@@ -38,11 +38,13 @@ git clone git@github.com:haversine-air/HSMP.git
 
 git clone git@github.com:haversine-air/AirPlugin.git
 
-3) Change to the AirPlugin directory (cd AirPlugin)
+3) Change to the AirPlugin directory 
 
 4) Edit the Makefile and adjust the compiler to your own
 
 5) Type "make platform"
+
+6) If the build is successfull, copy the corresponding .xpl file to your X-Plane Resources/plugins directory
 
 Where platform is one of: 
 
