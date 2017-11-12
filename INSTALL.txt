@@ -1,0 +1,168 @@
+HSAirXPL Plugin 4.5.2
+(c) 2013-2015 Haversine Ltd
+
+Hardware and Software Requirements: 
+===================================
+
+In order to run and use this plugin you need: 
+
+- An Intel computer with a running copy of X-Plane version 9 or 10.
+- An Ethernet (wired or WiFi) interface on the computer configured for a 
+local IP network. 
+- A WiFi network connected to the computer so that the iPhone/iPad/iPod can
+  receive the data broadcasted by the plugin. 
+- The devices must all be on the same subnet and layer 2 broadcast domain. 
+
+Installation Instructions: 
+==========================
+
+Note: If you have a previous version of the AirTrackXPL or HSAIRXPL installed 
+under the Resources/plugins sub-folder of X-Plane, 
+(e.g. AirTrackXPL-2.0-XXX.xpl), delete it first.
+
+Depending on your platform and X-Plane version, copy one of:
+
+	HSAIRXPL-Win-32.xpl
+	HSAIRXPL-Win-64.xpl
+	HSAIRXPL-Mac-32.xpl
+	HSAIRXPL-Mac-64.xpl
+	HSAIRXPL-Lin-32.xpl
+	HSAIRXPL-Lin-36.xpl
+
+To your X-Plane's resources/plugins folder. 
+
+The -Win- files are for Microsoft Windows, the -Mac- for Mac OS X and the 
+-Lin- files for Linux.
+ 
+The -32.xpl files are for X-Plane 32 bits whereas the -64.xpl files are 
+for X-Plane 64 bits. Please note that even though you may be running a 64 
+bits OS (like Windows 7 64 or OS X), you may still be running X-Plane in 
+32 bits mode. It is only from 10.20 that X-Plane became 64 bits.
+
+Hence for X-Plane above 10.20 you probably want the 64bit versions whereas for any other version of X-Plane, including all X-Plane 9 versions, 
+the plugin you'll want is the 32 bits. 
+
+If in doubt you may also copy both the 32 and 64 files and let one of them 
+fail to load depending on the version of X-Plane you launch. 
+
+That's all. 
+ 
+Support for the MCP and EFIS PRO and EL from CPFlight
+=====================================================
+
+As of version 4.3, this plugin also acts as a driver for the MCP-EL, MCP-PRO
+and corresponding primary EFIS units of CPFlight. 
+
+It replaces the manufacturer's driver and replaces the previously release 
+plugin CPFXPL for Mac available at x-plane.org. 
+
+The cpflight part only works if the words CPFLIGHT-SERIAL-PORT= are found in 
+the config file.
+
+On Mac if you have a CPFLight MCP it should appear as /dev/cu.usbserial...
+so create HSAIRXPL.cfg in the Resources/plugins folder of X-Plane and
+put one of:
+
+CPFLIGHT-SERIAL-PORT=AUTO
+
+or 
+
+CPFLIGHT-SERIAL-PORT=/dev/cu.usb...
+
+On Linux you will probably need to specify the device. Create  HSAIRXPL.cfg
+in the Resources/plugins folder of X-Plane and add a line such as 
+CPFLIGHT-SERIAL-PORT=/dev/serial-port to it.
+
+On Windows, create HSAIRXPL.cfg in the Resources/plugins folder of X-Plane and
+add a line such as:
+
+CPFLIGHT-SERIAL-PORT=COMn
+
+where COMn is the serial port of the MCP.
+
+Troubleshooting: 
+================
+
+If your X-Plane flight doesn't appear on your iPod/iPad/iPhone you can try
+to find the root cause of the problem. Below are some suggestions of things
+you can do: 
+
+1. Look at the Log.txt file under the X-Plane folder to see if the plugin
+loaded successfully. 
+
+2. The plugin will send UDP packets to the local network to address 
+239.224.224.1 on port 2424 for AirTrack and 2425 for AirFMC.  
+Make sure these are being sent. On Mac or Linux you can use for example: 
+
+	# sudo tcpdump port 2424
+
+	Or for the WiFi interface of your mac: 
+	# sudo tcpdump -i en1 port 2424 
+
+	Or on Linux:  
+
+	# sudo tcpdump -i eth1 port 2424 
+
+You should see packets going out on that interface. If not, something is 
+wrong with the plugin; if yes, something is wrong with the App. 
+
+Press CTRL-C to quit. 
+
+3. Make sure you have your iDevice connected to the same WiFi IP subnet 
+of where packets are being sent out. 
+
+4. If you have multiple network interfaces, it may be that the plugin 
+is loaded but is sending packets to the wrong interface. One example of 
+this is if you have a mac with a wired Internet connection and you are 
+using Internet sharing to share to the Wireless Interface. 
+
+In this case the packets sent by the plugin will go out on the interface 
+that has the best route to the destination multicast address 239.224.224.1 
+which, by default, is where the default Internet route is. 
+
+In order to overcome this problem you need to route these multicast packets
+onto the right interface. 
+
+Unfortunately there is no easy way in which we can do this from the plugin 
+because that would require for it (or X-Plane) to run with root privileges, 
+so to fix this you need to apply a manual fix yourself: 
+
+Just open a terminal window and type on the mac: 
+
+	# sudo route add -host 239.224.224.1/32 -interface en1
+
+Or on Linux: 
+
+	/sbin/route add -host 239.224.224.1 netmask 255.255.255.255 eth1
+
+Replace en1/eth1 by your WiFi Interface. 
+
+Note: You will have to do this everytime you restart, or you may install 
+this command on a startup script to be persistent. 
+
+5. Try restarting the App in the iPhone/iPad/iPod by double clicking on 
+the home button and killing it. 
+
+=========
+
+6. As of 2.2.2, a new way of targetting your iDevice has been introduced.
+
+If all else fails, check the IP address of your iPad/iPhone/iPod and 
+insert it in the address field under HSAir -> Settings menu option. 
+
+This tells X-Plane to only send packets to that IP address, but on 
+the other hand you are in control of the IP address to which it sends
+packets. 
+
+The only downside of this approach is that you can only use one device
+connected to X-Plane, and that if your device changes its IP address 
+(via DHCP for instance) you will need to keep changing it in X-Plane. 
+
+Contacting Us:
+==============
+
+You can of course visit us at http://haversine.com/, see the FAQ, and 
+contact us through support anytime you like. Feel free to do so if you have
+problems, comments, suggestions, or just to say hi.
+
+

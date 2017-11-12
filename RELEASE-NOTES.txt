@@ -1,0 +1,177 @@
+What's new in 4.7 (2017/08/16)
+##############################
+- Adds support for TCAS traffic broadcast from X-Plane
+
+What's new in 4.6.1, 4.6.2 and 4.6.3 (2017/08/10)
+#################################################
+- Fixes some issues with updating the flight plan and AirTrack
+
+What's new in 4.6 (2017/08/04)
+###################££###########
+- Fixes issues with several supported plane's in X-Plane 11 including the IXEG737,
+  and Boeing 767.
+- Adds support for the zibo 737 for X-Plane 11 (requires AirFMC 1.5)
+
+What's new in 4.5.2 (2016/10/16)
+###################££###########
+- Improves support for dual FMC selection with the IXEG 737 and QPAC A320
+
+What's new in 4.5.1 (2016/05/19)
+###################££###########
+- Fixes an issue with the IXEG 737
+
+What's new in 4.5 (2016/05/13)
+##############################
+- Added AirFMC and AirTrack support to the Boeing 737 Classic from IXEG
+
+What's new in 4.4 (2016/03/13)
+##############################
+- Added AirFMC support to the Boeing 767 from VMAX
+- Added AirTrack suppport for more than 100 route points (req. AirTrack>=3.9) 
+
+What's new in 4.3.3 (2015/10/20) 
+################################
+- Fixe AirTrack crash with JARA320/A330 and SID/STAR flight plans
+
+What's new in 4.3.2 (2015/10/13) 
+################################
+- Fixes ND mode ARC bug incorrectly identified as PLN in JAR A330 and A320
+
+What's new in 4.3.1 (2015/06/17) 
+################################
+- Fix an issue with yellow lines and AirFMC for the A330 from JAR Design
+- Fix a few issues with the Boeing 757 from Flight Factor and MCP support
+
+What's new in 4.3 (2015/05/20) 
+##############################
+- A totally new / restructured to support multiple aircraft seamlessly
+- Big endian support was dropped (old powerpc macs no longer supported)
+- Added AirTrack/MCP support for the Boeing 777 from FlightFactor
+- Added AirTrack/MCP support for the Boeing 757 from FlightFactor
+- Added AirFMC support for the A330 from JAR Design
+- Integrated support driver for the 737 MCP and EFIS from CPFlight
+
+What's new in 4.2 (2014/01/22)
+################################
+- Added support for the Boeing 748i fro Super Critical Simulations
+
+What's new in 4.2 (2014/01/22)
+################################
+- Added support for the Boeing 748i fro Super Critical Simulations
+
+What's new in 4.1 (2013/12/30)
+################################
+- Added support for EXEC and annunciator lights for AirFMC on certain planes
+- Added support for the QPAC A320 for AirFMC
+
+What's new in 4.0.5 (2013/12/22)
+################################
+- Preparations for 4.1
+
+What's new in 4.0.4 (2013/12/18)
+################################
+- Fixes an issue with the X-Plane flight planner and the FIX button not working
+  properly.
+
+What's new in 4.0.3 (2013/12/14)
+################################
+- Minor bug fixes.
+
+What's new in 4.0.2 (2013/12/14)
+################################
+- Mac 32 plugin compiled with support for older (ppc) Macs. 
+
+What's new in 4.0.1 (2013/12/13)
+################################
+- Small bug fix for auto-pilot plus Linux shared library
+
+What's new in 4.0 (2013/12/10)
+##############################
+- AirTrackXPL was renamed to HSAirXPL which now supports both the AirTrack 
+  and AirFMC apps and uses a totally new communications protocol. 
+- All the code is new; this is a brand new plugin
+
+What's new in 3.5 (2013/01/20)
+##############################
+- Fixes some issues related to libraries in Windows XP and X-Plane 9
+- Fixes an issue with the flight plan update
+
+What's new in 3.3 (2012/11/18)
+##############################
+- Support for 64 bit versions of X-Plane (win,mac,lin)
+
+What's new in 2.3 (2011/04/27)
+##############################
+
+- This version of the plugin introduces stall speed indicator bar and flight director 
+support for the PFD. 
+
+- In addition, some altitude and DME measurements are also made more precise with this plugin.
+
+What's new in 2.2.2 (2011/03/20):
+#################################
+
+- A new AirTrack Menu Settings option has been added, allowing users
+to specify the IP address of the target iPad / iPod / iPhone. This takes away 
+some of the automatism and restricts the use of AirTrack to one device at 
+a time, but can be used by people experiencing connectivity problems with 
+multicast to make it work. 
+
+What's new in 2.2.1 (2011/02/14):
+#################################
+
+- Corrects problems observed in some platforms with the FMC and plan loading.
+
+What's new in 2.2 (2011/02/08):
+###############################
+
+- The communications protocol was extended to support VOR/ADF selector buttons.
+
+- The plugin now supports FMC routes with up to 100 waypoints (instead of 50). 
+
+- Improved support for the x737 from EADT. 
+
+- Multiple corrections and small updates. 
+
+- Plus in general, the 2.2 plugin enables all the new features available in AirTrack 2.2
+
+What's new in 2.1 (2010/12/17): 
+###############################
+
+- The communications  protocol was extended to support additional EFIS messages. 
+
+- This version of the plugin also listens for incoming UDP packets from  
+AirTrack Apps and passes them on to X-Plane, thus effectively controlling the
+plane. 
+
+- Multiple bugs corrected, in particular ones related to the PFD auto-pilot 
+states. 
+
+- Improved the support for the x737 from EADT. 
+
+* Please visit air.ipobjects.com to find out what's new in the 
+  2.1 AirTrack App *
+
+
+What's new in 2.0 (2010/10/16): 
+###############################
+
+Updates are sent every 100ms instead of 500ms, so 10 update per second instead 
+of the previous 2 updates per second.
+
+The code was re-written and reorganized. 
+
+What's new in 1.0.1 (2010/08/14):
+#################################
+
+- Added the INSTALL.txt and RELEASE-NOTES.txt files
+
+- The broadcasted altitude is now the indicated pressure altitude, so it 
+  gets affected by the QNH/Altimeter setting. 
+ 
+- The Mac version of the plugin is now compiled under Mac OS Leopard 10.5 to
+  make it compatible with older systems.
+
+- The plugin now works with older PPC Macs too (G4, G5) (byte order reversed).
+
+
