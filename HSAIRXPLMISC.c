@@ -301,3 +301,30 @@ void hsxpl_log_str(char *logstr) {
   XPLMDebugString(str);
 #endif
 }
+
+
+
+int hsxpl_dirent_is_dir(struct dirent *ent) {
+
+#if !IBM
+  if(ent->d_type==DT_DIR) return 1;
+#else
+  struct stat info;
+  if( stat( ent->d_name, &info ) == 0 )
+    return S_ISDIR( info.st_mode );
+#endif
+  return 0;
+}
+
+int hsxpl_dirent_is_reg(struct dirent *ent) {
+
+#if !IBM
+  if(ent->d_type==DT_REG) return 1;
+#else
+  struct stat info;
+  if( stat( ent->d_name, &info ) == 0 )
+    return S_ISREG( info.st_mode );
+#endif
+  return 0;
+}
+

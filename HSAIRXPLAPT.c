@@ -34,6 +34,7 @@
 #endif
 
 #include <sys/stat.h>
+#include <fcntl.h>
 
 #include "HSAIRXPL.h"
 #include "HSMPMSG.h"
@@ -118,7 +119,7 @@ void hsairpl_apt_create_ref_for(char *rpath) {
  * itself recursively and should only be called with rpath=NULL from
  * the outside. */
 void hsairpl_apt_read_references(char *rpath) {
-#if !defined(_WIN32)
+
   char path[512]; memset(path,0,512);
   if(rpath==NULL) {
 
@@ -139,6 +140,7 @@ void hsairpl_apt_read_references(char *rpath) {
     struct dirent *dp;
     while((dp=readdir(dirp))!=NULL) {
       char dname[256];
+
 #if APL
       if(dp->d_namlen > 0) {
 
@@ -152,9 +154,9 @@ void hsairpl_apt_read_references(char *rpath) {
         if(!strcmp(dname,"..")) continue;
         char rpath[512];
         sprintf(rpath,"%s/%s",path,dname);
-        if(dp->d_type==DT_DIR) {
+        if(hsxpl_dirent_is_dir(dp)) {
           hsairpl_apt_read_references(rpath);
-        } else if(dp->d_type==DT_REG) {
+        } else if(hsxpl_dirent_is_reg(dp)) {
           if(!strcmp(dname,"apt.dat")) {
             hsairpl_apt_create_ref_for(rpath);
           }
@@ -163,7 +165,6 @@ void hsairpl_apt_read_references(char *rpath) {
     }
     closedir(dirp);
   }
-#endif
 }
 
 /* Returns the list of references or NULL if none */
@@ -257,7 +258,6 @@ char __hsairpl_apt_send_airport_to_airport_id__[8];
 
 void hsairpl_apt_send_airport_to(char *airportid, struct sockaddr_in*to) {
 
-#if !defined(_WIN32)
   char str[512];
   sprintf(str,"hsairpl_apt_send_airport_to(%s)",airportid);
   hsxpl_log(HSXPLDEBUG_ACTION,str);
@@ -294,7 +294,6 @@ void hsairpl_apt_send_airport_to(char *airportid, struct sockaddr_in*to) {
   } else {
     hsairpl_apt_send_req_fail();
   }
-#endif
 }
 
 /* Sends a request fail back to the client app */

@@ -31,8 +31,9 @@
 #define __HS_HSAIRXPL_H__
 
 #if defined(_WIN32)
-#include <Winsock2.h>
-#include <Ws2tcpip.h>
+#include <winsock2.h>
+#include <windows.h>
+#include <ws2tcpip.h>
 #include <io.h>
 #else
 #include <syslog.h>

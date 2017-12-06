@@ -28,9 +28,18 @@
 #ifndef HSAIRXPLMISC_h
 #define HSAIRXPLMISC_h
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <dirent.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
 #if defined(_WIN32)
-#include <Winsock2.h>
-#include <Ws2tcpip.h>
+#include <winsock2.h>
+#include <windows.h>
+#include <ws2tcpip.h>
 #include <io.h>
 #else
 #include <syslog.h>
@@ -39,9 +48,7 @@
 #include <arpa/inet.h>
 #include <sys/select.h>
 #include <sys/utsname.h>
-#include <unistd.h>
 #include <fcntl.h>
-#include <string.h>
 #endif
 
 #if IBM
@@ -82,5 +89,8 @@ void hsxpl_point_name_for_position(double lat,double lon,char *pName);
 
 void hsxpl_log(int level,char *logstr);
 void hsxpl_log_str(char *logstr);
+
+int hsxpl_dirent_is_dir(struct dirent *dp);
+int hsxpl_dirent_is_reg(struct dirent *dp);
 
 #endif /* HSAIRXPLMISC_h */
