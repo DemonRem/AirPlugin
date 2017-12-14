@@ -558,7 +558,7 @@ PLUGIN_API void XPluginReceiveMessage ( XPLMPluginID inFrom, long inMessage,
 
 
 #ifdef HSXPLDEBUG
-  hsxpl_log(HSXPLDEBUG_ACTION,"XPluginReceiveMessage()");
+//  hsxpl_log(HSXPLDEBUG_ACTION,"XPluginReceiveMessage()");
 #endif
 
   switch(inMessage) {
@@ -650,7 +650,6 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
     hsxpl_n1_pressed=0;
     hsxpl_navdb_update_from_xplane();
     hsxpl_send_second_data();
-    /*    hsxpl_clist_showtime(); */
     lastSecond=thisSecond;
 
     hsairpl_second_timer();
@@ -1502,6 +1501,24 @@ void hsxpl_hsmp_message_callback(uint32_t mid,void *data,struct sockaddr_in *fro
         default:
           break;
       }
+      break;
+    }
+
+    case(HSMP_MSG_AGRP_CLIST): {
+      switch(mid) {
+        case(HSMP_MID_CLIST_LIST_REQ): {
+          hsairpl_clist_send_indexes_to(from);
+          break;
+        }
+        case(HSMP_MID_CLIST_REQDL): {
+          char *listid=(char *)data;
+          hsairpl_clist_send_list_to(listid,from);
+          break;
+        }
+        default:
+          break;
+      }
+      break;
     }
     default: break;
   } /* End switch mgroup */
@@ -1834,9 +1851,10 @@ void hsxpl_send_subsecond_data(void) {
     hsairpl_apt_send_req_fail();
   }
 
-
+  if(hsairpl_clist_send_next_list_bytes()<0) {
+    hsairpl_clist_send_req_fail();
+  }
 }
-
 
 
 /* Send a packet with instant data several times per second */
@@ -3823,6 +3841,7 @@ void hsxpl_set_datarefs(void) {
   hsairpl_atc_update_datarefs();
 
   hsairpl_apt_read_references(NULL);
+  hsairpl_clist_read_references(NULL);
 
   hsxpl_navdb_reset_fmc_type();
 
