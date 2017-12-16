@@ -28,7 +28,22 @@
 #define __HSAIRXPLDREF__
 
 #include <stdio.h>
+
+#if defined(_WIN32)
+#include <winsock2.h>
+#include <windows.h>
+#include <ws2tcpip.h>
+#include <io.h>
+#else
+#include <syslog.h>
+#include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/select.h>
+#include <sys/utsname.h>
+#include <fcntl.h>
+#endif
+
 #include "HSMPMSG.h"
 
 typedef struct hsairpl_dref_read_req_s {

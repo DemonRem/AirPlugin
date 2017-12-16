@@ -229,13 +229,13 @@ void hsairpl_dref_showtime_base(hsairpl_dref_read_req_t **base) {
   hsmp_net_tgt_list_t *peer=NULL;
   hsmp_net_tgt_list_t *previouspeer=NULL;
 
-  // Build an initial packet
+  /* Build an initial packet */
   hsmp_pkt_t *pkt=NULL;
   int psize=1400; int msgcount=0;
 
   while(p!=NULL) {
     if(pkt==NULL) pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
-    // Try to find peer
+    /* Try to find peer */
     peer=hsmp_peer_with_sa(&p->from);
     if(previouspeer==NULL) previouspeer=peer;
     if(peer==NULL) {  /* Peer no longer valid, remove request from list */
