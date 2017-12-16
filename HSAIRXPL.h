@@ -79,7 +79,7 @@ typedef int socklen_t;
 #include <XPUIGraphics.h>
 #include <XPLMPlugin.h>
 
-#define HSAIRXPL_VERSION    "4.7b1"
+#define HSAIRXPL_VERSION    "4.7"
 
 /* Plane type */
 #define HSXPL_PLANE_XPLANE  0x00000000

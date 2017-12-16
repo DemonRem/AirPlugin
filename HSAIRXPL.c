@@ -45,6 +45,7 @@
 #include "HSAIRXPLCOMS.h"
 #include "HSAIRXPLATC.h"
 #include "HSAIRXPLAPT.h"
+#include "HSAIRXPLDREF.h"
 
 #ifdef CPFLIGHT
 #include "HSAIRCPFLIGHT.h"
@@ -166,11 +167,6 @@ struct xplane_datarefs_s {
   XPLMDataRef joyroll;
   XPLMDataRef joypitch;
   XPLMDataRef joyyaw;
-
-
-
-
-
 
 } xpdatarefs;
 
@@ -447,9 +443,9 @@ PLUGIN_API int XPluginStart ( char * outName, char * outSig, char * outDesc ) {
 #endif
 
   /* Register our credentials */
-  sprintf(outName,"Air Plugin v%s",HSAIRXPL_VERSION);
+  sprintf(outName,"Haversine Air Plugin v%s",HSAIRXPL_VERSION);
   strcpy(outSig, "com.haversine.air.xpl");
-  strcpy(outDesc, "Air X-Plane Plugin");
+  sprintf(outDesc,"Haversine Air Plugin v%s",HSAIRXPL_VERSION);
 
   /* Determine node type, windows, mac or linux */
   hsxpl_idver=HSMP_PKT_NT_XPG;
@@ -487,7 +483,7 @@ PLUGIN_API int XPluginStart ( char * outName, char * outSig, char * outDesc ) {
   hsxpl_navdb_clear_route();
 
   /* Setup settings menu entries */
-  hsxpl_main_menu=XPLMCreateMenu("Air Plugin",NULL,0,hsxpl_select_menu_option,0);
+  hsxpl_main_menu=XPLMCreateMenu("Haversine Air",NULL,0,hsxpl_select_menu_option,0);
   hsxpl_settings_menu_item=XPLMAppendMenuItem(hsxpl_main_menu,"Settings",(void *)"Settings",1);
 
   /* Load saved settings */
@@ -603,8 +599,9 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
   }
 #endif
 
-  static time_t   lastSecond=0;
-  time_t          thisSecond=time(NULL);
+  static int _hsxpl_runtime_two_tictacs_=1;
+  static int _hsxpl_runtime_three_tictacs_=1;
+  static int _hsxpl_runtime_second_tictacs_=1;
 
   /* Reset datarefs once again in the first run */
   if(_hsxpl_runtime_initialised_ == 0) {
@@ -622,11 +619,22 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
   /* Send data reports */
   hsxpl_send_subsecond_data();
 
-  /* One in every two cycles */
-  static int two_tictacs=1;
-  two_tictacs--;
-  if(two_tictacs<1) {
-    two_tictacs=2;
+  /* Clean up stuff */
+  if(hsairpl_apt_send_next_airport_bytes()<0) {
+    hsairpl_apt_send_req_fail();
+  }
+
+  if(hsairpl_clist_send_next_list_bytes()<0) {
+    hsairpl_clist_send_req_fail();
+  }
+
+  /* Send datarefs to those who requested them and clean up old expired peers */
+  hsairpl_dref_showtime_tictac();
+
+    /* One in every two cycles */
+  _hsxpl_runtime_two_tictacs_--;
+  if(_hsxpl_runtime_two_tictacs_<1) {
+    _hsxpl_runtime_two_tictacs_=2;
 
     /* Release x737 FMC key if pressed */
     if(x7datarefs.key_down!=NULL) {
@@ -637,25 +645,30 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
   }
 
   /* One in every three cycles */
-  static int three_tictacs=1;
-  three_tictacs--;
-  if(three_tictacs<1) {
-    three_tictacs=3;
+  _hsxpl_runtime_three_tictacs_--;
+  if(_hsxpl_runtime_three_tictacs_<1) {
+    _hsxpl_runtime_three_tictacs_=3;
     hsxpl_send_fmc_data();
 
   }
 
+  /* One in every second or roughly */
+  _hsxpl_runtime_second_tictacs_--;
+  if(_hsxpl_runtime_second_tictacs_<1) {
+    _hsxpl_runtime_second_tictacs_=(int)((float)(1.0/HSXPL_ENGINE_TICTAC));
 
-  if(lastSecond <thisSecond) {
     hsxpl_n1_pressed=0;
     hsxpl_navdb_update_from_xplane();
     hsxpl_send_second_data();
-    lastSecond=thisSecond;
+
+    /* Send ATC traffic */
+    hsairpl_atc_send_traffic();
+
+    /* Send per second datarefs and cleanup old peers */
+    hsairpl_dref_showtime_sec();
 
     hsairpl_second_timer();
-
   }
-
 
   /* Re-check ufmc because it sometimes takes a while for it to come up */
 
@@ -1520,6 +1533,14 @@ void hsxpl_hsmp_message_callback(uint32_t mid,void *data,struct sockaddr_in *fro
       }
       break;
     }
+
+    case(HSMP_MSG_AGRP_DREF): {
+      if((mid & 0xFF000000) == HSMP_MID_DREF_CLASSTYPE) {
+        hsairpl_dref_process_message(mid,data,from);
+      }
+      break;
+    }
+
     default: break;
   } /* End switch mgroup */
 }
@@ -1846,14 +1867,6 @@ void hsxpl_send_subsecond_data(void) {
     if(pkt2!=NULL) free(pkt2);
   }
 
-
-  if(hsairpl_apt_send_next_airport_bytes()<0) {
-    hsairpl_apt_send_req_fail();
-  }
-
-  if(hsairpl_clist_send_next_list_bytes()<0) {
-    hsairpl_clist_send_req_fail();
-  }
 }
 
 
@@ -1952,7 +1965,6 @@ void hsxpl_send_second_data(void) {
     }
   }
 
-  hsairpl_atc_send_traffic();
 
 }
 
@@ -6110,8 +6122,8 @@ void hsxpl_create_settings_widget(int x, int y, int w, int h)
 
   /* AirTrack IP address part */
 
-  char vstr[32];
-  sprintf(vstr,"Air Plugin %s Settings",HSAIRXPL_VERSION);
+  char vstr[64];
+  sprintf(vstr,"Haversine Air %s Settings",HSAIRXPL_VERSION);
   hsxpl_settings_widget = XPCreateWidget(x, y, x+w, y-h,1,vstr,1,NULL, xpWidgetClass_MainWindow);
   XPSetWidgetProperty(hsxpl_settings_widget, xpProperty_MainWindowHasCloseBoxes, 1);
 
