@@ -42,15 +42,21 @@ hsairpl_dref_read_req_t *hsairpl_dref_find_read_req(hsairpl_dref_read_req_t *req
   hsairpl_dref_read_req_t *p=queue;
   while(p!=NULL) {
     if(p->data.drid==req->data.drid) {
-      if(p->dtype==req->dtype) {
-        if(!strcmp(p->dref,req->dref)) {
-          if(!memcmp(&p->from,&req->from,sizeof(struct sockaddr_in))) {
-            return p;
-          }
-        }
+      if(!memcmp(&p->from,&req->from,sizeof(struct sockaddr_in))) {
+          return p;
       }
     }
     p=p->next;
+  }
+  if(p==NULL) {
+    while(p!=NULL) {
+      if(!strcmp(p->dref,req->dref)) {
+        if(!memcmp(&p->from,&req->from,sizeof(struct sockaddr_in))) {
+          return p;
+        }
+      }
+      p=p->next;
+    }
   }
   return NULL;
 }
@@ -82,40 +88,110 @@ uint32_t hsairpl_dref_process_dref_read_request(hsairpl_dref_read_req_t *req) {
 
   uint32_t mid=HSMP_MID_DREF_CLASSTYPE|HSMP_MID_DREF_GROUP|HSMP_MID_DREF_O_RD_REP;
 
-  XPLMDataRef dref=XPLMFindDataRef(req->dref);
+  char dataref[128];
+  int arrayindex=-1;
+  int dlen;
+
+  strncpy(dataref,req->dref,128);
+
+  /* See if it ends in [idx] for array types */
+  dlen=strlen(dataref);
+  int i=dlen-1;
+  if(dataref[i]==']') {
+    char *openbrackets=&dataref[i];
+    while(i>=0) {
+      openbrackets--;
+      if(*openbrackets=='[')  {
+        i--;
+        break;
+      }
+      i--;
+    }
+    if(i>=0) {
+      *openbrackets='\0';openbrackets++;
+      dataref[dlen-1]='\0';
+      arrayindex=atoi(openbrackets);
+    }
+  }
+
+  /* Process dataref */
+  XPLMDataRef dref=XPLMFindDataRef(dataref);
   uint32_t datasize=0;
   if(dref!=NULL) {
-      switch (req->dtype) {
-        case (HSMP_MID_DREF_T_INT32): {
-          mid |= HSMP_MID_DREF_T_INT32;
-          int32_t i=XPLMGetDatai(dref);
-          memcpy(req->data.dval,&i,sizeof(int32_t));
-          datasize=sizeof(int32_t);
-          break;
-        }
-        case (HSMP_MID_DREF_T_FLOAT): {
-          mid |= HSMP_MID_DREF_T_FLOAT;
-          float i=XPLMGetDataf(dref);
-          memcpy(req->data.dval,&i,sizeof(float));
-          datasize=sizeof(float);
-          break;
-        }
-        case (HSMP_MID_DREF_T_DOUBLE): {
-          mid |= HSMP_MID_DREF_T_DOUBLE;
-          double i=XPLMGetDataf(dref);
-          memcpy(req->data.dval,&i,sizeof(double));
-          datasize=sizeof(double);
-          break;
-        }
-        case (HSMP_MID_DREF_T_STR): {
-          mid |= HSMP_MID_DREF_T_STR;
-          XPLMGetDatab(dref,req->data.dval,0,127);
-          datasize=(uint32_t)strlen(req->data.dval)+1;
-          break;
-        }
-        default:
-          break;
+    uint32_t dtype=req->dtype;
+    if(dtype==HSMP_MID_DREF_T_UNDEF) {
+      XPLMDataTypeID dt=XPLMGetDataRefTypes(dref);
+      if(dt==0) return 0;
+      if(dt&xplmType_Int) {
+        dtype=HSMP_MID_DREF_T_INT32;
+      } else if(dt&xplmType_Double) {
+        dtype=HSMP_MID_DREF_T_DOUBLE;
+      } else if(dt&xplmType_Float) {
+        dtype=HSMP_MID_DREF_T_FLOAT;
+      } else if(dt&xplmType_FloatArray) {
+        dtype=HSMP_MID_DREF_T_AFLOAT;
+      } else if(dt&xplmType_IntArray) {
+        dtype=HSMP_MID_DREF_T_AINT32;
+      } else if(dt&xplmType_Data) {
+        dtype=HSMP_MID_DREF_T_STR;
+      } else {
+        return 0;
       }
+    }
+    switch (dtype) {
+      case (HSMP_MID_DREF_T_INT32): {
+        mid |= HSMP_MID_DREF_T_INT32;
+        int32_t i=XPLMGetDatai(dref);
+        memcpy(req->data.dval,&i,sizeof(int32_t));
+        datasize=sizeof(int32_t);
+        break;
+      }
+      case (HSMP_MID_DREF_T_FLOAT): {
+        mid |= HSMP_MID_DREF_T_FLOAT;
+        float i=XPLMGetDataf(dref);
+        memcpy(req->data.dval,&i,sizeof(float));
+        datasize=sizeof(float);
+        break;
+      }
+      case (HSMP_MID_DREF_T_DOUBLE): {
+        mid |= HSMP_MID_DREF_T_DOUBLE;
+        double i=XPLMGetDataf(dref);
+        memcpy(req->data.dval,&i,sizeof(double));
+        datasize=sizeof(double);
+        break;
+      }
+      case (HSMP_MID_DREF_T_STR): {
+        mid |= HSMP_MID_DREF_T_STR;
+        XPLMGetDatab(dref,req->data.dval,0,127);
+        datasize=(uint32_t)strlen(req->data.dval)+1;
+        break;
+      }
+      case (HSMP_MID_DREF_T_AINT32): {
+        mid |= HSMP_MID_DREF_T_INT32;
+        if(arrayindex>=0) {
+          int32_t i;
+          if(XPLMGetDatavi(dref,&i,arrayindex,1)==1) {
+            memcpy(req->data.dval,&i,sizeof(int32_t));
+            datasize=sizeof(int32_t);
+          }
+        }
+        break;
+      }
+      case (HSMP_MID_DREF_T_AFLOAT): {
+         mid |= HSMP_MID_DREF_T_FLOAT;
+        if(arrayindex>=0) {
+          float i;
+          if(XPLMGetDatavf(dref,&i,arrayindex,1)==1) {
+            memcpy(req->data.dval,&i,sizeof(float));
+            datasize=sizeof(float);
+          }
+        }
+        break;
+      }
+
+      default:
+        break;
+    }
   }
   if(datasize>0) {
     while(datasize%4) datasize+=1;        /* Round to 4 byte alignment */
@@ -166,7 +242,7 @@ void hsairpl_dref_process_message(uint32_t mid,void *data,struct sockaddr_in *fr
           free(pkt);
           free(req);
         } else if(mfreq==HSMP_MID_DREF_F_TICTAC) {
-           hsairpl_dref_delete_read_req(req,&hsairpl_dref_secondbase);
+          hsairpl_dref_delete_read_req(req,&hsairpl_dref_secondbase);
           if(hsairpl_dref_find_read_req(req,hsairpl_dref_tictacbase)==NULL) {
             req->next=hsairpl_dref_tictacbase;
             hsairpl_dref_tictacbase=req;

@@ -554,7 +554,7 @@ PLUGIN_API void XPluginReceiveMessage ( XPLMPluginID inFrom, long inMessage,
 
 
 #ifdef HSXPLDEBUG
-//  hsxpl_log(HSXPLDEBUG_ACTION,"XPluginReceiveMessage()");
+/*  hsxpl_log(HSXPLDEBUG_ACTION,"XPluginReceiveMessage()"); */
 #endif
 
   switch(inMessage) {
