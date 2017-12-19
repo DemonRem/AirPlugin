@@ -497,7 +497,7 @@ PLUGIN_API int XPluginStart ( char * outName, char * outSig, char * outDesc ) {
 #endif
 
   /* Setup AirEFB tcp server */
-  hsmp_tcp_start_server("0.0.0.0",HSMP_AIREFB_PORT);
+  hsmp_tcp_start_server("0.0.0.0",HSMP_DYN_TCP_PORT_START);
 
   /* Register main loopback call */
   XPLMRegisterFlightLoopCallback(hsxpl_runtime,-1,NULL);
