@@ -279,7 +279,11 @@ void hsairpl_apt_send_airport_to(char *airportid, struct sockaddr_in*to) {
         p=p->next;
       }
       if(p!=NULL) {
+#if IBM
+        __hsairpl_apt_file_being_sent_fd__=open(p->path,O_RDONLY|O_BINARY);
+#else
         __hsairpl_apt_file_being_sent_fd__=open(p->path,O_RDONLY);
+#endif
         if(__hsairpl_apt_file_being_sent_fd__>=0) {
           /*
           if(hsairpl_apt_send_next_airport_bytes()<0) {

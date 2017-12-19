@@ -267,8 +267,11 @@ void hsairpl_clist_read_references(char *rpath) {
           p=p->next;
         }
         if(p!=NULL) {
-
+#if IBM
+          __hsairpl_clist_file_being_sent_fd__=open(p->path,O_RDONLY|O_BINARY);
+#else
           __hsairpl_clist_file_being_sent_fd__=open(p->path,O_RDONLY);
+#endif
           if(__hsairpl_clist_file_being_sent_fd__>=0) {
 
           } else {
