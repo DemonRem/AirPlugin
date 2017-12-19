@@ -153,9 +153,9 @@ void hsairpl_clist_read_references(char *rpath) {
           if(!strcmp(dname,"..")) continue;
           char rpath[512];
           sprintf(rpath,"%s/%s",path,dname);
-          if(hsxpl_dirent_is_dir(dp)) {
+          if(hsxpl_path_is_dir(rpath)) {
             hsairpl_clist_read_references(rpath);
-          } else if(hsxpl_dirent_is_reg(dp)) {
+          } else if(hsxpl_path_is_reg(rpath)) {
             if(!strcmp(dname,"clist.txt")) {
               hsairpl_clist_create_ref_for(rpath);
             }

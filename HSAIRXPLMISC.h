@@ -90,7 +90,7 @@ void hsxpl_point_name_for_position(double lat,double lon,char *pName);
 void hsxpl_log(int level,char *logstr);
 void hsxpl_log_str(char *logstr);
 
-int hsxpl_dirent_is_dir(struct dirent *dp);
-int hsxpl_dirent_is_reg(struct dirent *dp);
+int hsxpl_path_is_dir(char *path);
+int hsxpl_path_is_reg(char *path);
 
 #endif /* HSAIRXPLMISC_h */

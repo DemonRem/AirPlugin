@@ -135,6 +135,7 @@ void hsairpl_apt_read_references(char *rpath) {
     strncpy(path,rpath,511);
   }
 
+
   DIR *dirp = opendir(path);
   if(dirp!=NULL) {
     struct dirent *dp;
@@ -154,14 +155,16 @@ void hsairpl_apt_read_references(char *rpath) {
         if(!strcmp(dname,"..")) continue;
         char rpath[512];
         sprintf(rpath,"%s/%s",path,dname);
-        if(hsxpl_dirent_is_dir(dp)) {
+
+        if(hsxpl_path_is_dir(rpath)) {
           hsairpl_apt_read_references(rpath);
-        } else if(hsxpl_dirent_is_reg(dp)) {
+        } else if(hsxpl_path_is_reg(rpath)) {
           if(!strcmp(dname,"apt.dat")) {
             hsairpl_apt_create_ref_for(rpath);
           }
         }
-      }
+
+        }
     }
     closedir(dirp);
   }
@@ -176,6 +179,7 @@ hsairpl_apt_ref_t *hsairpl_apt_references(void) {
 void hsairpl_apt_send_indexes_to(struct sockaddr_in*to) {
 
   if(__hsairpl_apt_ref_base__==NULL) return;
+
   hsmp_net_tgt_list_t *peer = hsmp_peer_with_sa(to);
   if(peer==NULL) return;
 

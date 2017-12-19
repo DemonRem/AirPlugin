@@ -35,6 +35,8 @@
 #include <math.h>
 #include <time.h>
 #include <ctype.h>
+#include <sys/stat.h>
+#include <errno.h>
 
 
 void IPONAVLatitudeCStringFor(double lat,char *latStr,int fmt)
@@ -302,29 +304,40 @@ void hsxpl_log_str(char *logstr) {
 #endif
 }
 
+int hsxpl_path_is_dir(char *path) {
 
-
-int hsxpl_dirent_is_dir(struct dirent *ent) {
-
-#if !IBM
-  if(ent->d_type==DT_DIR) return 1;
-#else
-  struct stat info;
-  if( stat( ent->d_name, &info ) == 0 )
+#if IBM
+  struct _stat info;
+  if( _stat( path, &info ) == 0 ) {
+    char str[1024];
+    sprintf(str,"stat on %s is %ld",path,info.st_mode);
+    hsxpl_log(HSXPLDEBUG_ACTION,str);
     return S_ISDIR( info.st_mode );
-#endif
-  return 0;
-}
-
-int hsxpl_dirent_is_reg(struct dirent *ent) {
-
-#if !IBM
-  if(ent->d_type==DT_REG) return 1;
+  }
 #else
   struct stat info;
-  if( stat( ent->d_name, &info ) == 0 )
-    return S_ISREG( info.st_mode );
+  if( stat( path, &info ) == 0 ) {
+    return S_ISDIR( info.st_mode );
+  }
 #endif
   return 0;
 }
 
+int hsxpl_path_is_reg(char *path) {
+
+#if IBM
+  struct _stat info;
+  if( _stat( path, &info ) == 0 ) {
+    char str[1024];
+    sprintf(str,"stat on %s is %ld",path,info.st_mode);
+    hsxpl_log(HSXPLDEBUG_ACTION,str);
+    return S_ISREG( info.st_mode );
+  }
+#else
+  struct stat info;
+  if( stat( path, &info ) == 0 ) {
+    return S_ISREG( info.st_mode );
+  }
+#endif
+  return 0;
+}
