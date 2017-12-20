@@ -1,6 +1,6 @@
-What's new in 4.7 (2017/08/16)
+What's new in 4.7 (2017/12/19)
 ##############################
-- Adds support for TCAS traffic broadcast from X-Plane
+- Adds support for AirEFB 
 
 What's new in 4.6.1, 4.6.2 and 4.6.3 (2017/08/10)
 #################################################

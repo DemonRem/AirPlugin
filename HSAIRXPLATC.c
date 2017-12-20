@@ -365,6 +365,7 @@ uint64_t hsairpl_atc_get_timestamp(void) {
 /* Sends all surrounding acf to peers */
 void hsairpl_atc_send_traffic(void) {
 
+
   int source = hsairpl_atc_source();
 
   if(source==HSAIRPL_ATC_SOURCE_WORLDTRAFFIC) {
@@ -378,6 +379,7 @@ void hsairpl_atc_send_traffic(void) {
 }
 
 void hsairpl_atc_xl_send_traffic(void) {
+
 
   if(hsairxpl_atc_xl_datarefs.gndTraffic!=NULL) {
     if(hsairxpl_atc_xl_datarefs.gndBufferSize>0 && hsairxpl_atc_xl_datarefs.gndBuffer!=NULL) {
@@ -436,6 +438,7 @@ void hsairpl_atc_xl_send_traffic(void) {
               acf.reserved=0;
               acf.timestamp=hsairpl_atc_get_timestamp();
               hsairxpl_atc_xl_datarefs.numberOfAircraft++;
+
               hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_AT_POS_ACF,&acf);
               n++;
               psize -= (int)sizeof(hsmp_atc_pos_t);

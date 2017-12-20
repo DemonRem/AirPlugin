@@ -1,12 +1,12 @@
-HSAirXPL Plugin 4.5.2
-(c) 2013-2015 Haversine Ltd
+HSAirXPL Plugin 4.7  
+(c) 2013-2017 Haversine Ltd
 
 Hardware and Software Requirements: 
 ===================================
 
 In order to run and use this plugin you need: 
 
-- An Intel computer with a running copy of X-Plane version 9 or 10.
+- An Intel computer with a running copy of X-Plane version 9, 10 or 11.
 - An Ethernet (wired or WiFi) interface on the computer configured for a 
 local IP network. 
 - A WiFi network connected to the computer so that the iPhone/iPad/iPod can
@@ -18,7 +18,7 @@ Installation Instructions:
 
 Note: If you have a previous version of the AirTrackXPL or HSAIRXPL installed 
 under the Resources/plugins sub-folder of X-Plane, 
-(e.g. AirTrackXPL-2.0-XXX.xpl), delete it first.
+(e.g. AirTrackXPL-4.7-XXX.xpl), delete it first.
 
 Depending on your platform and X-Plane version, copy one of:
 
@@ -91,7 +91,7 @@ you can do:
 loaded successfully. 
 
 2. The plugin will send UDP packets to the local network to address 
-239.224.224.1 on port 2424 for AirTrack and 2425 for AirFMC.  
+239.224.224.1 on port 2424 for AirTrack, 2425 for AirFMC and 2426 for AirEFB.  
 Make sure these are being sent. On Mac or Linux you can use for example: 
 
 	# sudo tcpdump port 2424

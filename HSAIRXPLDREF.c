@@ -41,21 +41,26 @@ hsairpl_dref_read_req_t *hsairpl_dref_find_read_req(hsairpl_dref_read_req_t *req
 
   hsairpl_dref_read_req_t *p=queue;
   while(p!=NULL) {
-    if(p->data.drid==req->data.drid) {
-      if(!memcmp(&p->from,&req->from,sizeof(struct sockaddr_in))) {
+
+    if(ntohs(p->from.sin_port)==ntohs(req->from.sin_port)) {
+      if(p->from.sin_addr.s_addr == req->from.sin_addr.s_addr) {
+        if(p->data.drid==req->data.drid) {
           return p;
+        }
       }
     }
     p=p->next;
   }
   if(p==NULL) {
     while(p!=NULL) {
-      if(!strcmp(p->dref,req->dref)) {
-        if(!memcmp(&p->from,&req->from,sizeof(struct sockaddr_in))) {
-          return p;
+      if(ntohs(p->from.sin_port)==ntohs(req->from.sin_port)) {
+        if(p->from.sin_addr.s_addr == req->from.sin_addr.s_addr) {
+          if(!strcmp(p->dref,req->dref)) {
+            return p;
+          }
         }
+        p=p->next;
       }
-      p=p->next;
     }
   }
   return NULL;
@@ -178,7 +183,7 @@ uint32_t hsairpl_dref_process_dref_read_request(hsairpl_dref_read_req_t *req) {
         break;
       }
       case (HSMP_MID_DREF_T_AFLOAT): {
-         mid |= HSMP_MID_DREF_T_FLOAT;
+        mid |= HSMP_MID_DREF_T_FLOAT;
         if(arrayindex>=0) {
           float i;
           if(XPLMGetDatavf(dref,&i,arrayindex,1)==1) {
@@ -222,6 +227,7 @@ void hsairpl_dref_process_message(uint32_t mid,void *data,struct sockaddr_in *fr
       if(req!=NULL) {
         memcpy(req->dref,hreq->dref,127);
         req->data.drid=hreq->drid;
+
         req->dtype=mdtype;
         memcpy(&req->from,from,sizeof(struct sockaddr_in));
 
@@ -299,6 +305,8 @@ void hsairpl_dref_process_message(uint32_t mid,void *data,struct sockaddr_in *fr
 
 void hsairpl_dref_showtime_base(hsairpl_dref_read_req_t **base) {
 
+  char str[512];
+
   hsairpl_dref_read_req_t *p = *base;
   hsairpl_dref_read_req_t *p2 = *base;
 
@@ -310,42 +318,78 @@ void hsairpl_dref_showtime_base(hsairpl_dref_read_req_t **base) {
   int psize=1400; int msgcount=0;
 
   while(p!=NULL) {
-    if(pkt==NULL) pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
+
     /* Try to find peer */
     peer=hsmp_peer_with_sa(&p->from);
-    if(previouspeer==NULL) previouspeer=peer;
+
     if(peer==NULL) {  /* Peer no longer valid, remove request from list */
       p2=p->next;
       hsairpl_dref_delete_read_req(p,base);
       p=p2;
       continue;
-    } else {
-      uint32_t mid=hsairpl_dref_process_dref_read_request(p);
-      if(mid) {
-        int peersdiffer=1;
-        if(!memcmp(&previouspeer->sa,&peer->sa,sizeof(struct sockaddr_in))) {
-          peersdiffer=0;
-        }
-        if(psize<HSMP_MESSAGE_SIZE_FOR_MID(mid) || peersdiffer) {
-          hsmp_net_send_to_target(pkt,pkt->hdr.dsize,peer);
-          msgcount=0;
+    }
+
+    /* If we have no packet, create one */
+    if(pkt==NULL) {
+      psize=1400; msgcount=0;
+      pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
+    }
+
+    /* If we have a different peer from the previous, send prev packet and
+     * create a new one */
+    if(previouspeer!=NULL) {
+      if(ntohs(previouspeer->sa.sin_port)!=ntohs(peer->sa.sin_port) ||
+         previouspeer->sa.sin_addr.s_addr != peer->sa.sin_addr.s_addr) {
+
+        if(msgcount>0) {
+          hsmp_net_send_to_target(pkt,pkt->hdr.dsize,previouspeer);
           free(pkt);
+          msgcount=0;
+          psize=1400;
           pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
           if(pkt==NULL) break;
-          psize=1400;
         }
-        hsmp_net_add_msg_to_pkt(pkt,mid,(void *)&p->data);
-        msgcount++;
-        psize -= HSMP_MESSAGE_SIZE_FOR_MID(mid);
-        previouspeer = peer;
       }
     }
+
+    uint32_t mid=hsairpl_dref_process_dref_read_request(p);
+    if(!mid)  {
+      p=p->next;
+      continue;
+
+    }
+
+    /* If we don't have enough space for the new packet, dispatch
+     * packet first and create a new one */
+    if(psize<HSMP_MESSAGE_SIZE_FOR_MID(mid)) {
+      if(msgcount>0) {
+        hsmp_net_send_to_target(pkt,pkt->hdr.dsize,peer);
+        free(pkt);
+        msgcount=0;
+        psize=1400;
+        pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
+        if(pkt==NULL) break;
+      }
+    }
+
+    /* Now add message */
+    hsmp_net_add_msg_to_pkt(pkt,mid,(void *)&p->data);
+    msgcount++;
+    psize -= HSMP_MESSAGE_SIZE_FOR_MID(mid);
+
+    /* Update previous peer to us */
+    previouspeer = peer;
+
+    /* Move to next dataref */
     p=p->next;
   }
-  if(msgcount>0 && peer!=NULL) {
-    hsmp_net_send_to_target(pkt,pkt->hdr.dsize,peer);
+
+  if(pkt!=NULL) {
+    if(msgcount>0 && peer!=NULL) {
+      hsmp_net_send_to_target(pkt,pkt->hdr.dsize,peer);
+    }
+    free(pkt);
   }
-  free(pkt);
 }
 
 void hsairpl_dref_showtime_tictac(void) {
