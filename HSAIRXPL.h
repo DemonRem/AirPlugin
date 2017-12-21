@@ -103,6 +103,7 @@ typedef int socklen_t;
 #define HSXPL_A320Q_COL_IDX_MAGENTA     5
 #define HSXPL_A320Q_COL_IDX_S           6
 
+
 /* A function that resets the datarefs */
 void hsxpl_set_datarefs(void);
 float hsxpl_runtime(float                inElapsedSinceLastCall,

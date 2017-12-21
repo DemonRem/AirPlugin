@@ -191,8 +191,14 @@ struct ix733_datarefs_s {
   XPLMDataRef     rlines[12];
 } ix733_datarefs;
 
+#define HSAIRXPL_Z783_L_L  0
+#define HSAIRXPL_Z783_L_S  1
+#define HSAIRXPL_Z783_L_I  2
+#define HSAIRXPL_Z783_L_M  3
+#define HSAIRXPL_Z783_L_G  4
+
 struct z738_datarefs_s {
-  XPLMDataRef   lines[14][3];
+  XPLMDataRef   lines[14][HSAIRXPL_Z783_L_G+1];
   XPLMDataRef   execLight;
 } z738datarefs;
 
@@ -3370,6 +3376,10 @@ void hsxpl_send_ix733_data(void) {
 
 }
 
+#define HSXPL_Z738_FMC_COL_WHITE         0xFFFFFFFF
+#define HSXPL_Z738_FMC_COL_GREEN         0x00FF00FF
+#define HSXPL_Z738_FMC_COL_MAGENTA       0xFF00FFFF
+
 void hsxpl_send_z738_data(void) {
 
   uint8_t i;
@@ -3386,7 +3396,7 @@ void hsxpl_send_z738_data(void) {
     for(j=0;j<HSMP_FMC_MAX_SCREEN_NOCOLS;j++) {
       screen.matrix[i][j].row=i;
       screen.matrix[i][j].col=j;
-      screen.matrix[i][j].colour=0xFFFFFFFF;
+      screen.matrix[i][j].colour=HSXPL_Z738_FMC_COL_WHITE;
       screen.matrix[i][j].fsize=fSize;
       screen.matrix[i][j].chr=' ';
     }
@@ -3408,48 +3418,78 @@ void hsxpl_send_z738_data(void) {
       for(i=0;i<4;i++) {
         uint8_t l=(k*4)+i;
         if(l>=14) break;
+
         fSize=22;
 
-
-        if(z738datarefs.lines[l][0]!=NULL) {
+        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_L]!=NULL) {
           memset(line,0,32);
-          XPLMGetDatab(z738datarefs.lines[l][0],line,0,24);
+          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_L],line,0,24);
           cp=line; j=0;
           while(*cp!='\0') {
             if(*cp!=' ') {
               screen.matrix[l][j].fsize=22;
               screen.matrix[l][j].chr= *cp;
-              screen.matrix[l][j].colour=0xFFFFFFFF;
+              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_WHITE;
             }
             cp++; j++;
             if(j>=24) break;
           }
         }
 
-        if(z738datarefs.lines[l][1]!=NULL) {
+        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_G]!=NULL) {
           memset(line,0,32);
-          XPLMGetDatab(z738datarefs.lines[l][1],line,0,24);
+          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_G],line,0,24);
+          cp=line; j=0;
+          while(*cp!='\0') {
+            if(*cp!=' ') {
+              screen.matrix[l][j].fsize=22;
+              screen.matrix[l][j].chr= *cp;
+              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_GREEN;
+            }
+            cp++; j++;
+            if(j>=24) break;
+          }
+        }
+
+        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_M]!=NULL) {
+          memset(line,0,32);
+          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_M],line,0,24);
+          cp=line; j=0;
+          while(*cp!='\0') {
+            if(*cp!=' ') {
+              screen.matrix[l][j].fsize=22;
+              screen.matrix[l][j].chr= *cp;
+              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_MAGENTA;
+            }
+            cp++; j++;
+            if(j>=24) break;
+          }
+        }
+
+        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_S]!=NULL) {
+          memset(line,0,32);
+          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_S],line,0,24);
           cp=line; j=0;
           while(*cp!='\0') {
             if(*cp!=' ') {
               screen.matrix[l][j].fsize=18;
               screen.matrix[l][j].chr= *cp;
-              screen.matrix[l][j].colour=0xFFFFFFFF;
+              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_WHITE;
             }
             cp++; j++;
             if(j>=24) break;
           }
         }
 
-        if(z738datarefs.lines[l][2]!=NULL) {
+        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_I]!=NULL) {
           memset(line,0,32);
-          XPLMGetDatab(z738datarefs.lines[l][2],line,0,24);
+          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_I],line,0,24);
           cp=line; j=0;
           while(*cp!='\0') {
             if(*cp!=' ') {
               screen.matrix[l][j].fsize=22;
               screen.matrix[l][j].chr= *cp;
-              screen.matrix[l][j].colour=0xFFFF00FF;
+              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_WHITE;
             }
             cp++; j++;
             if(j>=24) break;
@@ -4669,6 +4709,9 @@ void hsxpl_set_ix733_datarefs(void) {
 
 void hsxpl_set_zibo737_datarefs(void) {
 
+  int i;
+  char dref[128];
+
   if(strncmp(hsxpl_acf_icao(),"B738",7))
     return;
 
@@ -4682,42 +4725,31 @@ void hsxpl_set_zibo737_datarefs(void) {
 
   hsxpl_fmc.exec_light_on=XPLMFindDataRef("laminar/B738/indicators/fms_exec_light_pilot");
 
-  z738datarefs.lines[0][0]=XPLMFindDataRef("laminar/B738/fmc1/Line00_L");
-  z738datarefs.lines[0][1]=XPLMFindDataRef("laminar/B738/fmc1/Line00_S");
+  for(i=0;i<14;i+=2) {
 
-  z738datarefs.lines[1][1]=XPLMFindDataRef("laminar/B738/fmc1/Line01_X");
-  z738datarefs.lines[3][1]=XPLMFindDataRef("laminar/B738/fmc1/Line02_X");
-  z738datarefs.lines[5][1]=XPLMFindDataRef("laminar/B738/fmc1/Line03_X");
-  z738datarefs.lines[7][1]=XPLMFindDataRef("laminar/B738/fmc1/Line04_X");
-  z738datarefs.lines[9][1]=XPLMFindDataRef("laminar/B738/fmc1/Line05_X");
-  z738datarefs.lines[11][1]=XPLMFindDataRef("laminar/B738/fmc1/Line06_X");
+    sprintf(dref,"laminar/B738/fmc1/Line%02d_L",i/2);
+    z738datarefs.lines[i][HSAIRXPL_Z783_L_L]=XPLMFindDataRef(dref);
 
-  z738datarefs.lines[2][0]=XPLMFindDataRef("laminar/B738/fmc1/Line01_L");
-  z738datarefs.lines[2][1]=XPLMFindDataRef("laminar/B738/fmc1/Line01_S");
-  z738datarefs.lines[2][2]=XPLMFindDataRef("laminar/B738/fmc1/Line01_I");
+    sprintf(dref,"laminar/B738/fmc1/Line%02d_S",i/2);
+    z738datarefs.lines[i][HSAIRXPL_Z783_L_S]=XPLMFindDataRef(dref);
 
-  z738datarefs.lines[4][0]=XPLMFindDataRef("laminar/B738/fmc1/Line02_L");
-  z738datarefs.lines[4][1]=XPLMFindDataRef("laminar/B738/fmc1/Line02_S");
-  z738datarefs.lines[4][2]=XPLMFindDataRef("laminar/B738/fmc1/Line02_I");
+    sprintf(dref,"laminar/B738/fmc1/Line%02d_I",i/2);
+    z738datarefs.lines[i][HSAIRXPL_Z783_L_I]=XPLMFindDataRef(dref);
 
-  z738datarefs.lines[6][0]=XPLMFindDataRef("laminar/B738/fmc1/Line03_L");
-  z738datarefs.lines[6][1]=XPLMFindDataRef("laminar/B738/fmc1/Line03_S");
-  z738datarefs.lines[6][2]=XPLMFindDataRef("laminar/B738/fmc1/Line03_I");
+    sprintf(dref,"laminar/B738/fmc1/Line%02d_M",i/2);
+    z738datarefs.lines[i][HSAIRXPL_Z783_L_M]=XPLMFindDataRef(dref);
 
-  z738datarefs.lines[8][0]=XPLMFindDataRef("laminar/B738/fmc1/Line04_L");
-  z738datarefs.lines[8][1]=XPLMFindDataRef("laminar/B738/fmc1/Line04_S");
-  z738datarefs.lines[8][2]=XPLMFindDataRef("laminar/B738/fmc1/Line04_I");
+    sprintf(dref,"laminar/B738/fmc1/Line%02d_G",i/2);
+    z738datarefs.lines[i][HSAIRXPL_Z783_L_G]=XPLMFindDataRef(dref);
 
-  z738datarefs.lines[10][0]=XPLMFindDataRef("laminar/B738/fmc1/Line05_L");
-  z738datarefs.lines[10][1]=XPLMFindDataRef("laminar/B738/fmc1/Line05_S");
-  z738datarefs.lines[10][2]=XPLMFindDataRef("laminar/B738/fmc1/Line05_I");
+    if(i>0) {
+      sprintf(dref,"laminar/B738/fmc1/Line%02d_X",i/2);
+      z738datarefs.lines[i-1][HSAIRXPL_Z783_L_L]=XPLMFindDataRef(dref);
+    }
+  }
 
-  z738datarefs.lines[12][0]=XPLMFindDataRef("laminar/B738/fmc1/Line06_L");
-  z738datarefs.lines[12][1]=XPLMFindDataRef("laminar/B738/fmc1/Line06_S");
-  z738datarefs.lines[12][2]=XPLMFindDataRef("laminar/B738/fmc1/Line06_I");
-
-  z738datarefs.lines[13][0]=XPLMFindDataRef("laminar/B738/fmc1/Line_entry");
-  z738datarefs.lines[13][2]=XPLMFindDataRef("laminar/B738/fmc1/Line_entry_I");
+  z738datarefs.lines[13][HSAIRXPL_Z783_L_L]=XPLMFindDataRef("laminar/B738/fmc1/Line_entry");
+  z738datarefs.lines[13][HSAIRXPL_Z783_L_I]=XPLMFindDataRef("laminar/B738/fmc1/Line_entry_I");
 
   hsxpl_set_b738_keys();
 }
