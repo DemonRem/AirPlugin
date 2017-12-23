@@ -23,14 +23,15 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * FMC specifics.
+ * Implementation of the X-Plane default Boeing 737-800 datarefs and
+ * specific functions.
  *
  */
 
-#include "hsairxpl.h"
-#include "hsairxplfmc.h"
-#include "hsairxplmisc.h"
+#include <XPLMDataAccess.h>
+#include <XPLMUtilities.h>
 
-/* Shared global var to hold FMC specific datarefs */
-hsxpl_fmc_t hsxpl_fmc;
+#include "hsxpldefault738.h"
+#include "hsxplfmc.h"
+
 

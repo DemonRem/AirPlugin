@@ -42,7 +42,7 @@ The cpflight part only works if the words CPFLIGHT-SERIAL-PORT= are found in
 the config file.
 
 On Mac if you have a CPFLight MCP it should appear as /dev/cu.usbserial...
-so create hsairxpl.cfg in the Resources/plugins/HaversineAir folder of
+so create hsxpl.cfg in the Resources/plugins/HaversineAir folder of
 X-Plane and put one of:
 
 CPFLIGHT-SERIAL-PORT=AUTO
@@ -51,7 +51,7 @@ or
 
 CPFLIGHT-SERIAL-PORT=/dev/cu.usb...
 
-On Linux you will probably need to specify the device. Create  hsairxpl.cfg
+On Linux you will probably need to specify the device. Create  hsxpl.cfg
 in the Resources/plugins/HaversineAir folder of X-Plane and add a line such as
 CPFLIGHT-SERIAL-PORT=/dev/serial-port to it.
 

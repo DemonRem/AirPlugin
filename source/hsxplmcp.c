@@ -25,10 +25,10 @@
  *
  */
 
-#include "hsairxpl.h"
-#include "hsairxplmcp.h"
-#include "hsairxplz738.h"
-#include "hsairxplmisc.h"
+#include "hsxpl.h"
+#include "hsxplmcp.h"
+#include "hsxplzibo738.h"
+#include "hsxplmisc.h"
 #include "hsmpmsg.h"
 #include "hsmpnet.h"
 

@@ -25,12 +25,12 @@
  *
  */
 
-#include "hsairxpldref.h"
-#include "hsairxpl.h"
+#include "hsxpldref-requests.h"
+#include "hsxpl.h"
 #include "hsmpmsg.h"
 #include "hsmpnet.h"
 #include "hsmptcp.h"
-#include "hsairxplmisc.h"
+#include "hsxplmisc.h"
 
 hsairpl_dref_read_req_t *hsairpl_dref_tictacbase=NULL;
 hsairpl_dref_read_req_t *hsairpl_dref_secondbase=NULL;

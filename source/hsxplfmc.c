@@ -23,38 +23,14 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * Description:     Extension to support the CP Flight MCP Pro and EFIS
+ * FMC specifics.
  *
  */
 
-#ifdef CPFLIGHT
+#include "hsxpl.h"
+#include "hsxplfmc.h"
+#include "hsxplmisc.h"
 
-#ifndef __HS__HSAIRCPFLIGHT__
-#define __HS__HSAIRCPFLIGHT__
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <math.h>
-#include <time.h>
-#include <ctype.h>
-
-#include "hsairxpl.h"
-
-void hsaircpf_initialise_hardware(void);
-void hsaircpf_open_serial_port(void);
-void hsaircpf_close_serial_port(void);
-void hsaircpf_runloop(void);
-void hsaircpf_process_cmd(char *cmd);
-
-#if IBM
-ssize_t hsaircpf_write(HANDLE fildes, const void *buf, size_t nbyte);
-#else
-ssize_t hsaircpf_write(int fildes, const void *buf, size_t nbyte);
-#endif
-
-#endif /* defined(__HS__HSAIRCPFLIGHT__) */
-
-#endif /* CPFLIGHT */
+/* Shared global var to hold FMC specific datarefs */
+hsxpl_fmc_t hsxpl_fmc;
 

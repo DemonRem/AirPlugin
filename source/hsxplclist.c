@@ -36,12 +36,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "hsairxpl.h"
+#include "hsxpl.h"
 #include "hsmpmsg.h"
 #include "hsmpnet.h"
 #include "hsmptcp.h"
-#include "hsairxplmisc.h"
-#include "hsairxplclist.h"
+#include "hsxplmisc.h"
+#include "hsxplclist.h"
 
 /* A local pointer to a list of checklists */
 hsairpl_clist_ref_t *__hsairpl_clist_ref_base__=NULL;

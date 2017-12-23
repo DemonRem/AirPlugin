@@ -4,7 +4,7 @@
 
 This is the code for the Air plugin to be used with **X-Plane versions 9, 10 and 11** and allow any of these simulators to communicate with Haversine Apps such as AirTrack and AirFMC. 
 
-This code is in constant evolution as new functions and protocol messages are implemented. The plugin version is defined by HSAIRXPL_VERSION in HSAIRXPL.h
+This code is in constant evolution as new functions and protocol messages are implemented. The plugin version is defined by HSAIRXPL_VERSION in hsxpl.h
 
 Be advised, the code is ugly :D and there may well be much nicer and cleaner ways of structuring things. It does however work well and has very light weight on X-Plane or its framerate. 
 

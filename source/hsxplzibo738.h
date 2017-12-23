@@ -32,7 +32,7 @@
 #define ___HSAIRXPLZ738__
 
 #include <stdio.h>
-#include "hsairxpl.h"
+#include "hsxpl.h"
 
 /* Sets the datarefs required specific to zibo's 737-800 */
 void hsxpl_set_z738_datarefs(void);

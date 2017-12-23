@@ -34,24 +34,24 @@
 #include <math.h>
 #include <time.h>
 #include <ctype.h>
-#include "hsairxpl.h"
-#include "hsairxplmisc.h"
-#include "hsairxplnavdb.h"
+#include "hsxpl.h"
+#include "hsxplmisc.h"
+#include "hsxplnavdb.h"
 #include "hsmpmsg.h"
 #include "hsmpnet.h"
 #include "hsmptcp.h"
-#include "hsairxplclist.h"
-#include "hsairxplmcp.h"
-#include "hsairxplcoms.h"
-#include "hsairxplatc.h"
-#include "hsairxplapt.h"
-#include "hsairxpldref.h"
-#include "hsairxplfmc.h"
-#include "hsairxplb738.h"
-#include "hsairxplz738.h"
+#include "hsxplclist.h"
+#include "hsxplmcp.h"
+#include "hsxplcoms.h"
+#include "hsxplatc.h"
+#include "hsxplairports.h"
+#include "hsxpldref-requests.h"
+#include "hsxplfmc.h"
+#include "hsxpldefault738.h"
+#include "hsxplzibo738.h"
 
 #ifdef CPFLIGHT
-#include "hsairxplcpflight.h"
+#include "hsxplcpflight.h"
 #endif
 
 /* How often the engine handler is called to do stuff in secs */

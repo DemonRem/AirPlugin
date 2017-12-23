@@ -39,8 +39,8 @@
 
 #include "hsmpnet.h"
 #include "hsmpmsg.h"
-#include "hsairxplnavdb.h"
-#include "hsairxplmisc.h"
+#include "hsxplnavdb.h"
+#include "hsxplmisc.h"
 
 /* Our flight plan */
 hsmp_route_t hsxpl_route;

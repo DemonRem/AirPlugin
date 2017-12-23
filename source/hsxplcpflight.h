@@ -23,11 +23,14 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
+ * Description:     Extension to support the CP Flight MCP Pro and EFIS
+ *
  */
 
+#ifdef CPFLIGHT
 
-#ifndef __HS__HSAIRXPLCOMS__
-#define __HS__HSAIRXPLCOMS__
+#ifndef __HS__HSAIRCPFLIGHT__
+#define __HS__HSAIRCPFLIGHT__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,43 +40,21 @@
 #include <time.h>
 #include <ctype.h>
 
-#include "hsairxpl.h"
+#include "hsxpl.h"
 
-void hsairpl_coms_update_datarefs(void);
+void hsaircpf_initialise_hardware(void);
+void hsaircpf_open_serial_port(void);
+void hsaircpf_close_serial_port(void);
+void hsaircpf_runloop(void);
+void hsaircpf_process_cmd(char *cmd);
 
-uint32_t hsairpl_coms_get_nav1(void);
-uint32_t hsairpl_coms_get_snav1(void);
-uint32_t hsairpl_coms_get_nav2(void);
-uint32_t hsairpl_coms_get_snav2(void);
+#if IBM
+ssize_t hsaircpf_write(HANDLE fildes, const void *buf, size_t nbyte);
+#else
+ssize_t hsaircpf_write(int fildes, const void *buf, size_t nbyte);
+#endif
 
-uint32_t hsairpl_coms_get_com1(void);
-uint32_t hsairpl_coms_get_scom1(void);
-uint32_t hsairpl_coms_get_com2(void);
-uint32_t hsairpl_coms_get_scom2(void);
+#endif /* defined(__HS__HSAIRCPFLIGHT__) */
 
-uint32_t hsairpl_coms_get_adf1(void);
-uint32_t hsairpl_coms_get_sadf1(void);
-uint32_t hsairpl_coms_get_adf2(void);
-uint32_t hsairpl_coms_get_sadf2(void);
+#endif /* CPFLIGHT */
 
-void hsairpl_coms_set_nav1(uint32_t v);
-void hsairpl_coms_set_snav1(uint32_t v);
-void hsairpl_coms_set_nav2(uint32_t v);
-void hsairpl_coms_set_snav2(uint32_t v);
-
-void hsairpl_coms_set_com1(uint32_t v);
-void hsairpl_coms_set_scom1(uint32_t v);
-void hsairpl_coms_set_com2(uint32_t v);
-void hsairpl_coms_set_scom2(uint32_t v);
-
-void hsairpl_coms_set_adf1(uint32_t v);
-void hsairpl_coms_set_sadf1(uint32_t v);
-void hsairpl_coms_set_adf2(uint32_t v);
-void hsairpl_coms_set_sadf2(uint32_t v);
-
-uint32_t hsairpl_coms_get_xponder_mode(void);
-uint32_t hsairpl_coms_get_xponder_code(void);
-void hsairpl_coms_set_xponder_mode(uint32_t v);
-void hsairpl_coms_set_xponder_code(uint32_t v);
-
-#endif /* defined(__HS__HSAIRXPLCOMS__) */

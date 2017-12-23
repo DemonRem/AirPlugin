@@ -23,12 +23,12 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  */
 
-#include "hsairxplatc.h"
+#include "hsxplatc.h"
 
-#include "hsairxpl.h"
+#include "hsxpl.h"
 #include "hsmpmsg.h"
 #include "hsmpnet.h"
-#include "hsairxplmisc.h"
+#include "hsxplmisc.h"
 #include <string.h>
 #include <sys/time.h>
 #include <dirent.h>

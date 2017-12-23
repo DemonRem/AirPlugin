@@ -31,11 +31,11 @@
 #include <XPLMDataAccess.h>
 #include <XPLMUtilities.h>
 
-#include "hsairxplz738.h"
-#include "hsairxpl.h"
-#include "hsairxplmisc.h"
-#include "hsairxplfmc.h"
-#include "hsairxplmcp.h"
+#include "hsxplzibo738.h"
+#include "hsxpl.h"
+#include "hsxplmisc.h"
+#include "hsxplfmc.h"
+#include "hsxplmcp.h"
 
 #include "hsmpnet.h"
 
@@ -67,7 +67,7 @@ extern hsxpl_fmc_t hsxpl_fmc;
 /* The FMC type as defined from hsmpnet.h */
 extern uint32_t hsxpl_fmc_type;
 
-/* The plane type from hsairxpl.h */
+/* The plane type from hsxpl.h */
 extern uint32_t hsxpl_plane_type;
 
 #pragma mark Datarefs

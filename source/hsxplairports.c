@@ -36,12 +36,12 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "hsairxpl.h"
+#include "hsxpl.h"
 #include "hsmpmsg.h"
 #include "hsmpnet.h"
 #include "hsmptcp.h"
-#include "hsairxplmisc.h"
-#include "hsairxplapt.h"
+#include "hsxplmisc.h"
+#include "hsxplairports.h"
 
 /* A local pointer to a list of airports */
 hsairpl_apt_ref_t *__hsairpl_apt_ref_base__=NULL;

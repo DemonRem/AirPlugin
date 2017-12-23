@@ -26,8 +26,8 @@
  */
 
 
-#include "hsairxplcoms.h"
-#include "hsairxpl.h"
+#include "hsxplcoms.h"
+#include "hsxpl.h"
 #include "hsmpmsg.h"
 #include "hsmpnet.h"
 
