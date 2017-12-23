@@ -81,18 +81,19 @@ typedef int socklen_t;
 
 #define HSAIRXPL_VERSION    "4.7"
 
-/* Plane type */
-#define HSXPL_PLANE_XPLANE  0x00000000
-#define HSXPL_PLANE_X737    0x00000001
-#define HSXPL_PLANE_A320N   0x00000002
-#define HSXPL_PLANE_FF757   0x00000004
-#define HSXPL_PLANE_FF777   0x00000008
-#define HSXPL_PLANE_PCRJ200 0x00000010
-#define HSXPL_PLANE_A320Q   0x00000100
-#define HSXPL_PLANE_A330J   0x00000200
-#define HSXPL_PLANE_FF767   0x00000400
-#define HSXPL_PLANE_IX733   0x00000800
-#define HSXPL_PLANE_Z738    0x00001000
+/* Plane type, set in the hsxpl_plane_type global var */
+#define HSXPL_PLANE_XPLANE  0x00000000  /* X-Plane default plane */
+#define HSXPL_PLANE_X737    0x00000001  /* The x737 from EADT */
+#define HSXPL_PLANE_A320N   0x00000002  /* A320 from JAR design */
+#define HSXPL_PLANE_FF757   0x00000004  /* 757 from FlightFactor */
+#define HSXPL_PLANE_FF777   0x00000008  /* 777 from FlightFactor */
+#define HSXPL_PLANE_PCRJ200 0x00000010  /* CRJ 200 from Javier Rollon */
+#define HSXPL_PLANE_A320Q   0x00000100  /* A320 from QPAC */
+#define HSXPL_PLANE_A330J   0x00000200  /* A330 from JAR design, not yet used */
+#define HSXPL_PLANE_FF767   0x00000400  /* 767 from FlightFactor */
+#define HSXPL_PLANE_IX733   0x00000800  /* IXEG 737 Classic */
+#define HSXPL_PLANE_Z738    0x00001000  /* 737-800 modified by zibo */
+#define HSXPL_PLANE_B738    0x00002000  /* X-Plane 11 default 737-800 */
 
 /* A320 colour IDs */
 #define HSXPL_A320Q_COL_IDX_WHITE       0
@@ -102,7 +103,6 @@ typedef int socklen_t;
 #define HSXPL_A320Q_COL_IDX_YELLOW      4
 #define HSXPL_A320Q_COL_IDX_MAGENTA     5
 #define HSXPL_A320Q_COL_IDX_S           6
-
 
 /* A function that resets the datarefs */
 void hsxpl_set_datarefs(void);

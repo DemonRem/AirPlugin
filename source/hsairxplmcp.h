@@ -185,6 +185,6 @@ void hsairpl_efis1_set_range(float v);
 float hsairpl_efis1_get_range(void);
 
 /* hsairpl_second_timer() is executed once per second from the main loop */
-void hsairpl_second_timer(void);
+void hsairpl_mcp_second_timer(void);
 
 #endif /* defined(__HS__HSAIRXPLMCP__) */
