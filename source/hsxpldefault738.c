@@ -32,6 +32,23 @@
 #include <XPLMUtilities.h>
 
 #include "hsxpldefault738.h"
+#include "hsxpl.h"
 #include "hsxplfmc.h"
 
+/* The plane type from hsxpl.h */
+extern uint32_t hsxpl_plane_type;
+void hsxpl_set_default_738_datarefs(void) {
+
+  char dref[128];
+
+  /* Must match ICAO */
+  if(strncmp(hsxpl_acf_icao(),"B738",7))
+    return;
+
+  /* Must match tailno */
+  if(strncmp(hsxpl_acf_tailno(),"N816NN",7))
+    return;
+
+  hsxpl_plane_type = HSXPL_PLANE_B738;
+}
 
