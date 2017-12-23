@@ -160,11 +160,13 @@ void hsairpl_mcp_z738_set_alt_dial(uint32_t v) {
 
   /* And issue the number of commands accordingly */
   if(numcrements>0) {
-    for(int j=0;j<numcrements;j++) {
+    int j;
+    for(j=0;j<numcrements;j++) {
       XPLMCommandOnce(z738data.mcpAltDialUp);
     }
   } else if(numcrements<0) {
-    for(int j=0;j>numcrements;j--) {
+    int j;
+    for(j=0;j>numcrements;j--) {
       XPLMCommandOnce(z738data.mcpAltDialDown);
     }
   }
@@ -180,11 +182,13 @@ void hsairpl_mcp_z738_set_hdg_dial(uint32_t v) {
 
   /* And issue the number of commands accordingly */
   if(numcrements>0) {
-    for(int j=0;j<numcrements;j++) {
+    int j;
+    for(j=0;j<numcrements;j++) {
       XPLMCommandOnce(z738data.mcpHdgDialUp);
     }
   } else if(numcrements<0) {
-    for(int j=0;j>numcrements;j--) {
+    int j;
+    for(j=0;j>numcrements;j--) {
       XPLMCommandOnce(z738data.mcpHdgDialDown);
     }
   }
