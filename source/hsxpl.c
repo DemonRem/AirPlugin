@@ -3607,6 +3607,7 @@ void hsxpl_set_datarefs(void) {
   hsxpl_set_x737_datarefs();
   hsxpl_set_ufmc_datarefs();
   hsxpl_set_ix733_datarefs();
+  hsxpl_set_default_738_datarefs();
   hsxpl_set_z738_datarefs();
 
   hsxpl_set_pcrj200_datarefs();
