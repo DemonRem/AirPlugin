@@ -46,6 +46,9 @@
 #include "hsairxplatc.h"
 #include "hsairxplapt.h"
 #include "hsairxpldref.h"
+#include "hsairxplfmc.h"
+#include "hsairxplb738.h"
+#include "hsairxplz738.h"
 
 #ifdef CPFLIGHT
 #include "hsairxplcpflight.h"
@@ -117,6 +120,9 @@ uint32_t hsxpl_cpflight_enabled=0;
 
 /* Local hack to fix AirTrack N1 press twice bug until it's fixed */
 uint32_t hsxpl_n1_pressed=0;
+
+/* FMC datarefs */
+extern hsxpl_fmc_t hsxpl_fmc;
 
 /* The list of X-Plane datarefs */
 struct xplane_datarefs_s {
@@ -191,140 +197,8 @@ struct ix733_datarefs_s {
   XPLMDataRef     rlines[12];
 } ix733_datarefs;
 
-#define HSAIRXPL_Z783_L_L  0
-#define HSAIRXPL_Z783_L_S  1
-#define HSAIRXPL_Z783_L_I  2
-#define HSAIRXPL_Z783_L_M  3
-#define HSAIRXPL_Z783_L_G  4
-
-struct z738_datarefs_s {
-  XPLMDataRef   lines[14][HSAIRXPL_Z783_L_G+1];
-  XPLMDataRef   execLight;
-} z738datarefs;
-
-struct hsxpl_fmc_s {
 
 
-  XPLMDataRef  key_load;;
-  XPLMDataRef  key_save;
-
-  XPLMDataRef  key_apt;
-  XPLMDataRef  key_wpt;
-  XPLMDataRef  key_vor;
-  XPLMDataRef  key_ndb;
-  XPLMDataRef  key_latlon;
-
-
-  XPLMDataRef         key_lk1;
-  XPLMDataRef         key_lk2;
-  XPLMDataRef         key_lk3;
-  XPLMDataRef         key_lk4;
-  XPLMDataRef         key_lk5;
-  XPLMDataRef         key_lk6;
-
-  XPLMDataRef         key_rk1;
-  XPLMDataRef         key_rk2;
-  XPLMDataRef         key_rk3;
-  XPLMDataRef         key_rk4;
-  XPLMDataRef         key_rk5;
-  XPLMDataRef         key_rk6;
-
-  XPLMDataRef         key_1;
-  XPLMDataRef         key_2;
-  XPLMDataRef         key_3;
-  XPLMDataRef         key_4;
-  XPLMDataRef         key_5;
-  XPLMDataRef         key_6;
-  XPLMDataRef         key_7;
-  XPLMDataRef         key_8;
-  XPLMDataRef         key_9;
-  XPLMDataRef         key_0;
-  XPLMDataRef         key_a;
-  XPLMDataRef         key_b;
-  XPLMDataRef         key_c;
-  XPLMDataRef         key_d;
-  XPLMDataRef         key_e;
-  XPLMDataRef         key_f;
-  XPLMDataRef         key_g;
-  XPLMDataRef         key_h;
-  XPLMDataRef         key_i;
-  XPLMDataRef         key_j;
-  XPLMDataRef         key_k;
-  XPLMDataRef         key_l;
-  XPLMDataRef         key_m;
-  XPLMDataRef         key_n;
-  XPLMDataRef         key_o;
-  XPLMDataRef         key_p;
-  XPLMDataRef         key_q;
-  XPLMDataRef         key_r;
-  XPLMDataRef         key_s;
-  XPLMDataRef         key_t;
-  XPLMDataRef         key_u;
-  XPLMDataRef         key_v;
-  XPLMDataRef         key_w;
-  XPLMDataRef         key_x;
-  XPLMDataRef         key_y;
-  XPLMDataRef         key_z;
-  XPLMDataRef         key_slash;
-  XPLMDataRef         key_dot;
-  XPLMDataRef         key_space;
-  XPLMDataRef         key_plusminus;
-  XPLMDataRef         key_clr;
-  XPLMDataRef         key_del;
-
-  XPLMDataRef         key_init;
-  XPLMDataRef         key_rte;
-  XPLMDataRef         key_deparr;
-  XPLMDataRef         key_clb;
-  XPLMDataRef         key_crz;
-  XPLMDataRef         key_des;
-  XPLMDataRef         key_dir;
-  XPLMDataRef         key_legs;
-  XPLMDataRef         key_hold;
-  XPLMDataRef         key_prog;
-  XPLMDataRef         key_altn;
-  XPLMDataRef         key_exec;
-  XPLMDataRef         key_menu;
-  XPLMDataRef         key_fix;
-  XPLMDataRef         key_prevpage;
-  XPLMDataRef         key_nextpage;
-
-  XPLMDataRef         key_ovfy;
-  XPLMDataRef         key_perf;
-  XPLMDataRef         key_airp;
-  XPLMDataRef         key_radnav;
-  XPLMDataRef         key_fpln;
-  XPLMDataRef         key_sfpln;
-  XPLMDataRef         key_fuel;
-  XPLMDataRef         key_data;
-  XPLMDataRef         key_blank;
-
-  XPLMDataRef         key_left;
-  XPLMDataRef         key_right;
-  XPLMDataRef         key_up;
-  XPLMDataRef         key_down;
-
-  XPLMDataRef         key_fmccom;
-  XPLMDataRef         key_n1limit;
-  XPLMDataRef         key_atc;
-
-  XPLMDataRef         key_index;
-  XPLMDataRef         key_radio;
-  XPLMDataRef         key_mfdmenu;
-
-  XPLMDataRef         key_lnav;
-  XPLMDataRef         key_vnav;
-  XPLMDataRef         key_msg;
-  XPLMDataRef         key_ap;
-
-  XPLMDataRef         exec_light_on;
-  XPLMDataRef         dspy_light_on;
-  XPLMDataRef         fail_light_on;
-  XPLMDataRef         msg_light_on;
-  XPLMDataRef         ofst_light_on;
-
-
-} hsxpl_fmc;
 
 /* Data refs for X737FMC */
 struct ufmc_datarefs_s {
@@ -673,7 +547,7 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
     /* Send per second datarefs and cleanup old peers */
     hsairpl_dref_showtime_sec();
 
-    hsairpl_second_timer();
+    hsairpl_mcp_second_timer();
   }
 
   /* Re-check ufmc because it sometimes takes a while for it to come up */
@@ -3376,146 +3250,6 @@ void hsxpl_send_ix733_data(void) {
 
 }
 
-#define HSXPL_Z738_FMC_COL_WHITE         0xFFFFFFFF
-#define HSXPL_Z738_FMC_COL_GREEN         0x00FF00FF
-#define HSXPL_Z738_FMC_COL_MAGENTA       0xFF00FFFF
-
-void hsxpl_send_z738_data(void) {
-
-  uint8_t i;
-  uint8_t j;
-  uint8_t fSize=22;
-
-  /* Build screen, prepare matrix  */
-
-  hsmp_fmc_screen_t screen;
-  memset(&screen,0,sizeof(hsmp_fmc_screen_t));
-
-  /* Initialise to spaces */
-  for(i=0;i<HSMP_FMC_MAX_SCREEN_NOROWS;i++) {
-    for(j=0;j<HSMP_FMC_MAX_SCREEN_NOCOLS;j++) {
-      screen.matrix[i][j].row=i;
-      screen.matrix[i][j].col=j;
-      screen.matrix[i][j].colour=HSXPL_Z738_FMC_COL_WHITE;
-      screen.matrix[i][j].fsize=fSize;
-      screen.matrix[i][j].chr=' ';
-    }
-  }
-
-  uint8_t k;
-  char line[32];
-  /* char str[512]; */
-  char *cp=NULL;
-  hsmp_pkt_t *pkt=NULL;
-  uint32_t fmcType=HSMP_FMC_TYPE_XP_XP738;
-
-  for(k=0;k<4;k++) {
-    pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
-    if(pkt!=NULL) {
-      uint8_t i,j;
-      hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_TYPE,&fmcType);
-
-      for(i=0;i<4;i++) {
-        uint8_t l=(k*4)+i;
-        if(l>=14) break;
-
-        fSize=22;
-
-        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_L]!=NULL) {
-          memset(line,0,32);
-          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_L],line,0,24);
-          cp=line; j=0;
-          while(*cp!='\0') {
-            if(*cp!=' ') {
-              screen.matrix[l][j].fsize=22;
-              screen.matrix[l][j].chr= *cp;
-              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_WHITE;
-            }
-            cp++; j++;
-            if(j>=24) break;
-          }
-        }
-
-        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_G]!=NULL) {
-          memset(line,0,32);
-          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_G],line,0,24);
-          cp=line; j=0;
-          while(*cp!='\0') {
-            if(*cp!=' ') {
-              screen.matrix[l][j].fsize=22;
-              screen.matrix[l][j].chr= *cp;
-              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_GREEN;
-            }
-            cp++; j++;
-            if(j>=24) break;
-          }
-        }
-
-        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_M]!=NULL) {
-          memset(line,0,32);
-          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_M],line,0,24);
-          cp=line; j=0;
-          while(*cp!='\0') {
-            if(*cp!=' ') {
-              screen.matrix[l][j].fsize=22;
-              screen.matrix[l][j].chr= *cp;
-              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_MAGENTA;
-            }
-            cp++; j++;
-            if(j>=24) break;
-          }
-        }
-
-        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_S]!=NULL) {
-          memset(line,0,32);
-          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_S],line,0,24);
-          cp=line; j=0;
-          while(*cp!='\0') {
-            if(*cp!=' ') {
-              screen.matrix[l][j].fsize=18;
-              screen.matrix[l][j].chr= *cp;
-              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_WHITE;
-            }
-            cp++; j++;
-            if(j>=24) break;
-          }
-        }
-
-        if(z738datarefs.lines[l][HSAIRXPL_Z783_L_I]!=NULL) {
-          memset(line,0,32);
-          XPLMGetDatab(z738datarefs.lines[l][HSAIRXPL_Z783_L_I],line,0,24);
-          cp=line; j=0;
-          while(*cp!='\0') {
-            if(*cp!=' ') {
-              screen.matrix[l][j].fsize=22;
-              screen.matrix[l][j].chr= *cp;
-              screen.matrix[l][j].colour=HSXPL_Z738_FMC_COL_WHITE;
-            }
-            cp++; j++;
-            if(j>=24) break;
-          }
-        }
-
-
-        for(j=0;j<HSMP_FMC_MAX_SCREEN_NOCOLS;j++) {
-          hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_SCREEN_C,&(screen.matrix[l][j]));
-        }
-      }
-
-      if(k==3) {
-
-        uint32_t an=0;
-        if(hsxpl_fmc.exec_light_on!=NULL) {
-          if(XPLMGetDatai(hsxpl_fmc.exec_light_on)!=0) an|=HSMP_FMC_ANNUNC_EXEC;
-        }
-        hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_ANNUNCIATORS,&an);
-      }
-
-      hsmp_net_send_to_stream_peers(pkt,HSMP_PKT_NT_AIRFMC);
-      free(pkt);
-    }
-  }
-}
 
 /* If UFMC is available, send its data */
 void hsxpl_send_ufmc_data(void) {
@@ -3873,7 +3607,7 @@ void hsxpl_set_datarefs(void) {
   hsxpl_set_x737_datarefs();
   hsxpl_set_ufmc_datarefs();
   hsxpl_set_ix733_datarefs();
-  hsxpl_set_zibo737_datarefs();
+  hsxpl_set_z738_datarefs();
 
   hsxpl_set_pcrj200_datarefs();
   hsxpl_set_p777_datarefs();
@@ -3882,11 +3616,9 @@ void hsxpl_set_datarefs(void) {
   hsxpl_set_a320q_datarefs();
   hsxpl_set_a320n_datarefs();
 
-
   /* If X-Plane, re-read datarefs for FMC since they will have been overwritten */
   if(hsxpl_fmc_type==HSMP_FMC_TYPE_XPLANE)
     hsxpl_set_xplane_datarefs();
-
 
   hsairpl_mcp_update_datarefs();
   hsairpl_coms_update_datarefs();
@@ -4703,139 +4435,6 @@ void hsxpl_set_ix733_datarefs(void) {
     ix733_datarefs.rlines[11]=XPLMFindDataRef("ixeg/733/FMC/cdu2D_line6R_d");
 
   }
-
-
-}
-
-void hsxpl_set_zibo737_datarefs(void) {
-
-  int i;
-  char dref[128];
-
-  if(strncmp(hsxpl_acf_icao(),"B738",7))
-    return;
-
-  if(strncmp(hsxpl_acf_tailno(),"ZB738",7))
-    return;
-
-  hsxpl_plane_type = HSXPL_PLANE_Z738;
-  hsxpl_fmc_type = HSMP_FMC_TYPE_XP_XP738;
-
-  memset(&z738datarefs,0,sizeof(struct z738_datarefs_s));
-
-  hsxpl_fmc.exec_light_on=XPLMFindDataRef("laminar/B738/indicators/fms_exec_light_pilot");
-
-  for(i=0;i<14;i+=2) {
-
-    sprintf(dref,"laminar/B738/fmc1/Line%02d_L",i/2);
-    z738datarefs.lines[i][HSAIRXPL_Z783_L_L]=XPLMFindDataRef(dref);
-
-    sprintf(dref,"laminar/B738/fmc1/Line%02d_S",i/2);
-    z738datarefs.lines[i][HSAIRXPL_Z783_L_S]=XPLMFindDataRef(dref);
-
-    sprintf(dref,"laminar/B738/fmc1/Line%02d_I",i/2);
-    z738datarefs.lines[i][HSAIRXPL_Z783_L_I]=XPLMFindDataRef(dref);
-
-    sprintf(dref,"laminar/B738/fmc1/Line%02d_M",i/2);
-    z738datarefs.lines[i][HSAIRXPL_Z783_L_M]=XPLMFindDataRef(dref);
-
-    sprintf(dref,"laminar/B738/fmc1/Line%02d_G",i/2);
-    z738datarefs.lines[i][HSAIRXPL_Z783_L_G]=XPLMFindDataRef(dref);
-
-    if(i>0) {
-      sprintf(dref,"laminar/B738/fmc1/Line%02d_X",i/2);
-      z738datarefs.lines[i-1][HSAIRXPL_Z783_L_L]=XPLMFindDataRef(dref);
-    }
-  }
-
-  z738datarefs.lines[13][HSAIRXPL_Z783_L_L]=XPLMFindDataRef("laminar/B738/fmc1/Line_entry");
-  z738datarefs.lines[13][HSAIRXPL_Z783_L_I]=XPLMFindDataRef("laminar/B738/fmc1/Line_entry_I");
-
-  hsxpl_set_b738_keys();
-}
-
-void hsxpl_set_b738_keys(void) {
-
-  hsxpl_fmc.key_0=XPLMFindCommand("laminar/B738/button/fmc1_0");
-  hsxpl_fmc.key_1=XPLMFindCommand("laminar/B738/button/fmc1_1");
-  hsxpl_fmc.key_2=XPLMFindCommand("laminar/B738/button/fmc1_2");
-  hsxpl_fmc.key_3=XPLMFindCommand("laminar/B738/button/fmc1_3");
-  hsxpl_fmc.key_4=XPLMFindCommand("laminar/B738/button/fmc1_4");
-  hsxpl_fmc.key_5=XPLMFindCommand("laminar/B738/button/fmc1_5");
-  hsxpl_fmc.key_6=XPLMFindCommand("laminar/B738/button/fmc1_6");
-  hsxpl_fmc.key_7=XPLMFindCommand("laminar/B738/button/fmc1_7");
-  hsxpl_fmc.key_8=XPLMFindCommand("laminar/B738/button/fmc1_8");
-  hsxpl_fmc.key_9=XPLMFindCommand("laminar/B738/button/fmc1_9");
-
-  hsxpl_fmc.key_lk1=XPLMFindCommand("laminar/B738/button/fmc1_1L");
-  hsxpl_fmc.key_lk2=XPLMFindCommand("laminar/B738/button/fmc1_2L");
-  hsxpl_fmc.key_lk3=XPLMFindCommand("laminar/B738/button/fmc1_3L");
-  hsxpl_fmc.key_lk4=XPLMFindCommand("laminar/B738/button/fmc1_4L");
-  hsxpl_fmc.key_lk5=XPLMFindCommand("laminar/B738/button/fmc1_5L");
-  hsxpl_fmc.key_lk6=XPLMFindCommand("laminar/B738/button/fmc1_6L");
-
-  hsxpl_fmc.key_rk1=XPLMFindCommand("laminar/B738/button/fmc1_1R");
-  hsxpl_fmc.key_rk2=XPLMFindCommand("laminar/B738/button/fmc1_2R");
-  hsxpl_fmc.key_rk3=XPLMFindCommand("laminar/B738/button/fmc1_3R");
-  hsxpl_fmc.key_rk4=XPLMFindCommand("laminar/B738/button/fmc1_4R");
-  hsxpl_fmc.key_rk5=XPLMFindCommand("laminar/B738/button/fmc1_5R");
-  hsxpl_fmc.key_rk6=XPLMFindCommand("laminar/B738/button/fmc1_6R");
-
-  hsxpl_fmc.key_a=XPLMFindCommand("laminar/B738/button/fmc1_A");
-  hsxpl_fmc.key_b=XPLMFindCommand("laminar/B738/button/fmc1_B");
-  hsxpl_fmc.key_c=XPLMFindCommand("laminar/B738/button/fmc1_C");
-  hsxpl_fmc.key_d=XPLMFindCommand("laminar/B738/button/fmc1_D");
-  hsxpl_fmc.key_e=XPLMFindCommand("laminar/B738/button/fmc1_E");
-  hsxpl_fmc.key_f=XPLMFindCommand("laminar/B738/button/fmc1_F");
-  hsxpl_fmc.key_g=XPLMFindCommand("laminar/B738/button/fmc1_G");
-  hsxpl_fmc.key_h=XPLMFindCommand("laminar/B738/button/fmc1_H");
-  hsxpl_fmc.key_i=XPLMFindCommand("laminar/B738/button/fmc1_I");
-  hsxpl_fmc.key_j=XPLMFindCommand("laminar/B738/button/fmc1_J");
-  hsxpl_fmc.key_k=XPLMFindCommand("laminar/B738/button/fmc1_K");
-  hsxpl_fmc.key_l=XPLMFindCommand("laminar/B738/button/fmc1_L");
-  hsxpl_fmc.key_m=XPLMFindCommand("laminar/B738/button/fmc1_M");
-  hsxpl_fmc.key_n=XPLMFindCommand("laminar/B738/button/fmc1_N");
-  hsxpl_fmc.key_o=XPLMFindCommand("laminar/B738/button/fmc1_O");
-  hsxpl_fmc.key_p=XPLMFindCommand("laminar/B738/button/fmc1_P");
-  hsxpl_fmc.key_q=XPLMFindCommand("laminar/B738/button/fmc1_Q");
-  hsxpl_fmc.key_r=XPLMFindCommand("laminar/B738/button/fmc1_R");
-  hsxpl_fmc.key_s=XPLMFindCommand("laminar/B738/button/fmc1_S");
-  hsxpl_fmc.key_t=XPLMFindCommand("laminar/B738/button/fmc1_T");
-  hsxpl_fmc.key_u=XPLMFindCommand("laminar/B738/button/fmc1_U");
-  hsxpl_fmc.key_v=XPLMFindCommand("laminar/B738/button/fmc1_V");
-  hsxpl_fmc.key_w=XPLMFindCommand("laminar/B738/button/fmc1_W");
-  hsxpl_fmc.key_x=XPLMFindCommand("laminar/B738/button/fmc1_X");
-  hsxpl_fmc.key_y=XPLMFindCommand("laminar/B738/button/fmc1_Y");
-  hsxpl_fmc.key_z=XPLMFindCommand("laminar/B738/button/fmc1_Z");
-
-  hsxpl_fmc.key_plusminus=XPLMFindCommand("laminar/B738/button/fmc1_minus");
-  hsxpl_fmc.key_dot=XPLMFindCommand("laminar/B738/button/fmc1_period");
-
-  hsxpl_fmc.key_del=XPLMFindCommand("laminar/B738/button/fmc1_del");
-  hsxpl_fmc.key_space=XPLMFindCommand("laminar/B738/button/fmc1_SP");
-  hsxpl_fmc.key_slash=XPLMFindCommand("laminar/B738/button/fmc1_slash");
-  hsxpl_fmc.key_clr=XPLMFindCommand("laminar/B738/button/fmc1_clr");
-
-  hsxpl_fmc.key_init=XPLMFindCommand("laminar/B738/button/fmc1_init_ref");
-  hsxpl_fmc.key_rte=XPLMFindCommand("laminar/B738/button/fmc1_rte");
-  hsxpl_fmc.key_clb=XPLMFindCommand("laminar/B738/button/fmc1_clb");
-  hsxpl_fmc.key_crz=XPLMFindCommand("laminar/B738/button/fmc1_crz");
-  hsxpl_fmc.key_des=XPLMFindCommand("laminar/B738/button/fmc1_des");
-
-  hsxpl_fmc.key_menu=XPLMFindCommand("laminar/B738/button/fmc1_menu");
-  hsxpl_fmc.key_legs=XPLMFindCommand("laminar/B738/button/fmc1_legs");
-  hsxpl_fmc.key_deparr=XPLMFindCommand("laminar/B738/button/fmc1_dep_app");
-  hsxpl_fmc.key_hold=XPLMFindCommand("laminar/B738/button/fmc1_hold");
-  hsxpl_fmc.key_prog=XPLMFindCommand("laminar/B738/button/fmc1_prog");
-  hsxpl_fmc.key_exec=XPLMFindCommand("laminar/B738/button/fmc1_exec");
-
-  hsxpl_fmc.key_n1limit=XPLMFindCommand("laminar/B738/button/fmc1_n1_lim");
-  hsxpl_fmc.key_fix=XPLMFindCommand("laminar/B738/button/fmc1_fix");
-
-  hsxpl_fmc.key_prevpage=XPLMFindCommand("laminar/B738/button/fmc1_prev_page");
-  hsxpl_fmc.key_nextpage=XPLMFindCommand("laminar/B738/button/fmc1_next_page");
-
-
 }
 
 

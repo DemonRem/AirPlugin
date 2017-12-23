@@ -27,14 +27,14 @@
 #
 
 INCLUDES=-I. -I.. -I./XPSDK/CHeaders/XPLM -I./XPSDK/CHeaders/Widgets -I../HSMP
-CFLAGS=-DCPFXPL=1 -DXPLM200=1 -DXPLM210=1 -DXPLM211=1 -DXPL=1 -DCPFLIGHT=1 # -DHSXPLDEBUG=3 # -DHSMPDEBUG=1 # -fPIC -fno-stack-protector
+CFLAGS=-DCPFXPL=1 -DXPLM200=1 -DXPLM210=1 -DXPLM211=1 -DXPL=1 -DCPFLIGHT=1 -DHSXPLDEBUG=3 # -DHSMPDEBUG=1 # -fPIC -fno-stack-protector
 LIBS=	# -lm
 LFLAGS= # rdynamic
 CC=cc
 
-HDRS=./source/hsairxpl.h ../HSMP/hsmpnet.h ../HSMP/hsmptcp.h ../HSMP/hsmpmsg.h ../HSMP/hsmpatp.h ./source/hsairxplclist.h ./source/hsairxplmcp.h ./source/hsairxplcoms.h ./source/hsairxplcpflight.h ./source/hsairxplmisc.h ./source/hsairxplnavdb.h ./source/hsairxplatc.h ./source/hsairxplapt.h ./source/hsairxpldref.h
+HDRS=./source/hsairxpl.h ../HSMP/hsmpnet.h ../HSMP/hsmptcp.h ../HSMP/hsmpmsg.h ../HSMP/hsmpatp.h ./source/hsairxplclist.h ./source/hsairxplmcp.h ./source/hsairxplcoms.h ./source/hsairxplcpflight.h ./source/hsairxplmisc.h ./source/hsairxplnavdb.h ./source/hsairxplatc.h ./source/hsairxplapt.h ./source/hsairxpldref.h ./source/hsairxplb738.h ./source/hsairxplz738.h ./source/hsairxplfmc.h
 
-SRCS=./source/hsairxplclist.c ./source/hsairxpl.c	./source/hsairxplmcp.c ./source/hsairxplcoms.c ../HSMP/hsmpnet.c ../HSMP/hsmptcp.c ./source/hsairxplcpflight.c ./source/hsairxplmisc.c ./source/hsairxplnavdb.c ./source/hsairxplatc.c ./source/hsairxplapt.c ./source/hsairxpldref.c
+SRCS=./source/hsairxplclist.c ./source/hsairxpl.c	./source/hsairxplmcp.c ./source/hsairxplcoms.c ../HSMP/hsmpnet.c ../HSMP/hsmptcp.c ./source/hsairxplcpflight.c ./source/hsairxplmisc.c ./source/hsairxplnavdb.c ./source/hsairxplatc.c ./source/hsairxplapt.c ./source/hsairxpldref.c ./source/hsairxplb738.c ./source/hsairxplz738.c ./source/hsairxplfmc.c
 
 ##############################################################################
 # Windows flags and libraries
