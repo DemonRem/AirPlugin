@@ -24,7 +24,7 @@
  * SUCH DAMAGE.
  *
  */
-#include "HSAIRXPLMISC.h"
+#include "hsairxplmisc.h"
 
 #include <XPLMUtilities.h>
 

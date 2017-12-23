@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef HSAIRXPLAPT_h
-#define HSAIRXPLAPT_h
+#ifndef __HSAIRXPLAPT_H__
+#define __HSAIRXPLAPT_H__
 
 #include <stdio.h>
 
@@ -70,4 +70,4 @@ void hsairpl_apt_send_req_fail(void);
 /* Sends the next set of bytes for an apt.dat transfer that is ongoing */
 int hsairpl_apt_send_next_airport_bytes(void);
 
-#endif /* HSAIRXPLAPT_h */
+#endif /* __HSAIRXPLAPT_H__ */

@@ -34,21 +34,21 @@
 #include <math.h>
 #include <time.h>
 #include <ctype.h>
-#include "HSAIRXPL.h"
-#include "HSAIRXPLMISC.h"
-#include "HSAIRXPLNAVDB.h"
-#include "HSMPMSG.h"
-#include "HSMPNET.h"
-#include "HSMPTCP.h"
-#include "HSAIRXPLCLIST.h"
-#include "HSAIRXPLMCP.h"
-#include "HSAIRXPLCOMS.h"
-#include "HSAIRXPLATC.h"
-#include "HSAIRXPLAPT.h"
-#include "HSAIRXPLDREF.h"
+#include "hsairxpl.h"
+#include "hsairxplmisc.h"
+#include "hsairxplnavdb.h"
+#include "hsmpmsg.h"
+#include "hsmpnet.h"
+#include "hsmptcp.h"
+#include "hsairxplclist.h"
+#include "hsairxplmcp.h"
+#include "hsairxplcoms.h"
+#include "hsairxplatc.h"
+#include "hsairxplapt.h"
+#include "hsairxpldref.h"
 
 #ifdef CPFLIGHT
-#include "HSAIRCPFLIGHT.h"
+#include "hsairxplcpflight.h"
 #endif
 
 /* How often the engine handler is called to do stuff in secs */
@@ -6257,11 +6257,11 @@ void hsxpl_load_settings(void)
 #endif
   
 #if !defined(_WIN32)
-  FILE *fp=fopen("Resources/plugins/HSAIRXPL.cfg","r");
-  if(fp==NULL) fp=fopen("Resources/plugins/AirTrackXPL.cfg","r");
+  FILE *fp=fopen("Resources/plugins/HaversineAir/hsairxpl.cfg","r");
+  if(fp==NULL) fp=fopen("Resources/plugins/HaversineAir/hsairxpl.cfg","r");
 #else
-  FILE *fp=fopen("Resources\\plugins\\HSAIRXPL.cfg","r");
-  if(fp==NULL) fp=fopen("Resources\\plugins\\AirTrackXPL.cfg","r");
+  FILE *fp=fopen("Resources\\plugins\\HaversineAir\\hsairxpl.cfg","r");
+  if(fp==NULL) fp=fopen("Resources\\plugins\\HaversineAir\\hsairxpl.cfg","r");
 #endif
   
   
@@ -6343,9 +6343,9 @@ void hsxpl_save_settings(void)
 {
   
 #if !defined(_WIN32)
-  FILE *fp=fopen("Resources/plugins/HSAIRXPL.cfg","w");
+  FILE *fp=fopen("Resources/plugins/HaversineAir/hsairxpl.cfg","w");
 #else
-  FILE *fp=fopen("Resources\\plugins\\HSAIRXPL.cfg","w");
+  FILE *fp=fopen("Resources\\plugins\\HaversineAir\\hsairxpl.cfg","w");
 #endif
   if(fp!=NULL) {
     

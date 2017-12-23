@@ -23,38 +23,39 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * Description:     Extension to support the CP Flight MCP Pro and EFIS
- *
  */
-
-#ifdef CPFLIGHT
-
-#ifndef __HS__HSAIRCPFLIGHT__
-#define __HS__HSAIRCPFLIGHT__
+#ifndef __HSAIRXPLDREF__
+#define __HSAIRXPLDREF__
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <math.h>
-#include <time.h>
-#include <ctype.h>
 
-#include "HSAIRXPL.h"
-
-void hsaircpf_initialise_hardware(void);
-void hsaircpf_open_serial_port(void);
-void hsaircpf_close_serial_port(void);
-void hsaircpf_runloop(void);
-void hsaircpf_process_cmd(char *cmd);
-
-#if IBM
-ssize_t hsaircpf_write(HANDLE fildes, const void *buf, size_t nbyte);
+#if defined(_WIN32)
+#include <winsock2.h>
+#include <windows.h>
+#include <ws2tcpip.h>
+#include <io.h>
 #else
-ssize_t hsaircpf_write(int fildes, const void *buf, size_t nbyte);
+#include <syslog.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/select.h>
+#include <sys/utsname.h>
+#include <fcntl.h>
 #endif
 
-#endif /* defined(__HS__HSAIRCPFLIGHT__) */
+#include "hsmpmsg.h"
 
-#endif /* CPFLIGHT */
+typedef struct hsairpl_dref_read_req_s {
+  char dref[128];
+  hsmp_dref_read_rep_t data;
+  uint32_t dtype;
+  struct sockaddr_in from;
+  struct hsairpl_dref_read_req_s *next;
+} hsairpl_dref_read_req_t;
 
+void hsairpl_dref_process_message(uint32_t mid,void *data,struct sockaddr_in *from);
+void hsairpl_dref_showtime_tictac(void);
+void hsairpl_dref_showtime_sec(void);
+
+#endif /* __HSAIRXPLDREF__ */

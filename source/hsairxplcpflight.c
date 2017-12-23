@@ -29,9 +29,9 @@
 
 #ifdef CPFLIGHT
 
-#include "HSAIRXPL.h"
-#include "HSAIRCPFLIGHT.h"
-#include "HSAIRXPLMCP.h"
+#include "hsairxpl.h"
+#include "hsairxplcpflight.h"
+#include "hsairxplmcp.h"
 
 #include <time.h>
 #include <stdio.h>

@@ -21,11 +21,13 @@
  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
  */
 
 
-#ifndef __HS_AIRXPLATC_H__
-#define __HS_AIRXPLATC_H__
+#ifndef __HS__HSAIRXPLCOMS__
+#define __HS__HSAIRXPLCOMS__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,35 +37,43 @@
 #include <time.h>
 #include <ctype.h>
 
-#include "HSAIRXPL.h"
+#include "hsairxpl.h"
 
-/* #define HSAIRPL_ATC_MAX_ACF    25  */ /* To fit 25 hsmp_atc_pos_t in 1440 bytes */
-#define HSAIRPL_ATC_MAX_ACF    20     /* X-Plane limit */
+void hsairpl_coms_update_datarefs(void);
 
-/* The available sources */
-#define HSAIRPL_ATC_SOURCE_UNDEFINED      0
-#define HSAIRPL_ATC_SOURCE_XPLANE_AI      1
-#define HSAIRPL_ATC_SOURCE_WORLDTRAFFIC   2
-#define HSAIRPL_ATC_SOURCE_XLIFE          3
-#define HSAIRPL_ATC_SOURCE_VATSIM         4
+uint32_t hsairpl_coms_get_nav1(void);
+uint32_t hsairpl_coms_get_snav1(void);
+uint32_t hsairpl_coms_get_nav2(void);
+uint32_t hsairpl_coms_get_snav2(void);
 
-#define HSAIRPL_ATC_PG_SIGNATURE_VATSIM          "vatsim.protodev.clients.xsquawkbox"
-#define HSAIRPL_ATC_PG_SIGNATURE_XLIFE           "jardesign.x-life"
-#define HSAIRPL_ATC_PG_SIGNATURE_WORLDTRAFFIC    "cjs.util.worldtraffic"
+uint32_t hsairpl_coms_get_com1(void);
+uint32_t hsairpl_coms_get_scom1(void);
+uint32_t hsairpl_coms_get_com2(void);
+uint32_t hsairpl_coms_get_scom2(void);
 
-int hsairpl_atc_total_aircrafts(void);
-int hsairpl_atc_active_aircrafts(void);
-int hsairpl_atc_wt_total_aircrafts(void);
-int hsairpl_atc_wt_active_aircrafts(void);
-int hsairpl_atc_xpai_total_aircrafts(void);
-int hsairpl_atc_xpai_active_aircrafts(void);
-int hsairpl_atc_plugin_id(void);
-void hsairpl_atc_update_datarefs(void);
-void hsairpl_atc_send_traffic(void);
-void hsairpl_atc_xpai_send_traffic(void);
-void hsairpl_atc_wt_send_traffic(void);
-void hsairpl_atc_xl_send_traffic(void);
-int hsairpl_atc_xl_get_tfc(void *inRefcon,void *outValue,int inOffset,int inMaxLength);
-void	hsairpl_atc_xl_set_tfc(void *inRefcon,void *inValue,int inOffset,int inLength);
+uint32_t hsairpl_coms_get_adf1(void);
+uint32_t hsairpl_coms_get_sadf1(void);
+uint32_t hsairpl_coms_get_adf2(void);
+uint32_t hsairpl_coms_get_sadf2(void);
 
-#endif /* __HS_AIRXPLATC_H__ */
+void hsairpl_coms_set_nav1(uint32_t v);
+void hsairpl_coms_set_snav1(uint32_t v);
+void hsairpl_coms_set_nav2(uint32_t v);
+void hsairpl_coms_set_snav2(uint32_t v);
+
+void hsairpl_coms_set_com1(uint32_t v);
+void hsairpl_coms_set_scom1(uint32_t v);
+void hsairpl_coms_set_com2(uint32_t v);
+void hsairpl_coms_set_scom2(uint32_t v);
+
+void hsairpl_coms_set_adf1(uint32_t v);
+void hsairpl_coms_set_sadf1(uint32_t v);
+void hsairpl_coms_set_adf2(uint32_t v);
+void hsairpl_coms_set_sadf2(uint32_t v);
+
+uint32_t hsairpl_coms_get_xponder_mode(void);
+uint32_t hsairpl_coms_get_xponder_code(void);
+void hsairpl_coms_set_xponder_mode(uint32_t v);
+void hsairpl_coms_set_xponder_code(uint32_t v);
+
+#endif /* defined(__HS__HSAIRXPLCOMS__) */

@@ -25,8 +25,8 @@
  *
  */
 
-#ifndef HSAIRXPLMISC_h
-#define HSAIRXPLMISC_h
+#ifndef __HSAIRXPLMISC_H__
+#define __HSAIRXPLMISC_H__
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -93,4 +93,4 @@ void hsxpl_log_str(char *logstr);
 int hsxpl_path_is_dir(char *path);
 int hsxpl_path_is_reg(char *path);
 
-#endif /* HSAIRXPLMISC_h */
+#endif /* __HSAIRXPLMISC_H__ */

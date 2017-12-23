@@ -26,10 +26,10 @@
  */
 
 
-#include "HSAIRXPLCOMS.h"
-#include "HSAIRXPL.h"
-#include "HSMPMSG.h"
-#include "HSMPNET.h"
+#include "hsairxplcoms.h"
+#include "hsairxpl.h"
+#include "hsmpmsg.h"
+#include "hsmpnet.h"
 
 /* The X-Plane SDK include files */
 

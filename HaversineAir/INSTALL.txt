@@ -6,7 +6,7 @@ Hardware and Software Requirements:
 
 In order to run and use this plugin you need: 
 
-- An Intel computer with a running copy of X-Plane version 9, 10 or 11.
+- An Intel computer with a running copy of X-Plane version 11, 10 or 9.
 - An Ethernet (wired or WiFi) interface on the computer configured for a 
 local IP network. 
 - A WiFi network connected to the computer so that the iPhone/iPad/iPod can
@@ -18,34 +18,16 @@ Installation Instructions:
 
 Note: If you have a previous version of the AirTrackXPL or HSAIRXPL installed 
 under the Resources/plugins sub-folder of X-Plane, 
-(e.g. AirTrackXPL-4.7-XXX.xpl), delete it first.
+(e.g. HSAIRXPL-4.6-XXX.xpl), delete it first.
 
-Depending on your platform and X-Plane version, copy one of:
+For X-Plane 11 copy the ENTIRE folder named HaversineAir to the Resources/plugins
+X-Plane folder.
 
-	HSAIRXPL-Win-32.xpl
-	HSAIRXPL-Win-64.xpl
-	HSAIRXPL-Mac-32.xpl
-	HSAIRXPL-Mac-64.xpl
-	HSAIRXPL-Lin-32.xpl
-	HSAIRXPL-Lin-36.xpl
+In older versions of X-Plane (9) which do not support the compact universal plugin
+directory layout you may need to configure the corresponding 32 bit individually
+to Resources/plugins directly and rename it to something like hsair.xpl
 
-To your X-Plane's resources/plugins folder. 
-
-The -Win- files are for Microsoft Windows, the -Mac- for Mac OS X and the 
--Lin- files for Linux.
- 
-The -32.xpl files are for X-Plane 32 bits whereas the -64.xpl files are 
-for X-Plane 64 bits. Please note that even though you may be running a 64 
-bits OS (like Windows 7 64 or OS X), you may still be running X-Plane in 
-32 bits mode. It is only from 10.20 that X-Plane became 64 bits.
-
-Hence for X-Plane above 10.20 you probably want the 64bit versions whereas for any other version of X-Plane, including all X-Plane 9 versions, 
-the plugin you'll want is the 32 bits. 
-
-If in doubt you may also copy both the 32 and 64 files and let one of them 
-fail to load depending on the version of X-Plane you launch. 
-
-That's all. 
+That's all.
  
 Support for the MCP and EFIS PRO and EL from CPFlight
 =====================================================
@@ -60,8 +42,8 @@ The cpflight part only works if the words CPFLIGHT-SERIAL-PORT= are found in
 the config file.
 
 On Mac if you have a CPFLight MCP it should appear as /dev/cu.usbserial...
-so create HSAIRXPL.cfg in the Resources/plugins folder of X-Plane and
-put one of:
+so create hsairxpl.cfg in the Resources/plugins/HaversineAir folder of
+X-Plane and put one of:
 
 CPFLIGHT-SERIAL-PORT=AUTO
 
@@ -69,12 +51,12 @@ or
 
 CPFLIGHT-SERIAL-PORT=/dev/cu.usb...
 
-On Linux you will probably need to specify the device. Create  HSAIRXPL.cfg
-in the Resources/plugins folder of X-Plane and add a line such as 
+On Linux you will probably need to specify the device. Create  hsairxpl.cfg
+in the Resources/plugins/HaversineAir folder of X-Plane and add a line such as
 CPFLIGHT-SERIAL-PORT=/dev/serial-port to it.
 
-On Windows, create HSAIRXPL.cfg in the Resources/plugins folder of X-Plane and
-add a line such as:
+On Windows, create hsairxpl in the Resources/plugins/HaversineAir folder of
+X-Plane and add a line such as:
 
 CPFLIGHT-SERIAL-PORT=COMn
 
@@ -91,7 +73,11 @@ you can do:
 loaded successfully. 
 
 2. The plugin will send UDP packets to the local network to address 
-239.224.224.1 on port 2424 for AirTrack, 2425 for AirFMC and 2426 for AirEFB.  
+239.224.224.1 on port 2424 for AirTrack, 2425 for AirFMC and 2426 for AirEFB.
+
+From UDP port 59000 of the computer <---> To UDP port 2424, 2425 or 2426 of
+the corresponding app.
+
 Make sure these are being sent. On Mac or Linux you can use for example: 
 
 	# sudo tcpdump port 2424
@@ -104,9 +90,11 @@ Make sure these are being sent. On Mac or Linux you can use for example:
 	# sudo tcpdump -i eth1 port 2424 
 
 You should see packets going out on that interface. If not, something is 
-wrong with the plugin; if yes, something is wrong with the App. 
+wrong with the plugin; if yes, something is wrong with the App.
 
-Press CTRL-C to quit. 
+The plugin attempts to bind to port 59000 so UDP packets will go:
+
+Press CTRL-C to quit.
 
 3. Make sure you have your iDevice connected to the same WiFi IP subnet 
 of where packets are being sent out. 

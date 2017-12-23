@@ -1,6 +1,7 @@
-What's new in 4.7 (2017/12/19)
+What's new in 4.7 (2017/12/21)
 ##############################
-- Adds support for AirEFB 
+- Adds support for AirEFB
+- Fixes an issue with coloured lines not displaying properly in the Zibo 737
 
 What's new in 4.6.1, 4.6.2 and 4.6.3 (2017/08/10)
 #################################################

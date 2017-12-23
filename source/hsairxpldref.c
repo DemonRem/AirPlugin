@@ -25,13 +25,12 @@
  *
  */
 
-#include "HSAIRXPLDREF.h"
-
-#include "HSAIRXPL.h"
-#include "HSMPMSG.h"
-#include "HSMPNET.h"
-#include "HSMPTCP.h"
-#include "HSAIRXPLMISC.h"
+#include "hsairxpldref.h"
+#include "hsairxpl.h"
+#include "hsmpmsg.h"
+#include "hsmpnet.h"
+#include "hsmptcp.h"
+#include "hsairxplmisc.h"
 
 hsairpl_dref_read_req_t *hsairpl_dref_tictacbase=NULL;
 hsairpl_dref_read_req_t *hsairpl_dref_secondbase=NULL;
@@ -100,7 +99,7 @@ uint32_t hsairpl_dref_process_dref_read_request(hsairpl_dref_read_req_t *req) {
   strncpy(dataref,req->dref,128);
 
   /* See if it ends in [idx] for array types */
-  dlen=strlen(dataref);
+  dlen=(int)strlen(dataref);
   int i=dlen-1;
   if(dataref[i]==']') {
     char *openbrackets=&dataref[i];
@@ -304,8 +303,6 @@ void hsairpl_dref_process_message(uint32_t mid,void *data,struct sockaddr_in *fr
 }
 
 void hsairpl_dref_showtime_base(hsairpl_dref_read_req_t **base) {
-
-  char str[512];
 
   hsairpl_dref_read_req_t *p = *base;
   hsairpl_dref_read_req_t *p2 = *base;

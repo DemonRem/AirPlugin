@@ -1,5 +1,5 @@
 # -
-# Copyright (c) 2013-2015 Haversine Ltd
+# Copyright (c) 2013-2017 Haversine Ltd
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -32,9 +32,9 @@ LIBS=	# -lm
 LFLAGS= # rdynamic
 CC=cc
 
-HDRS=HSAIRXPL.h ../HSMP/HSMPNET.h ../HSMP/HSMPTCP.h ../HSMP/HSMPMSG.h ../HSMP/HSMPATP.h HSAIRXPLCLIST.h HSAIRXPLMCP.h HSAIRXPLCOMS.h HSAIRCPFLIGHT.h HSAIRXPLMISC.h HSAIRXPLNAVDB.h HSAIRXPLATC.h HSAIRXPLAPT.h HSAIRXPLDREF.h
+HDRS=./source/hsairxpl.h ../HSMP/hsmpnet.h ../HSMP/hsmptcp.h ../HSMP/hsmpmsg.h ../HSMP/hsmpatp.h ./source/hsairxplclist.h ./source/hsairxplmcp.h ./source/hsairxplcoms.h ./source/hsairxplcpflight.h ./source/hsairxplmisc.h ./source/hsairxplnavdb.h ./source/hsairxplatc.h ./source/hsairxplapt.h ./source/hsairxpldref.h
 
-SRCS=HSAIRXPLCLIST.c HSAIRXPL.c	HSAIRXPLMCP.c HSAIRXPLCOMS.c ../HSMP/HSMPNET.c ../HSMP/HSMPTCP.c HSAIRCPFLIGHT.c HSAIRXPLMISC.c HSAIRXPLNAVDB.c HSAIRXPLATC.c HSAIRXPLAPT.c HSAIRXPLDREF.c
+SRCS=./source/hsairxplclist.c ./source/hsairxpl.c	./source/hsairxplmcp.c ./source/hsairxplcoms.c ../HSMP/hsmpnet.c ../HSMP/hsmptcp.c ./source/hsairxplcpflight.c ./source/hsairxplmisc.c ./source/hsairxplnavdb.c ./source/hsairxplatc.c ./source/hsairxplapt.c ./source/hsairxpldref.c
 
 ##############################################################################
 # Windows flags and libraries
@@ -108,44 +108,43 @@ help:
 	@echo   ""
 
 all:	osx32 osx64 win32 win64 lin32 lin64
-osx64:	HSAIRXPL-Mac-64.xpl
-osx32:	HSAIRXPL-Mac-32.xpl
-lin64:	HSAIRXPL-Lin-64.xpl
-lin32:	HSAIRXPL-Lin-32.xpl
-win64:	HSAIRXPL-Win-64.xpl
-win32:	HSAIRXPL-Win-32.xpl
+osx64:	HaversineAir/64/mac.xpl
+osx32:	HaversineAir/32/mac.xpl
+lin64:	HaversineAir/64/lin.xpl
+lin32:	HaversineAir/32/lin.xpl
+win64:	HaversineAir/64/win.xpl
+win32:	HaversineAir/32/win.xpl
 
 ##############################################################################
 # Windows build files
 ##############################################################################
 
-HSAIRXPL-Win-32.xpl:  $(SRCS) $(HDRS)
-	$(CCWIN32) -o HSAIRXPL-Win-32.xpl $(SRCS) $(CFLAGS) $(CFLAGSWIN32) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSWIN32) $(LIBSWIN32)
+HaversineAir/32/win.xpl:  $(SRCS) $(HDRS)
+	$(CCWIN32) -o HaversineAir/32/win.xpl $(SRCS) $(CFLAGS) $(CFLAGSWIN32) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSWIN32) $(LIBSWIN32)
 
-HSAIRXPL-Win-64.xpl:  $(SRCS) $(HDRS)
-	$(CCWIN64) -o HSAIRXPL-Win-64.xpl $(SRCS) $(CFLAGS) $(CFLAGSWIN64) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSWIN64) $(LIBSWIN64)
+HaversineAir/64/win.xpl:  $(SRCS) $(HDRS)
+	$(CCWIN64) -o HaversineAir/64/win.xpl $(SRCS) $(CFLAGS) $(CFLAGSWIN64) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSWIN64) $(LIBSWIN64)
 
 ##############################################################################
 # OSX build files
 ##############################################################################
 
-HSAIRXPL-Mac-32.xpl:  $(SRCS) $(HDRS)
-	$(CCOSX32) -o HSAIRXPL-Mac-32.xpl $(SRCS) $(CFLAGS) $(CFLAGSOSX32) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSOSX32) $(LIBSOSX32)
+HaversineAir/32/mac.xpl:  $(SRCS) $(HDRS)
+	$(CCOSX32) -o HaversineAir/32/mac.xpl $(SRCS) $(CFLAGS) $(CFLAGSOSX32) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSOSX32) $(LIBSOSX32)
 
-HSAIRXPL-Mac-64.xpl:  $(SRCS) $(HDRS)
-	$(CCOSX64) -o HSAIRXPL-Mac-64.xpl $(SRCS) $(CFLAGS) $(CFLAGSOSX64) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSOSX64) $(LIBSOSX64)
+HaversineAir/64/mac.xpl:  $(SRCS) $(HDRS)
+	$(CCOSX64) -o HaversineAir/64/mac.xpl $(SRCS) $(CFLAGS) $(CFLAGSOSX64) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSOSX64) $(LIBSOSX64)
 
 ##############################################################################
 # Linux build files
 ##############################################################################
 
-HSAIRXPL-Lin-32.xpl:  $(SRCS) $(HDRS)
-	$(CCLIN32) -o HSAIRXPL-Lin-32.xpl $(SRCS) $(CFLAGS) $(CFLAGSLIN32) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSLIN32) $(LIBSLIN32)
+HaversineAir/32/lin.xpl:  $(SRCS) $(HDRS)
+	$(CCLIN32) -o HaversineAir/32/lin.xpl $(SRCS) $(CFLAGS) $(CFLAGSLIN32) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSLIN32) $(LIBSLIN32)
 
-HSAIRXPL-Lin-64.xpl:  $(SRCS) $(HDRS)
-	$(CCLIN64) -o HSAIRXPL-Lin-64.xpl $(SRCS) $(CFLAGS) $(CFLAGSLIN64) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSLIN64) $(LIBSLIN64)
-
+HaversineAir/64/lin.xpl:  $(SRCS) $(HDRS)
+	$(CCLIN64) -o HaversineAir/64/lin.xpl $(SRCS) $(CFLAGS) $(CFLAGSLIN64) $(INCLUDES) $(LIBS) $(LFLAGS) $(LFLAGSLIN64) $(LIBSLIN64)
 
 clean:
-	rm -f *.o *.xpl *.exp *.lib
+	rm -f *.o *.xpl *.exp *.lib HaversineAir/32/*.xpl HaversineAir/64/*.xpl
 

@@ -37,10 +37,10 @@
 #include <XPLMUtilities.h>
 #include <XPLMNavigation.h>
 
-#include "HSMPNET.h"
-#include "HSMPMSG.h"
-#include "HSAIRXPLNAVDB.h"
-#include "HSAIRXPLMISC.h"
+#include "hsmpnet.h"
+#include "hsmpmsg.h"
+#include "hsairxplnavdb.h"
+#include "hsairxplmisc.h"
 
 /* Our flight plan */
 hsmp_route_t hsxpl_route;

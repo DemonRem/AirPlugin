@@ -36,7 +36,7 @@
 #include <time.h>
 #include <ctype.h>
 
-#include "HSAIRXPL.h"
+#include "hsairxpl.h"
 
 void hsairpl_mcp_update_datarefs(void);           /* Updates - looks up the datarefs */
 
