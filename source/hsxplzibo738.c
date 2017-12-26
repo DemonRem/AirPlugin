@@ -142,7 +142,7 @@ void hsxpl_set_z738_datarefs(void) {
  * be specified separately and the plugin will use the default ones.
  *
  * In order to achieve the desired values, the corresponding UP and DOWN buttons
- * need to be pressed exectly the number of increments or decrements and because
+ * need to be pressed exactly the number of increments or decrements and because
  * the values aren't immediately changed we can't just do a cyle and wait for them
  * to be correct here but we have to rely on the fact that they will be right given
  * the right number of presses. */
