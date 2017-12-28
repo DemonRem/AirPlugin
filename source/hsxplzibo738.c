@@ -130,7 +130,6 @@ void hsxpl_set_z738_datarefs(void) {
   z738data.mcpAltDialDown=XPLMFindCommand("laminar/B738/autopilot/altitude_dn");
   z738data.mcpHdgDialUp=XPLMFindCommand("laminar/B738/autopilot/heading_up");
   z738data.mcpHdgDialDown=XPLMFindCommand("laminar/B738/autopilot/heading_dn");
-
 }
 
 #pragma mark MCP stuff
@@ -193,7 +192,6 @@ void hsairpl_mcp_z738_set_hdg_dial(uint32_t v) {
     }
   }
 }
-
 
 #pragma mark FMC stuff
 

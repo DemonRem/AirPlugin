@@ -34,9 +34,22 @@
 #include "hsxpldefault738.h"
 #include "hsxpl.h"
 #include "hsxplfmc.h"
+#include "hsxplmcp.h"
+
+/* The default Laminar Boeing 737-800 specific datarefs */
+struct b738_datarefs_s {
+  XPLMDataRef mcpAtArmToggle;
+  XPLMDataRef mcpFdCaToggle;
+  XPLMDataRef mcpFdCaPos;
+  XPLMDataRef mcpFdFoToggle;
+  XPLMDataRef mcpFdFoPos;
+  XPLMDataRef mcpCmdAPress;
+  XPLMDataRef mcpCmdBPress;
+} b738data;
 
 /* The plane type from hsxpl.h */
 extern uint32_t hsxpl_plane_type;
+
 void hsxpl_set_default_738_datarefs(void) {
 
   char dref[128];
@@ -45,10 +58,80 @@ void hsxpl_set_default_738_datarefs(void) {
   if(strncmp(hsxpl_acf_icao(),"B738",7))
     return;
 
-  /* Must match tailno */
-  if(strncmp(hsxpl_acf_tailno(),"N816NN",7))
-    return;
+  /* The default Laminar 737-800 shares a lot with the Zibo mod 737-800, the latter, in fact,
+   * builds upon the the default 737-800. Therefore, in this file, we code what is specific
+   * for the default Laminar 737-800 and what is equal on the Zibo mod 737-800. Code that is
+   * only for the Zibo mod 737-800 is in hsxplzibo738.c
+   */
 
-  hsxpl_plane_type = HSXPL_PLANE_B738;
+  /* Must match tailno */
+  if ( strncmp(hsxpl_acf_tailno(),"N816NN",7) == 0 )
+     hsxpl_plane_type = HSXPL_PLANE_B738;
+  else if ( strncmp(hsxpl_acf_tailno(),"ZB738",7) == 0 )
+	  hsxpl_plane_type = HSXPL_PLANE_Z738;
+       else
+	  return;
+
+  memset(&b738data,0,sizeof(struct b738_datarefs_s));
+
+  /* MCP commands and datarefs, default 737-800 specific */
+  b738data.mcpAtArmToggle=XPLMFindCommand("laminar/B738/autopilot/autothrottle_arm_toggle");
+  b738data.mcpFdCaToggle=XPLMFindCommand("laminar/B738/autopilot/flight_director_toggle");
+  b738data.mcpFdFoToggle=XPLMFindCommand("laminar/B738/autopilot/flight_director_fo_toggle");
+  b738data.mcpCmdAPress=XPLMFindCommand("laminar/B738/autopilot/cmd_a_press");
+  b738data.mcpCmdBPress=XPLMFindCommand("laminar/B738/autopilot/cmd_b_press");
+
+  b738data.mcpFdCaPos=XPLMFindDataRef("laminar/B738/autopilot/flight_director_pos");
+  b738data.mcpFdCaPos=XPLMFindDataRef("laminar/B738/autopilot/flight_director_fo_pos");
 }
 
+/* FD captain side */
+void hsairpl_mcp_b738_fd_ca_toggle() {
+  if ( b738data.mcpFdCaToggle != NULL ) {
+     XPLMCommandOnce(b738data.mcpFdCaToggle);
+  }
+}
+
+uint32_t hsairpl_mcp_b738_get_fd_ca() {
+  if ( b738data.mcpFdCaPos != NULL ) {
+     if (XPLMGetDatai(b738data.mcpFdCaPos) > 0)
+     	return(1);
+  }
+  return(0);
+}
+
+/* FD first officer side */
+void hsairpl_mcp_b738_fd_fo_toggle() {
+  if ( b738data.mcpFdFoToggle != NULL ) {
+     XPLMCommandOnce(b738data.mcpFdFoToggle);
+  }
+}
+
+uint32_t hsairpl_mcp_b738_get_fd_fo() {
+  if ( b738data.mcpFdFoPos != NULL ) {
+     if (XPLMGetDatai(b738data.mcpFdFoPos) > 0)
+     	return(1);
+  }
+  return(0);
+}
+
+/* A/T Arm */
+void hsairpl_mcp_b738_at_arm_toggle() {
+  if ( b738data.mcpAtArmToggle != NULL ) {
+     XPLMCommandOnce(b738data.mcpAtArmToggle);
+  }
+}
+
+/* CMD A */
+void hsairpl_mcp_b738_cmd_a_press() {
+  if ( b738data.mcpCmdAPress != NULL ) {
+     XPLMCommandOnce(b738data.mcpCmdAPress);
+     }
+}
+
+/* CMD B */
+void hsairpl_mcp_b738_cmd_b_press() {
+  if ( b738data.mcpCmdBPress != NULL ) {
+     XPLMCommandOnce(b738data.mcpCmdBPress);
+     }
+}

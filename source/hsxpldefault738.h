@@ -35,4 +35,16 @@
 /* Sets B737FMC keys to the corresponding command refs */
 void hsxpl_set_b738_keys(void);
 
+/* Sets the datarefs required specific to Laminar default 737-800 */
+void hsxpl_set_default_738_datarefs(void);
+
+/* MCP specifics */
+void hsairpl_mcp_b738_at_arm_toggle(void);
+void hsairpl_mcp_b738_fd_ca_toggle(void);
+uint32_t hsairpl_mcp_b738_get_fd_ca(void);
+void hsairpl_mcp_b738_fd_fo_toggle(void);
+uint32_t hsairpl_mcp_b738_get_fd_fo(void);
+void hsairpl_mcp_b738_cmd_a_press(void);
+void hsairpl_mcp_b738_cmd_b_press(void);
+
 #endif /* ___HSAIRXPLB738__ */

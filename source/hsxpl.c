@@ -2024,7 +2024,7 @@ void hsxpl_send_fmc_data(void) {
       case(xplm_Nav_Fix): sprintf(line,"< FIX ");break;
       case(xplm_Nav_DME): sprintf(line,"< DME ");break;
       case(xplm_Nav_LatLon): sprintf(line,"< L-L ");break;
-      default: sprintf(line,"");
+      default: memset(line,0,32);
     }
     if(outID[0]!='\0') {
       outID[22]='\0';
