@@ -1,3 +1,7 @@
+What's new in 4.7.1 (2017/12/31)
+################################
+- Fixes an issue with manual IP configuration mode and AirEFB
+
 What's new in 4.7 (2017/12/21)
 ##############################
 - Adds support for AirEFB

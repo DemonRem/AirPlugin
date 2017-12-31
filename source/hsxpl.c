@@ -5810,6 +5810,7 @@ int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,
       if(hsxpl_unicast_sa.sin_addr.s_addr) {
         hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
         hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
+        hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
       }
       hsxpl_unicast_sa.sin_addr.s_addr=0;
       hsxpl_save_settings();
@@ -5822,6 +5823,7 @@ int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,
       if(hsxpl_unicast_sa.sin_addr.s_addr) {
         hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
         hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
+        hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
       }
       hsxpl_unicast_sa.sin_addr.s_addr=0;
       XPSetWidgetDescriptor(hsxpl_iptxinput, "AUTO");
@@ -5834,6 +5836,7 @@ int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,
     hsxpl_unicast_sa.sin_addr=a4;
     hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT,HSMP_PKT_NT_AIRTRACK|HSMP_PKT_PROTO_VER);
     hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT,HSMP_PKT_NT_AIRFMC|HSMP_PKT_PROTO_VER);
+    hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT,HSMP_PKT_NT_AIREFB|HSMP_PKT_PROTO_VER);
     hsxpl_save_settings();
     return 1;
     
@@ -5901,6 +5904,7 @@ void hsxpl_load_settings(void)
             if(hsxpl_unicast_sa.sin_addr.s_addr) {
               hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
               hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
+              hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
             }
             hsxpl_unicast_sa.sin_addr.s_addr=0;
           }
@@ -5913,6 +5917,7 @@ void hsxpl_load_settings(void)
               if(hsxpl_unicast_sa.sin_addr.s_addr) {
                 hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
                 hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
+                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
               }
               hsxpl_unicast_sa.sin_addr.s_addr=0;
               hsxpl_save_settings();
@@ -5920,11 +5925,13 @@ void hsxpl_load_settings(void)
               if(hsxpl_unicast_sa.sin_addr.s_addr) {
                 hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
                 hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
+                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
               }
               hsxpl_unicast_sa.sin_addr.s_addr=a4.s_addr;
               hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT,HSMP_PKT_NT_AIRTRACK|HSMP_PKT_PROTO_VER);
               hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT,HSMP_PKT_NT_AIRFMC|HSMP_PKT_PROTO_VER);
-              
+              hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT,HSMP_PKT_NT_AIREFB|HSMP_PKT_PROTO_VER);
+
               hsxpl_save_settings();
               
             }

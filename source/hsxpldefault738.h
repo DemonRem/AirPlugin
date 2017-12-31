@@ -35,4 +35,7 @@
 /* Sets B737FMC keys to the corresponding command refs */
 void hsxpl_set_b738_keys(void);
 
+/* Configuration of default datarefs */
+void hsxpl_set_default_738_datarefs(void);
+
 #endif /* ___HSAIRXPLB738__ */
