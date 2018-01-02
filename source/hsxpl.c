@@ -5639,11 +5639,11 @@ void hsxpl_fmc_press_key(uint32_t mid,XPLMDataRef k) {
 
       XPLMCommandOnce(k);
 
-    } else if(hsxpl_fmc_type==HSMP_FMC_TYPE_XPLANE || hsxpl_fmc_type==HSMP_FMC_TYPE_XP_XP738)
+    } else if(hsxpl_fmc_type==HSMP_FMC_TYPE_XPLANE || hsxpl_fmc_type==HSMP_FMC_TYPE_XP_XP738) {
 
       XPLMCommandOnce(k);
 
-    else if(hsxpl_fmc_type==HSMP_FMC_TYPE_XP_XFMC) {
+    } else if(hsxpl_fmc_type==HSMP_FMC_TYPE_XP_XFMC) {
 
       switch(mid) {
         case(HSMP_MID_FMC_BUT_L01): XPLMSetDatai(k,0);break;
