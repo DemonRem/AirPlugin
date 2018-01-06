@@ -28,6 +28,7 @@
 #include "hsxpl.h"
 #include "hsxplmcp.h"
 #include "hsxplzibo738.h"
+#include "hsxpldefault738.h"
 #include "hsxplmisc.h"
 #include "hsmpmsg.h"
 #include "hsmpnet.h"
@@ -671,6 +672,20 @@ void hsairpl_mcp_update_datarefs(void) {
     
   }
   
+  if(hsxpl_plane_type==HSXPL_PLANE_Z738) {
+    hsairxpl_mcp_datarefs.ap_hdgdial=XPLMFindDataRef("laminar/B738/autopilot/mcp_hdg_dial");
+    hsairxpl_mcp_datarefs.ap_obs2p=XPLMFindDataRef("sim/cockpit2/radios/actuators/nav1_obs_deg_mag_copilot");
+  }
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairxpl_mcp_datarefs.ap_obs1p=XPLMFindDataRef("sim/cockpit/radios/nav1_obs_degm");
+    hsairxpl_mcp_datarefs.ap_obs2p=XPLMFindDataRef("sim/cockpit/radios/nav2_obs_degm2");
+  }
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairxpl_mcp_datarefs.ap_speed_status=XPLMFindDataRef("laminar/B738/autopilot/speed_status1");
+  }
+
   if(hsxpl_plane_type==HSXPL_PLANE_FF777) {
     
     /*
@@ -1012,15 +1027,12 @@ void hsairpl_mcp_update_datarefs(void) {
 /* ######## PRESS BUTTONS ######## */
 
 void hsairpl_mcp_press_cmda(void) {
-  
-  
   if(hsxpl_plane_type==HSXPL_PLANE_IX733) {
     if(hsairxpl_mcp_datarefs.x733_cmda_act!=NULL) {
       XPLMSetDataf(hsairxpl_mcp_datarefs.x733_cmda_act,1.0);
     }
     return;
   }
-  
   
   if(hsxpl_plane_type==HSXPL_PLANE_FF777) {
     if(hsairxpl_mcp_datarefs.t7_ap_cmda!=NULL) {
@@ -1072,8 +1084,6 @@ void hsairpl_mcp_press_cmda(void) {
     }
   }
   
-  
-  
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_cmda!=NULL) {
       if(hsairpl_mcp_get_cmda_led())
@@ -1084,7 +1094,6 @@ void hsairpl_mcp_press_cmda(void) {
     }
   }
   
-  
   if(hsxpl_plane_type==HSXPL_PLANE_A320N) {
     if(hsairxpl_mcp_datarefs.a320n_fcu_ap1!=NULL) {
       if(hsairpl_mcp_get_cmda_led())
@@ -1094,7 +1103,11 @@ void hsairpl_mcp_press_cmda(void) {
       return;
     }
   }
-  
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_cmd_a_press();
+    return;
+  }
   
   if(hsairxpl_mcp_datarefs.ap_fdmode!=NULL) {
     if(XPLMGetDatai(hsairxpl_mcp_datarefs.ap_fdmode)==2) {
@@ -1141,8 +1154,6 @@ void hsairpl_mcp_press_cmdb(void) {
     }
   }
   
-  
-  
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_cmdb!=NULL) {
       if(hsairpl_mcp_get_cmdb_led())
@@ -1162,11 +1173,13 @@ void hsairpl_mcp_press_cmdb(void) {
       return;
     }
   }
-  
-  
-  
-  
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_cmd_b_press();
+    return;
+  }
 }
+
 void hsairpl_mcp_press_cwsa(void) {
   if(hsxpl_plane_type==HSXPL_PLANE_IX733) {
     if(hsairxpl_mcp_datarefs.x733_cwsa_act!=NULL) {
@@ -1343,7 +1356,12 @@ void hsairpl_mcp_press_n1(void) {
       return;
     }
   }
-  
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_n1_press();
+    return;
+  } /* XXX */
+
   if(hsairxpl_mcp_datarefs.ap_state!=NULL) {
     /* if(hsairpl_mcp_get_lchg_led()) */
     XPLMSetDatai(hsairxpl_mcp_datarefs.ap_state,64);
@@ -1352,10 +1370,8 @@ void hsairpl_mcp_press_n1(void) {
 }
 
 
-void hsairpl_mcp_press_spd(void)
-{
-  
-  
+void hsairpl_mcp_press_spd(void) {
+
   if(hsxpl_plane_type==HSXPL_PLANE_IX733) {
     if(hsairxpl_mcp_datarefs.x733_spd_act!=NULL) {
       XPLMSetDataf(hsairxpl_mcp_datarefs.x733_spd_act,1.0);
@@ -1407,6 +1423,11 @@ void hsairpl_mcp_press_spd(void)
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_speed_press();
+    return;
+  } /* XXX */
+
   /*
    if(hsairxpl_mcp_datarefs.ap_at!=NULL){
    if(XPLMGetDatai(hsairxpl_mcp_datarefs.ap_at)==0){
@@ -1485,6 +1506,11 @@ void hsairpl_mcp_press_lchg(void) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_lvlchg_press();
+    return;
+  } /* XXX */
+
   if(hsairxpl_mcp_datarefs.ap_state!=NULL) {
     XPLMSetDatai(hsairxpl_mcp_datarefs.ap_state,64);
   }
@@ -1542,6 +1568,11 @@ void hsairpl_mcp_press_vnav(void) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_vnav_press();
+    return;
+  } /* XXX */
+
   if(hsairxpl_mcp_datarefs.ap_state!=NULL) {
     XPLMSetDatai(hsairxpl_mcp_datarefs.ap_state,4096);
   }
@@ -1681,6 +1712,11 @@ void hsairpl_mcp_press_hdg(void) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_hdgsel_press();
+    return;
+  } /* XXX */
+
   if(hsairxpl_mcp_datarefs.ap_state!=NULL) {
     XPLMSetDatai(hsairxpl_mcp_datarefs.ap_state,00002);
   }
@@ -1689,7 +1725,6 @@ void hsairpl_mcp_press_hdg(void) {
 
 
 void hsairpl_mcp_press_lnav(void) {
-  
   
   if(hsxpl_plane_type==HSXPL_PLANE_IX733) {
     if(hsairxpl_mcp_datarefs.x733_lnav_act!=NULL) {
@@ -1742,6 +1777,11 @@ void hsairpl_mcp_press_lnav(void) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_lnav_press();
+    return;
+  } /* XXX */
+
   if(hsairxpl_mcp_datarefs.ap_state!=NULL) {
     XPLMSetDatai(hsairxpl_mcp_datarefs.ap_state,256);
   }
@@ -1799,7 +1839,11 @@ void hsairpl_mcp_press_loc(void) {
     }
   }
   
-  
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_vorloc_press();
+    return;
+  } /* XXX */
+
   if(hsairxpl_mcp_datarefs.ap_state!=NULL && hsairxpl_mcp_datarefs.ap_hsisource!=NULL) {
     if(XPLMGetDatai(hsairxpl_mcp_datarefs.ap_hsisource) < 2) {
       XPLMSetDatai(hsairxpl_mcp_datarefs.ap_state,256);
@@ -1862,6 +1906,11 @@ void hsairpl_mcp_press_app(void) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_app_press();
+    return;
+  } /* XXX */
+
   if(hsairxpl_mcp_datarefs.ap_state!=NULL && hsairxpl_mcp_datarefs.ap_hsisource!=NULL) {
     if(XPLMGetDatai(hsairxpl_mcp_datarefs.ap_hsisource) < 2) {
       XPLMSetDatai(hsairxpl_mcp_datarefs.ap_state,1024);
@@ -1925,6 +1974,11 @@ void hsairpl_mcp_press_alt(void) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_althld_press();
+    return;
+  } /* XXX */
+
   if(hsairxpl_mcp_datarefs.ap_state!=NULL){
     XPLMSetDatai(hsairxpl_mcp_datarefs.ap_state,16384);
   }
@@ -1983,6 +2037,11 @@ void hsairpl_mcp_press_vs(void) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_vs_press();
+    return;
+  } /* XXX */
+
   if(hsairxpl_mcp_datarefs.ap_state!=NULL){
     XPLMSetDatai(hsairxpl_mcp_datarefs.ap_state,16);
   }
@@ -2044,8 +2103,10 @@ void hsairpl_mcp_set_fd1(uint32_t v) {
     }
   }
   
-  
-  
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_fd_ca_toggle();
+    return;
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_fd_on!=NULL) {
@@ -2096,6 +2157,10 @@ uint32_t hsairpl_mcp_get_fd1_mode(void) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    return( hsairpl_mcp_b738_get_fd_ca() );
+  }
+
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_fd_on!=NULL) {
       if(XPLMGetDatai(hsairxpl_mcp_datarefs.x737_ap_fd_on))
@@ -2167,9 +2232,11 @@ void hsairpl_mcp_set_fd2(uint32_t v) {
     }
   }
   
-  
-  
-  
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_fd_fo_toggle();
+    return;
+  }
+
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_fd2_on!=NULL) {
       if(v) {
@@ -2268,8 +2335,6 @@ void hsairpl_mcp_set_atarm(uint32_t v) {
     }
   }
   
-  
-  
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_atarm_status!=NULL) {
       if(v) {
@@ -2281,6 +2346,11 @@ void hsairpl_mcp_set_atarm(uint32_t v) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_at_arm_toggle();
+    return;
+  }
+
   if(hsairxpl_mcp_datarefs.ap_at!=NULL && hsairxpl_mcp_datarefs.ap_speed_status!=NULL){
     if(v) {
       if(!XPLMGetDatai(hsairxpl_mcp_datarefs.ap_speed_status)) {
@@ -2539,8 +2609,9 @@ uint32_t hsairpl_mcp_get_n1_led(void) {
     }
   }
   
-  
-  
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_n1_led() );
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_n1mode!=NULL) {
@@ -2597,6 +2668,9 @@ uint32_t hsairpl_mcp_get_lchg_led(void) {
     }
   }
   
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_lvlchg_led() );
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_lcstatus!=NULL) {
@@ -2651,6 +2725,9 @@ uint32_t hsairpl_mcp_get_spd_led(void) {
     }
   }
   
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_speed_led() );
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_speed_status!=NULL) {
@@ -2703,6 +2780,11 @@ uint32_t hsairpl_mcp_get_vnav_led(void) {
         return 0;
     }
   }
+
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_vnav_led() );
+  }
+  
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_vnavled!=NULL) {
       return XPLMGetDatai(hsairxpl_mcp_datarefs.x737_ap_vnavled);
@@ -2804,7 +2886,9 @@ uint32_t hsairpl_mcp_get_hdg_led(void) {
      */
   }
   
-  
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_hdgsel_led() );
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_hdg_status!=NULL) {
@@ -2859,6 +2943,9 @@ uint32_t hsairpl_mcp_get_lnav_led(void) {
     }
   }
   
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_lnav_led() );
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_lnavled!=NULL) {
@@ -2912,7 +2999,9 @@ uint32_t hsairpl_mcp_get_loc_led(void) {
     }
   }
   
-  
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_vorloc_led() );
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_loc_status!=NULL) {
@@ -2968,6 +3057,9 @@ uint32_t hsairpl_mcp_get_app_led(void) {
     }
   }
   
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_app_led() );
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_app_status!=NULL) {
@@ -3021,6 +3113,9 @@ uint32_t hsairpl_mcp_get_alt_led(void) {
     }
   }
   
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_althld_led() );
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_alt_status!=NULL) {
@@ -3032,8 +3127,6 @@ uint32_t hsairpl_mcp_get_alt_led(void) {
       return 1;
     }
   }
-  
-  
   
   return 0;
   
@@ -3076,6 +3169,9 @@ uint32_t hsairpl_mcp_get_vs_led(void) {
     }
   }
   
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
+     return( hsairpl_mcp_z738_get_vs_led() );
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_vs_on!=NULL) {
@@ -3114,8 +3210,8 @@ uint32_t hsairpl_mcp_get_ma2_led(void) {
 /* ######## DIALS ######## */
 
 void hsairpl_mcp_set_crs1_dial(uint32_t v) {
-  
   v = v % 360;
+
   if(hsairxpl_mcp_datarefs.ap_obs1p!=NULL) {
     XPLMSetDataf(hsairxpl_mcp_datarefs.ap_obs1p,(float)v);
   }
@@ -3131,6 +3227,7 @@ uint32_t hsairpl_mcp_get_crs1_dial(void) {
 
 void hsairpl_mcp_set_crs2_dial(uint32_t v) {
   v = v % 360;
+
   if(hsairxpl_mcp_datarefs.ap_obs2p!=NULL) {
     XPLMSetDataf(hsairxpl_mcp_datarefs.ap_obs2p,(float)v);
   }
@@ -3214,7 +3311,6 @@ uint32_t hsairpl_mcp_get_hdg_dial(void) {
     }
   }
   
-  
   if(hsairxpl_mcp_datarefs.ap_hdgdial!=NULL) {
     return (uint32_t)XPLMGetDataf(hsairxpl_mcp_datarefs.ap_hdgdial);
   }
@@ -3248,6 +3344,7 @@ void hsairpl_mcp_set_alt_dial(uint32_t v) {
   if(hsxpl_plane_type==HSXPL_PLANE_A320N) {
     if(hsairxpl_mcp_datarefs.a320n_fcu_alt_dial!=NULL){
       XPLMSetDatai(hsairxpl_mcp_datarefs.a320n_fcu_alt_dial,v/100);
+      return;
     }
   }
   

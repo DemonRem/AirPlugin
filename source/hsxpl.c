@@ -2024,7 +2024,7 @@ void hsxpl_send_fmc_data(void) {
       case(xplm_Nav_Fix): sprintf(line,"< FIX ");break;
       case(xplm_Nav_DME): sprintf(line,"< DME ");break;
       case(xplm_Nav_LatLon): sprintf(line,"< L-L ");break;
-      default: sprintf(line,"");
+      default: memset(line,0,32);
     }
     if(outID[0]!='\0') {
       outID[22]='\0';
@@ -5639,11 +5639,11 @@ void hsxpl_fmc_press_key(uint32_t mid,XPLMDataRef k) {
 
       XPLMCommandOnce(k);
 
-    } else if(hsxpl_fmc_type==HSMP_FMC_TYPE_XPLANE || hsxpl_fmc_type==HSMP_FMC_TYPE_XP_XP738)
+    } else if(hsxpl_fmc_type==HSMP_FMC_TYPE_XPLANE || hsxpl_fmc_type==HSMP_FMC_TYPE_XP_XP738) {
 
       XPLMCommandOnce(k);
 
-    else if(hsxpl_fmc_type==HSMP_FMC_TYPE_XP_XFMC) {
+    } else if(hsxpl_fmc_type==HSMP_FMC_TYPE_XP_XFMC) {
 
       switch(mid) {
         case(HSMP_MID_FMC_BUT_L01): XPLMSetDatai(k,0);break;
