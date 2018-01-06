@@ -2104,7 +2104,7 @@ void hsairpl_mcp_set_fd1(uint32_t v) {
   }
   
   if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
-    hsairpl_mcp_b738_fd_ca_toggle();
+    hsairpl_mcp_b738_fd_ca_toggle(v);
     return;
   }
   
@@ -2233,7 +2233,7 @@ void hsairpl_mcp_set_fd2(uint32_t v) {
   }
   
   if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
-    hsairpl_mcp_b738_fd_fo_toggle();
+    hsairpl_mcp_b738_fd_fo_toggle(v);
     return;
   }
 
@@ -2347,7 +2347,7 @@ void hsairpl_mcp_set_atarm(uint32_t v) {
   }
   
   if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
-    hsairpl_mcp_b738_at_arm_toggle();
+    hsairpl_mcp_b738_at_arm_toggle(v);
     return;
   }
 
