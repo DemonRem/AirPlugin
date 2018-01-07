@@ -40,10 +40,11 @@ void hsxpl_set_b738_keys(void);
 void hsxpl_set_default_738_datarefs(void);
 
 /* MCP specifics */
-void hsairpl_mcp_b738_at_arm_toggle(void);
-void hsairpl_mcp_b738_fd_ca_toggle(void);
+void hsairpl_mcp_b738_at_arm_toggle(uint32_t);
+uint32_t hsairpl_mcp_b738_get_at_arm(void);
+void hsairpl_mcp_b738_fd_ca_toggle(uint32_t);
 uint32_t hsairpl_mcp_b738_get_fd_ca(void);
-void hsairpl_mcp_b738_fd_fo_toggle(void);
+void hsairpl_mcp_b738_fd_fo_toggle(uint32_t);
 uint32_t hsairpl_mcp_b738_get_fd_fo(void);
 void hsairpl_mcp_b738_n1_press(void);
 void hsairpl_mcp_b738_speed_press(void);

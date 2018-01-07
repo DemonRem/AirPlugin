@@ -39,6 +39,7 @@
 /* The default Laminar Boeing 737-800 specific datarefs */
 struct b738_datarefs_s {
   XPLMDataRef mcpAtArmToggle;
+  XPLMDataRef mcpAtArmPos;
   XPLMDataRef mcpFdCaToggle;
   XPLMDataRef mcpFdCaPos;
   XPLMDataRef mcpFdFoToggle;
@@ -89,6 +90,7 @@ void hsxpl_set_default_738_datarefs(void) {
   b738data.mcpFdFoToggle	= XPLMFindCommand("laminar/B738/autopilot/flight_director_fo_toggle");
 
   /* switch positions */
+  b738data.mcpAtArmPos		= XPLMFindDataRef("laminar/B738/autopilot/autothrottle_arm_pos");
   b738data.mcpFdCaPos		= XPLMFindDataRef("laminar/B738/autopilot/flight_director_pos");
   b738data.mcpFdFoPos		= XPLMFindDataRef("laminar/B738/autopilot/flight_director_fo_pos");
 
@@ -108,9 +110,14 @@ void hsxpl_set_default_738_datarefs(void) {
 }
 
 /* FD captain side */
+<<<<<<< HEAD
 void hsairpl_mcp_b738_fd_ca_toggle(void) {
+=======
+void hsairpl_mcp_b738_fd_ca_toggle(uint32_t onoff) {
+>>>>>>> 0316d221f5311376d08e4651b39aab60f21c511c
   if ( b738data.mcpFdCaToggle != NULL ) {
-     XPLMCommandOnce(b738data.mcpFdCaToggle);
+     if ( hsairpl_mcp_b738_get_fd_ca() != onoff )
+        XPLMCommandOnce(b738data.mcpFdCaToggle);
   }
 }
 
@@ -123,9 +130,14 @@ uint32_t hsairpl_mcp_b738_get_fd_ca(void) {
 }
 
 /* FD first officer side */
+<<<<<<< HEAD
 void hsairpl_mcp_b738_fd_fo_toggle(void) {
+=======
+void hsairpl_mcp_b738_fd_fo_toggle(uint32_t onoff) {
+>>>>>>> 0316d221f5311376d08e4651b39aab60f21c511c
   if ( b738data.mcpFdFoToggle != NULL ) {
-     XPLMCommandOnce(b738data.mcpFdFoToggle);
+     if ( hsairpl_mcp_b738_get_fd_fo() != onoff )
+        XPLMCommandOnce(b738data.mcpFdFoToggle);
   }
 }
 
@@ -138,10 +150,23 @@ uint32_t hsairpl_mcp_b738_get_fd_fo(void) {
 }
 
 /* A/T Arm */
+<<<<<<< HEAD
 void hsairpl_mcp_b738_at_arm_toggle(void) {
+=======
+void hsairpl_mcp_b738_at_arm_toggle(uint32_t armoff) {
+>>>>>>> 0316d221f5311376d08e4651b39aab60f21c511c
   if ( b738data.mcpAtArmToggle != NULL ) {
-     XPLMCommandOnce(b738data.mcpAtArmToggle);
+     if ( hsairpl_mcp_b738_get_at_arm() != armoff )
+        XPLMCommandOnce(b738data.mcpAtArmToggle);
   }
+}
+
+uint32_t hsairpl_mcp_b738_get_at_arm() {
+  if ( b738data.mcpAtArmPos != NULL ) {
+     if (XPLMGetDatai(b738data.mcpAtArmPos) > 0)
+     	return(1);
+  }
+  return(0);
 }
 
 /* N1 */
