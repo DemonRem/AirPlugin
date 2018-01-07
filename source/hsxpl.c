@@ -327,6 +327,13 @@ PLUGIN_API int XPluginStart ( char * outName, char * outSig, char * outDesc ) {
   strcpy(outSig, "com.haversine.air.xpl");
   sprintf(outDesc,"Haversine Air Plugin v%s",HSAIRXPL_VERSION);
 
+  /* Log the start of the plugin regardless of the state of HSXPLDEBUG so
+   * that its version gets into Log.txt */
+  char logstr[64];
+  sprintf(logstr,"%s XPluginStart()",outName);
+  XPLMDebugString(logstr);
+
+
   /* Determine node type, windows, mac or linux */
   hsxpl_idver=HSMP_PKT_NT_XPG;
 #if defined(_WIN32)

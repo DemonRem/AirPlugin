@@ -31,6 +31,7 @@
 #define ___HSAIRXPLB738__
 
 #include <stdio.h>
+#include "hsxpl.h"
 
 /* Sets B737FMC keys to the corresponding command refs */
 void hsxpl_set_b738_keys(void);

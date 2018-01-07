@@ -27,7 +27,7 @@
 #
 
 INCLUDES=-I. -I.. -I./XPSDK/CHeaders/XPLM -I./XPSDK/CHeaders/Widgets -I../HSMP
-CFLAGS=-DCPFXPL=1 -DXPLM200=1 -DXPLM210=1 -DXPLM211=1 -DXPL=1 -DCPFLIGHT=1 -DHSXPLDEBUG=3 # -DHSMPDEBUG=1 # -fPIC -fno-stack-protector
+CFLAGS=-DCPFXPL=1 -DXPLM200=1 -DXPLM210=1 -DXPLM211=1 -DXPL=1 -DCPFLIGHT=1 -Wunused-function -Wunused-label -Wunused-value -Wunused-variable -Wimplicit-function-declaration # -DHSXPLDEBUG=3 -DHSMPDEBUG=1 # -fPIC -fno-stack-protector
 LIBS=	# -lm
 LFLAGS= # rdynamic
 CC=cc
@@ -78,7 +78,7 @@ LIBSOSX64= # -framework XPWidgets -framework XPLM
 # Linux flags and libraries
 ##############################################################################
 CCLIN32=/usr/local/gcc-4.8.1-for-linux32/bin/i586-pc-linux-gcc
-CCLIN64=gcc
+CCLIN64=/usr/local/gcc-4.8.1-for-linux64/bin/x86_64-pc-linux-gcc
 
 CFLAGSLIN32=-fPIC -m32 -O0 -ansi -iquote. -DIBM=0 -DAPL=0 -DLIN=1 -D_BSD_SOURCE=1
 CFLAGSLIN64=-fPIC -m64 -O0 -ansi -iquote. -DIBM=0 -DAPL=0 -DLIN=1 -D_BSD_SOURCE=1 -Wunused-function -Wunused-label -Wunused-value -Wunused-variable -Wimplicit-function-declaration

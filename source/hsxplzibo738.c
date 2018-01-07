@@ -219,61 +219,61 @@ void hsairpl_mcp_z738_set_hdg_dial(uint32_t v) {
   }
 }
 
-uint32_t hsairpl_mcp_z738_get_n1_led() {
+uint32_t hsairpl_mcp_z738_get_n1_led(void) {
   if ( z738data.mcpN1led != NULL ) {
     return XPLMGetDatai(z738data.mcpN1led);
   }
   return 0;
 }
-uint32_t hsairpl_mcp_z738_get_speed_led() {
+uint32_t hsairpl_mcp_z738_get_speed_led(void) {
   if ( z738data.mcpSPEEDled != NULL ) {
     return XPLMGetDatai(z738data.mcpSPEEDled);
   }
   return 0;
 }
-uint32_t hsairpl_mcp_z738_get_lvlchg_led() {
+uint32_t hsairpl_mcp_z738_get_lvlchg_led(void) {
   if ( z738data.mcpLVLCHGled != NULL ) {
     return XPLMGetDatai(z738data.mcpLVLCHGled);
   }
   return 0;
 }
-uint32_t hsairpl_mcp_z738_get_vnav_led() {
+uint32_t hsairpl_mcp_z738_get_vnav_led(void) {
   if ( z738data.mcpVNAVled != NULL ) {
     return XPLMGetDatai(z738data.mcpVNAVled);
   }
   return 0;
 }
-uint32_t hsairpl_mcp_z738_get_lnav_led() {
+uint32_t hsairpl_mcp_z738_get_lnav_led(void) {
   if ( z738data.mcpLNAVled != NULL ) {
     return XPLMGetDatai(z738data.mcpLNAVled);
   }
   return 0;
 }
-uint32_t hsairpl_mcp_z738_get_vorloc_led() {
+uint32_t hsairpl_mcp_z738_get_vorloc_led(void) {
   if ( z738data.mcpVORLOCled != NULL ) {
     return XPLMGetDatai(z738data.mcpVORLOCled);
   }
   return 0;
 }
-uint32_t hsairpl_mcp_z738_get_app_led() {
+uint32_t hsairpl_mcp_z738_get_app_led(void) {
   if ( z738data.mcpAPPled != NULL ) {
     return XPLMGetDatai(z738data.mcpAPPled);
   }
   return 0;
 }
-uint32_t hsairpl_mcp_z738_get_hdgsel_led() {
+uint32_t hsairpl_mcp_z738_get_hdgsel_led(void) {
   if ( z738data.mcpHDGSELled != NULL ) {
     return XPLMGetDatai(z738data.mcpHDGSELled);
   }
   return 0;
 }
-uint32_t hsairpl_mcp_z738_get_althld_led() {
+uint32_t hsairpl_mcp_z738_get_althld_led(void) {
   if ( z738data.mcpALTHLDled != NULL ) {
     return XPLMGetDatai(z738data.mcpALTHLDled);
   }
   return 0;
 }
-uint32_t hsairpl_mcp_z738_get_vs_led() {
+uint32_t hsairpl_mcp_z738_get_vs_led(void) {
   if ( z738data.mcpVSled != NULL ) {
     return XPLMGetDatai(z738data.mcpVSled);
   }

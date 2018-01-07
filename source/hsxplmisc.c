@@ -28,16 +28,19 @@
 
 #include <XPLMUtilities.h>
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <math.h>
 #include <time.h>
 #include <ctype.h>
 #include <sys/stat.h>
 #include <errno.h>
 
+#if LIN /* can't seem to find round() in math.h / linux so need to declare it here */
+double round(double x);
+#endif
 
 void IPONAVLatitudeCStringFor(double lat,char *latStr,int fmt)
 {
@@ -309,9 +312,6 @@ int hsxpl_path_is_dir(char *path) {
 #if IBM
   struct _stat info;
   if( _stat( path, &info ) == 0 ) {
-    char str[1024];
-    sprintf(str,"stat on %s is %ld",path,info.st_mode);
-    hsxpl_log(HSXPLDEBUG_ACTION,str);
     return S_ISDIR( info.st_mode );
   }
 #else
@@ -328,9 +328,6 @@ int hsxpl_path_is_reg(char *path) {
 #if IBM
   struct _stat info;
   if( _stat( path, &info ) == 0 ) {
-    char str[1024];
-    sprintf(str,"stat on %s is %ld",path,info.st_mode);
-    hsxpl_log(HSXPLDEBUG_ACTION,str);
     return S_ISREG( info.st_mode );
   }
 #else
