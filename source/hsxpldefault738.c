@@ -63,6 +63,8 @@ extern uint32_t hsxpl_plane_type;
 
 void hsxpl_set_default_738_datarefs(void) {
 
+  char dref[128];
+
   /* Must match ICAO */
   if(strncmp(hsxpl_acf_icao(),"B738",7))
     return;
@@ -110,18 +112,14 @@ void hsxpl_set_default_738_datarefs(void) {
 }
 
 /* FD captain side */
-<<<<<<< HEAD
-void hsairpl_mcp_b738_fd_ca_toggle(void) {
-=======
 void hsairpl_mcp_b738_fd_ca_toggle(uint32_t onoff) {
->>>>>>> 0316d221f5311376d08e4651b39aab60f21c511c
   if ( b738data.mcpFdCaToggle != NULL ) {
      if ( hsairpl_mcp_b738_get_fd_ca() != onoff )
         XPLMCommandOnce(b738data.mcpFdCaToggle);
   }
 }
 
-uint32_t hsairpl_mcp_b738_get_fd_ca(void) {
+uint32_t hsairpl_mcp_b738_get_fd_ca() {
   if ( b738data.mcpFdCaPos != NULL ) {
      if (XPLMGetDatai(b738data.mcpFdCaPos) > 0)
      	return(1);
@@ -130,18 +128,14 @@ uint32_t hsairpl_mcp_b738_get_fd_ca(void) {
 }
 
 /* FD first officer side */
-<<<<<<< HEAD
-void hsairpl_mcp_b738_fd_fo_toggle(void) {
-=======
 void hsairpl_mcp_b738_fd_fo_toggle(uint32_t onoff) {
->>>>>>> 0316d221f5311376d08e4651b39aab60f21c511c
   if ( b738data.mcpFdFoToggle != NULL ) {
      if ( hsairpl_mcp_b738_get_fd_fo() != onoff )
         XPLMCommandOnce(b738data.mcpFdFoToggle);
   }
 }
 
-uint32_t hsairpl_mcp_b738_get_fd_fo(void) {
+uint32_t hsairpl_mcp_b738_get_fd_fo() {
   if ( b738data.mcpFdFoPos != NULL ) {
      if (XPLMGetDatai(b738data.mcpFdFoPos) > 0)
      	return(1);
@@ -150,11 +144,7 @@ uint32_t hsairpl_mcp_b738_get_fd_fo(void) {
 }
 
 /* A/T Arm */
-<<<<<<< HEAD
-void hsairpl_mcp_b738_at_arm_toggle(void) {
-=======
 void hsairpl_mcp_b738_at_arm_toggle(uint32_t armoff) {
->>>>>>> 0316d221f5311376d08e4651b39aab60f21c511c
   if ( b738data.mcpAtArmToggle != NULL ) {
      if ( hsairpl_mcp_b738_get_at_arm() != armoff )
         XPLMCommandOnce(b738data.mcpAtArmToggle);
@@ -170,74 +160,74 @@ uint32_t hsairpl_mcp_b738_get_at_arm() {
 }
 
 /* N1 */
-void hsairpl_mcp_b738_n1_press(void) {
+void hsairpl_mcp_b738_n1_press() {
   if ( b738data.mcpN1press != NULL ) {
      XPLMCommandOnce(b738data.mcpN1press);
   }
 }
 /* SPEED */
-void hsairpl_mcp_b738_speed_press(void) {
+void hsairpl_mcp_b738_speed_press() {
   if ( b738data.mcpSPEEDpress != NULL ) {
      XPLMCommandOnce(b738data.mcpSPEEDpress);
   }
 }
 /* LVL CHG */
-void hsairpl_mcp_b738_lvlchg_press(void) {
+void hsairpl_mcp_b738_lvlchg_press() {
   if ( b738data.mcpLVLCHGpress != NULL ) {
      XPLMCommandOnce(b738data.mcpLVLCHGpress);
   }
 }
 /* VNAV */
-void hsairpl_mcp_b738_vnav_press(void) {
+void hsairpl_mcp_b738_vnav_press() {
   if ( b738data.mcpVNAVpress != NULL ) {
      XPLMCommandOnce(b738data.mcpVNAVpress);
   }
 }
 /* LNAV */
-void hsairpl_mcp_b738_lnav_press(void) {
+void hsairpl_mcp_b738_lnav_press() {
   if ( b738data.mcpLNAVpress != NULL ) {
      XPLMCommandOnce(b738data.mcpLNAVpress);
   }
 }
 /* VOR LOC */
-void hsairpl_mcp_b738_vorloc_press(void) {
+void hsairpl_mcp_b738_vorloc_press() {
   if ( b738data.mcpVORLOCpress != NULL ) {
      XPLMCommandOnce(b738data.mcpVORLOCpress);
   }
 }
 /* APP */
-void hsairpl_mcp_b738_app_press(void) {
+void hsairpl_mcp_b738_app_press() {
   if ( b738data.mcpAPPpress != NULL ) {
      XPLMCommandOnce(b738data.mcpAPPpress);
   }
 }
 /* HDG SEL */
-void hsairpl_mcp_b738_hdgsel_press(void) {
+void hsairpl_mcp_b738_hdgsel_press() {
   if ( b738data.mcpHDGSELpress != NULL ) {
      XPLMCommandOnce(b738data.mcpHDGSELpress);
   }
 }
 /* ALT HLD */
-void hsairpl_mcp_b738_althld_press(void) {
+void hsairpl_mcp_b738_althld_press() {
   if ( b738data.mcpALTHLDpress != NULL ) {
      XPLMCommandOnce(b738data.mcpALTHLDpress);
   }
 }
 /* V/S */
-void hsairpl_mcp_b738_vs_press(void) {
+void hsairpl_mcp_b738_vs_press() {
   if ( b738data.mcpVSpress != NULL ) {
      XPLMCommandOnce(b738data.mcpVSpress);
   }
 }
 /* CMD A */
-void hsairpl_mcp_b738_cmd_a_press(void) {
+void hsairpl_mcp_b738_cmd_a_press() {
   if ( b738data.mcpCmdApress != NULL ) {
      XPLMCommandOnce(b738data.mcpCmdApress);
   }
 }
 
 /* CMD B */
-void hsairpl_mcp_b738_cmd_b_press(void) {
+void hsairpl_mcp_b738_cmd_b_press() {
   if ( b738data.mcpCmdBpress != NULL ) {
      XPLMCommandOnce(b738data.mcpCmdBpress);
   }
