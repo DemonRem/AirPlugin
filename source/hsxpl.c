@@ -330,7 +330,7 @@ PLUGIN_API int XPluginStart ( char * outName, char * outSig, char * outDesc ) {
   /* Log the start of the plugin regardless of the state of HSXPLDEBUG so
    * that its version gets into Log.txt */
   char logstr[64];
-  sprintf(logstr,"%s XPluginStart()",outName);
+  sprintf(logstr,"%s XPluginStart()\n",outName);
   XPLMDebugString(logstr);
 
 
