@@ -51,7 +51,7 @@
 #endif
 
 #if LIN /* can't seem to find roundf() in math.h / linux so need to declare it here */
-double roundf(float x);
+float roundf(float x);
 #endif
 
 /* A structure to hold the hardware states so that we don't overwrite */

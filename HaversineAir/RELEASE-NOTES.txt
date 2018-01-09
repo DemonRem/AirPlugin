@@ -1,3 +1,8 @@
+What's new in 4.7.3 (2018/01/09)
+################################
+- Additional fix for Linux
+- Addedsupport for the FMS exec light in the Zibo 738
+
 What's new in 4.7.2 (2018/01/07)
 ################################
 - Fixes an issue with AirFMC not responding on Linux

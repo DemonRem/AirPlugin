@@ -106,7 +106,7 @@ void hsxpl_set_z738_datarefs(void) {
 
   memset(&z738data,0,sizeof(struct z738_datarefs_s));
 
-  hsxpl_fmc.exec_light_on=XPLMFindDataRef("laminar/B738/indicators/fms_exec_light_pilot");
+  hsxpl_fmc.exec_light_on=XPLMFindDataRef("laminar/B738/indicators/fmc_exec_lights");
 
   for(i=0;i<14;i+=2) {
 
