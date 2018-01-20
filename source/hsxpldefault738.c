@@ -56,6 +56,13 @@ struct b738_datarefs_s {
   XPLMDataRef mcpVSpress;
   XPLMDataRef mcpCmdApress;
   XPLMDataRef mcpCmdBpress;
+  XPLMDataRef efisCptWXRpress;
+  XPLMDataRef efisCptSTApress;
+  XPLMDataRef efisCptWPTpress;
+  XPLMDataRef efisCptARPTpress;
+  XPLMDataRef efisCptDATApress;
+  XPLMDataRef efisCptPOSpress;
+  XPLMDataRef efisCptTERRpress;
 } b738data;
 
 /* The plane type from hsxpl.h */
@@ -107,7 +114,18 @@ void hsxpl_set_default_738_datarefs(void) {
   b738data.mcpVSpress		= XPLMFindCommand("laminar/B738/autopilot/vs_press");
   b738data.mcpCmdApress		= XPLMFindCommand("laminar/B738/autopilot/cmd_a_press");
   b738data.mcpCmdBpress		= XPLMFindCommand("laminar/B738/autopilot/cmd_b_press");
+
+  /* EFIS commands and datarefs, default 737-800 specific */
+  b738data.efisCptWXRpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/wxr_press");
+  b738data.efisCptSTApress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/sta_press");
+  b738data.efisCptWPTpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/wpt_press");
+  b738data.efisCptARPTpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/arpt_press");
+  b738data.efisCptDATApress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/data_press");
+  b738data.efisCptPOSpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/pos_press");
+  b738data.efisCptTERRpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/terr_press");
 }
+
+#pragma mark MCP stuff
 
 /* FD captain side */
 void hsairpl_mcp_b738_fd_ca_toggle(uint32_t onoff) {
@@ -229,4 +247,47 @@ void hsairpl_mcp_b738_cmd_b_press(void) {
   if ( b738data.mcpCmdBpress != NULL ) {
      XPLMCommandOnce(b738data.mcpCmdBpress);
   }
+}
+
+#pragma mark EFIS Captain side stuff
+
+/* WXR */
+void hsairpl_efis1_b738_wxr_press(void) {
+  if ( b738data.efisCptWXRpress != NULL )
+    XPLMCommandOnce(b738data.efisCptWXRpress);
+}
+
+/* STA */
+void hsairpl_efis1_b738_sta_press(void) {
+  if ( b738data.efisCptSTApress != NULL )
+    XPLMCommandOnce(b738data.efisCptSTApress);
+}
+
+/* WPT */
+void hsairpl_efis1_b738_wpt_press(void) {
+  if ( b738data.efisCptWPTpress != NULL )
+    XPLMCommandOnce(b738data.efisCptWPTpress);
+}
+
+/* ARPT */
+void hsairpl_efis1_b738_arpt_press(void) {
+  if ( b738data.efisCptARPTpress != NULL )
+    XPLMCommandOnce(b738data.efisCptARPTpress);
+}
+
+/* DATA */
+void hsairpl_efis1_b738_data_press(void) {
+  if ( b738data.efisCptDATApress != NULL )
+    XPLMCommandOnce(b738data.efisCptDATApress);
+}
+/* POS */
+void hsairpl_efis1_b738_pos_press(void) {
+  if ( b738data.efisCptPOSpress != NULL )
+    XPLMCommandOnce(b738data.efisCptPOSpress);
+}
+
+/* TERR */
+void hsairpl_efis1_b738_terr_press(void) {
+  if ( b738data.efisCptTERRpress != NULL )
+    XPLMCommandOnce(b738data.efisCptTERRpress);
 }
