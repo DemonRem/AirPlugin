@@ -1243,6 +1243,11 @@ void hsairpl_mcp_press_co(void) {
     }
   }
   
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_mcp_b738_co_press();
+    return;
+  }
+
   /* Default */
   if(hsairpl_mcp_get_speed_is_mach()) {
     hsairpl_mcp_set_speed_is_mach(0);

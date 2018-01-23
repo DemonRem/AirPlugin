@@ -48,6 +48,7 @@ void hsairpl_mcp_b738_fd_fo_toggle(uint32_t);
 uint32_t hsairpl_mcp_b738_get_fd_fo(void);
 void hsairpl_mcp_b738_n1_press(void);
 void hsairpl_mcp_b738_speed_press(void);
+void hsairpl_mcp_b738_co_press(void);
 void hsairpl_mcp_b738_lvlchg_press(void);
 void hsairpl_mcp_b738_vnav_press(void);
 void hsairpl_mcp_b738_lnav_press(void);

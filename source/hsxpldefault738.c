@@ -46,6 +46,7 @@ struct b738_datarefs_s {
   XPLMDataRef mcpFdFoPos;
   XPLMDataRef mcpN1press;
   XPLMDataRef mcpSPEEDpress;
+  XPLMDataRef mcpCOpress;
   XPLMDataRef mcpLVLCHGpress;
   XPLMDataRef mcpVNAVpress;
   XPLMDataRef mcpLNAVpress;
@@ -104,6 +105,7 @@ void hsxpl_set_default_738_datarefs(void) {
   /* push buttons */
   b738data.mcpN1press		= XPLMFindCommand("laminar/B738/autopilot/n1_press");
   b738data.mcpSPEEDpress	= XPLMFindCommand("laminar/B738/autopilot/speed_press");
+  b738data.mcpCOpress		= XPLMFindCommand("sim/autopilot/knots_mach_toggle");
   b738data.mcpLVLCHGpress	= XPLMFindCommand("laminar/B738/autopilot/lvl_chg_press");
   b738data.mcpVNAVpress		= XPLMFindCommand("laminar/B738/autopilot/vnav_press");
   b738data.mcpLNAVpress		= XPLMFindCommand("laminar/B738/autopilot/lnav_press");
@@ -185,6 +187,12 @@ void hsairpl_mcp_b738_n1_press(void) {
 void hsairpl_mcp_b738_speed_press(void) {
   if ( b738data.mcpSPEEDpress != NULL ) {
      XPLMCommandOnce(b738data.mcpSPEEDpress);
+  }
+}
+/* C/O IAS/MACH */
+void hsairpl_mcp_b738_co_press(void) {
+  if (b738data.mcpCOpress != NULL ) {
+     XPLMCommandOnce(b738data.mcpCOpress);
   }
 }
 /* LVL CHG */
