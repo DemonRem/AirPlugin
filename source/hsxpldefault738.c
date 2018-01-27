@@ -64,6 +64,9 @@ struct b738_datarefs_s {
   XPLMDataRef efisCptDATApress;
   XPLMDataRef efisCptPOSpress;
   XPLMDataRef efisCptTERRpress;
+  XPLMDataRef efisCptFPVpress;
+  XPLMDataRef efisCptMTRSpress;
+  XPLMDataRef efisCptBaroSTDpress;
 } b738data;
 
 /* The plane type from hsxpl.h */
@@ -125,6 +128,9 @@ void hsxpl_set_default_738_datarefs(void) {
   b738data.efisCptDATApress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/data_press");
   b738data.efisCptPOSpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/pos_press");
   b738data.efisCptTERRpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/terr_press");
+  b738data.efisCptFPVpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/fpv_press");
+  b738data.efisCptMTRSpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/mtrs_press");
+  b738data.efisCptBaroSTDpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/std_press");
 }
 
 #pragma mark MCP stuff
@@ -298,4 +304,21 @@ void hsairpl_efis1_b738_pos_press(void) {
 void hsairpl_efis1_b738_terr_press(void) {
   if ( b738data.efisCptTERRpress != NULL )
     XPLMCommandOnce(b738data.efisCptTERRpress);
+}
+
+/* FPV */
+void hsairpl_efis1_b738_fpv_press(void) {
+  if ( b738data.efisCptFPVpress != NULL )
+    XPLMCommandOnce(b738data.efisCptFPVpress);
+}
+
+/* MTRS */
+void hsairpl_efis1_b738_mtrs_press(void) {
+  if ( b738data.efisCptMTRSpress != NULL )
+    XPLMCommandOnce(b738data.efisCptMTRSpress);
+}
+
+void hsairpl_efis1_b738_baro_std_press(void) {
+  if ( b738data.efisCptBaroSTDpress != NULL )
+    XPLMCommandOnce(b738data.efisCptBaroSTDpress);
 }

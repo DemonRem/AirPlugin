@@ -68,5 +68,8 @@ void hsairpl_efis1_b738_arpt_press(void);
 void hsairpl_efis1_b738_data_press(void);
 void hsairpl_efis1_b738_pos_press(void);
 void hsairpl_efis1_b738_terr_press(void);
+void hsairpl_efis1_b738_fpv_press(void);
+void hsairpl_efis1_b738_mtrs_press(void);
+void hsairpl_efis1_b738_baro_std_press(void);
 
 #endif /* ___HSAIRXPLB738__ */

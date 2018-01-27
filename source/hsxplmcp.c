@@ -5329,6 +5329,11 @@ void hsairpl_efis1_press_std(void) {
     hsairpl_efis1_set_baro(29.92);
     return;
   }
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_efis1_b738_baro_std_press();
+    return;
+  }
   
   hsairpl_efis1_set_baro(29.92);
   
@@ -5425,6 +5430,11 @@ void hsairpl_efis1_press_fpv(void) {
       }
     }
   }
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_efis1_b738_fpv_press();
+    return;
+  }
   
   if(hsxpl_plane_type==HSXPL_PLANE_XPLANE) {
     hsairpl_ap_toggle_source();
@@ -5442,6 +5452,11 @@ void hsairpl_efis1_press_mtrs(void) {
         XPLMSetDatai(hsairxpl_mcp_datarefs.t7_efis_mtrs,1);
       }
     }
+  }
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    hsairpl_efis1_b738_mtrs_press();
+    return;
   }
 }
 
