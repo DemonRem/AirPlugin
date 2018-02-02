@@ -52,6 +52,12 @@ uint32_t hsairpl_mcp_z738_get_hdgsel_led(void);
 uint32_t hsairpl_mcp_z738_get_althld_led(void);
 uint32_t hsairpl_mcp_z738_get_vs_led(void);
 
+/* EFIS captain side specifics */
+void     hsairpl_efis1_z738_set_mode(uint32_t);
+uint32_t hsairpl_efis1_z738_get_mode(void);
+void     hsairpl_efis1_z738_set_range(float);
+uint32_t hsairpl_efis1_z738_get_range(void);
+
 /* Sends the z738 specific data to AirEFB i.e. its MCDU screen lines and states */
 void hsxpl_send_z738_data(void);
 

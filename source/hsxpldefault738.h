@@ -48,6 +48,7 @@ void hsairpl_mcp_b738_fd_fo_toggle(uint32_t);
 uint32_t hsairpl_mcp_b738_get_fd_fo(void);
 void hsairpl_mcp_b738_n1_press(void);
 void hsairpl_mcp_b738_speed_press(void);
+void hsairpl_mcp_b738_co_press(void);
 void hsairpl_mcp_b738_lvlchg_press(void);
 void hsairpl_mcp_b738_vnav_press(void);
 void hsairpl_mcp_b738_lnav_press(void);
@@ -58,5 +59,17 @@ void hsairpl_mcp_b738_althld_press(void);
 void hsairpl_mcp_b738_vs_press(void);
 void hsairpl_mcp_b738_cmd_a_press(void);
 void hsairpl_mcp_b738_cmd_b_press(void);
+
+/* EFIS captain side specifics */
+void hsairpl_efis1_b738_wxr_press(void);
+void hsairpl_efis1_b738_sta_press(void);
+void hsairpl_efis1_b738_wpt_press(void);
+void hsairpl_efis1_b738_arpt_press(void);
+void hsairpl_efis1_b738_data_press(void);
+void hsairpl_efis1_b738_pos_press(void);
+void hsairpl_efis1_b738_terr_press(void);
+void hsairpl_efis1_b738_fpv_press(void);
+void hsairpl_efis1_b738_mtrs_press(void);
+void hsairpl_efis1_b738_baro_std_press(void);
 
 #endif /* ___HSAIRXPLB738__ */

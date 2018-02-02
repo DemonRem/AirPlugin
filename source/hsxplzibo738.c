@@ -71,6 +71,12 @@ struct z738_datarefs_s {
   XPLMDataRef mcpVSled;
   XPLMDataRef mcpCmdAled;
   XPLMDataRef mcpCmdBled;
+  XPLMDataRef efisCptModeUp;
+  XPLMDataRef efisCptModeDn;
+  XPLMDataRef efisCptModePos;
+  XPLMDataRef efisCptRangeUp;
+  XPLMDataRef efisCptRangeDn;
+  XPLMDataRef efisCptRangePos;
 } z738data;
 
 /* Shared global var to hold FMC specific datarefs */
@@ -142,6 +148,15 @@ void hsxpl_set_z738_datarefs(void) {
   z738data.mcpAltDialDown=XPLMFindCommand("laminar/B738/autopilot/altitude_dn");
   z738data.mcpHdgDialUp=XPLMFindCommand("laminar/B738/autopilot/heading_up");
   z738data.mcpHdgDialDown=XPLMFindCommand("laminar/B738/autopilot/heading_dn");
+
+  /* EFIS captain side */
+  z738data.efisCptModeUp=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_up");
+  z738data.efisCptModeDn=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_dn");
+  z738data.efisCptModePos=XPLMFindDataRef("laminar/B738/EFIS_control/capt/map_mode_pos");
+
+  z738data.efisCptRangeUp=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_up");
+  z738data.efisCptRangeDn=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_dn");
+  z738data.efisCptRangePos=XPLMFindDataRef("laminar/B738/EFIS/capt/map_range");
 
   /* Autopilot Lights */
   z738data.mcpN1led	= XPLMFindDataRef("laminar/B738/autopilot/n1_status");
@@ -280,6 +295,77 @@ uint32_t hsairpl_mcp_z738_get_vs_led(void) {
   return 0;
 }
 
+#pragma mark EFIS Captain side stuff
+
+/* ND mode */
+uint32_t hsairpl_efis1_z738_get_mode(void) {
+  if ( z738data.efisCptModePos != NULL ) {
+    return XPLMGetDatai(z738data.efisCptModePos);
+  }
+  return 0;
+}
+
+void hsairpl_efis1_z738_set_mode(uint32_t v) {
+  int32_t numcrements;
+  uint32_t m = hsairpl_efis1_z738_get_mode();
+
+  if ( v == 4 ) v = 3;		/* 0=APP, 1=VOR, 2=MAP, 3=PLN */
+
+  /* if virtual cockpit range dial and physical MCP range dial are out-of-sync at startup,
+   * we have to do multiple up/dn commands to catch up.
+   */
+  numcrements = v - m;
+  if(numcrements>0) {
+    int j;
+    for(j=0;j<numcrements;j++) {
+      XPLMCommandOnce(z738data.efisCptModeUp);
+    }
+  } else if(numcrements<0) {
+    int j;
+    for(j=0;j>numcrements;j--) {
+      XPLMCommandOnce(z738data.efisCptModeDn);
+    }
+  }
+}
+
+/* ND range */
+uint32_t hsairpl_efis1_z738_get_range(void) {
+  if ( z738data.efisCptRangePos != NULL ) {
+    return XPLMGetDatai(z738data.efisCptRangePos);
+  }
+  return 0;
+}
+
+void hsairpl_efis1_z738_set_range(float v) {
+  uint32_t curRangePos = hsairpl_efis1_z738_get_range();
+  uint32_t newRangePos;
+  int32_t numcrements;
+
+  if (v >= 640 ) newRangePos = 7;
+  else if ( v >= 320 ) newRangePos = 6;
+  else if ( v >= 160 ) newRangePos = 5;
+  else if ( v >=  80 ) newRangePos = 4;
+  else if ( v >=  40 ) newRangePos = 3;
+  else if ( v >=  20 ) newRangePos = 2;
+  else if ( v >=  10 ) newRangePos = 1;
+  else if ( v >=   5 ) newRangePos = 0;
+
+  /* if virtual cockpit range dial and physical MCP range dial are out-of-sync at startup,
+   * we have to do multiple up/dn commands to catch up.
+   */
+  numcrements = newRangePos - curRangePos;
+  if(numcrements>0) {
+    int j;
+    for(j=0;j<numcrements;j++) {
+      XPLMCommandOnce(z738data.efisCptRangeUp);
+    }
+  } else if(numcrements<0) {
+    int j;
+    for(j=0;j>numcrements;j--) {
+      XPLMCommandOnce(z738data.efisCptRangeDn);
+    }
+  }
+}
 
 #pragma mark FMC stuff
 
