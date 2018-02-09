@@ -678,8 +678,7 @@ void hsairpl_mcp_update_datarefs(void) {
   }
 
   if ( hsxpl_plane_type==HSXPL_PLANE_B738) {
-    hsairxpl_mcp_datarefs.ap_obs1p=XPLMFindDataRef("sim/cockpit/radios/nav1_obs_degm");
-    hsairxpl_mcp_datarefs.ap_obs2p=XPLMFindDataRef("sim/cockpit/radios/nav2_obs_degm2");
+    hsairxpl_mcp_datarefs.ap_obs2p=XPLMFindDataRef("sim/cockpit2/radios/actuators/nav2_obs_deg_mag_copilot");
   }
 
   if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
