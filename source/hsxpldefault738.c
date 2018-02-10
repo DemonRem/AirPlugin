@@ -57,6 +57,8 @@ struct b738_datarefs_s {
   XPLMDataRef mcpVSpress;
   XPLMDataRef mcpCmdApress;
   XPLMDataRef mcpCmdBpress;
+  XPLMDataRef mcpCwsApress;
+  XPLMDataRef mcpCwsBpress;
   XPLMDataRef efisCptWXRpress;
   XPLMDataRef efisCptSTApress;
   XPLMDataRef efisCptWPTpress;
@@ -119,6 +121,8 @@ void hsxpl_set_default_738_datarefs(void) {
   b738data.mcpVSpress		= XPLMFindCommand("laminar/B738/autopilot/vs_press");
   b738data.mcpCmdApress		= XPLMFindCommand("laminar/B738/autopilot/cmd_a_press");
   b738data.mcpCmdBpress		= XPLMFindCommand("laminar/B738/autopilot/cmd_b_press");
+  b738data.mcpCwsApress		= XPLMFindCommand("laminar/B738/autopilot/cws_a_press");
+  b738data.mcpCwsBpress		= XPLMFindCommand("laminar/B738/autopilot/cws_b_press");
 
   /* EFIS commands and datarefs, default 737-800 specific */
   b738data.efisCptWXRpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/wxr_press");
@@ -260,6 +264,20 @@ void hsairpl_mcp_b738_cmd_a_press(void) {
 void hsairpl_mcp_b738_cmd_b_press(void) {
   if ( b738data.mcpCmdBpress != NULL ) {
      XPLMCommandOnce(b738data.mcpCmdBpress);
+  }
+}
+
+/* CWS A */
+void hsairpl_mcp_b738_cws_a_press(void) {
+  if ( b738data.mcpCwsApress != NULL ) {
+     XPLMCommandOnce(b738data.mcpCwsApress);
+  }
+}
+
+/* CWS B */
+void hsairpl_mcp_b738_cws_b_press(void) {
+  if ( b738data.mcpCwsBpress != NULL ) {
+     XPLMCommandOnce(b738data.mcpCwsBpress);
   }
 }
 

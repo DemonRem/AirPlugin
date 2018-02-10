@@ -71,6 +71,8 @@ struct z738_datarefs_s {
   XPLMDataRef mcpVSled;
   XPLMDataRef mcpCmdAled;
   XPLMDataRef mcpCmdBled;
+  XPLMDataRef mcpCwsAled;
+  XPLMDataRef mcpCwsBled;
   XPLMDataRef efisCptModeUp;
   XPLMDataRef efisCptModeDn;
   XPLMDataRef efisCptModePos;
@@ -171,6 +173,8 @@ void hsxpl_set_z738_datarefs(void) {
   z738data.mcpVSled	= XPLMFindDataRef("laminar/B738/autopilot/vs_status");
   z738data.mcpCmdAled	= XPLMFindDataRef("laminar/B738/autopilot/cmd_a_status");
   z738data.mcpCmdBled	= XPLMFindDataRef("laminar/B738/autopilot/cmd_b_status");
+  z738data.mcpCwsAled	= XPLMFindDataRef("laminar/B738/autopilot/cws_a_status");
+  z738data.mcpCwsBled	= XPLMFindDataRef("laminar/B738/autopilot/cws_b_status");
 }
 
 #pragma mark MCP stuff
@@ -305,6 +309,20 @@ uint32_t hsairpl_mcp_z738_get_cmda_led(void) {
 uint32_t hsairpl_mcp_z738_get_cmdb_led(void) {
   if ( z738data.mcpCmdBled != NULL ) {
     return XPLMGetDatai(z738data.mcpCmdBled);
+  }
+  return 0;
+}
+
+uint32_t hsairpl_mcp_z738_get_cwsa_led(void) {
+  if ( z738data.mcpCwsAled != NULL ) {
+    return XPLMGetDatai(z738data.mcpCwsAled);
+  }
+  return 0;
+}
+
+uint32_t hsairpl_mcp_z738_get_cwsb_led(void) {
+  if ( z738data.mcpCwsBled != NULL ) {
+    return XPLMGetDatai(z738data.mcpCwsBled);
   }
   return 0;
 }

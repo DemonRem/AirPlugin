@@ -441,13 +441,24 @@ void hsaircpf_process_cmd(char *cmd)
         return;
     }
 
-
     /* CMD B press */
     if(!strncmp(cmd,"K033",4)) {
         hsairpl_mcp_press_cmdb();
         return;
     }
-    
+
+    /* CWS A press */
+    if(!strncmp(cmd,"K034",4)) {
+        hsairpl_mcp_press_cwsa();
+        return;
+    }
+
+    /* CWS B press */
+    if(!strncmp(cmd,"K035",4)) {
+        hsairpl_mcp_press_cwsb();
+        return;
+    }
+
     /* AP DISENGAGE ON */
     if(!strncmp(cmd,"K041",4)) {
         hsairpl_mcp_set_apdisc(1);
@@ -466,21 +477,18 @@ void hsaircpf_process_cmd(char *cmd)
         return;
     }
 
-    
     /* SPEED PRESS */
     if(!strncmp(cmd,"K022",4)) {
         hsairpl_mcp_press_spd();
         return;
     }
 
-    
     /* LCHG PRESS */
     if(!strncmp(cmd,"K024",4)) {
         hsairpl_mcp_press_lchg();
         return;
     }
 
-    
     /* VNAV PRESS */
     if(!strncmp(cmd,"K026",4)) {
         hsairpl_mcp_press_vnav();
@@ -504,7 +512,6 @@ void hsaircpf_process_cmd(char *cmd)
         hsairpl_mcp_press_app();
         return;
     }
-
 
     /* VS PRESS */
     if(!strncmp(cmd,"K031",4)) {
@@ -544,7 +551,6 @@ void hsaircpf_process_cmd(char *cmd)
         return;
     }
 
-    
     /* EFIS range */
     if(!strncmp(cmd,"S000",4)) {
         hsairpl_efis1_set_range(5);
@@ -598,7 +604,6 @@ void hsaircpf_process_cmd(char *cmd)
         return;
     }
 
-
     /* TFC mode */
     if(!strncmp(cmd,"S008",4)) {
         hsairpl_efis1_press_tfc();
@@ -627,7 +632,7 @@ void hsaircpf_process_cmd(char *cmd)
     if(!strncmp(cmd,"B003",4)) {
         hsairpl_efis1_press_wpt();
         return;
-  }
+    }
     
     /* EFIS ARPT*/
     if(!strncmp(cmd,"B004",4)) {

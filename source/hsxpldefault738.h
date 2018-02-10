@@ -59,6 +59,8 @@ void hsairpl_mcp_b738_althld_press(void);
 void hsairpl_mcp_b738_vs_press(void);
 void hsairpl_mcp_b738_cmd_a_press(void);
 void hsairpl_mcp_b738_cmd_b_press(void);
+void hsairpl_mcp_b738_cws_a_press(void);
+void hsairpl_mcp_b738_cws_b_press(void);
 
 /* EFIS captain side specifics */
 void hsairpl_efis1_b738_wxr_press(void);

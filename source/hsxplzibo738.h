@@ -53,6 +53,8 @@ uint32_t hsairpl_mcp_z738_get_althld_led(void);
 uint32_t hsairpl_mcp_z738_get_vs_led(void);
 uint32_t hsairpl_mcp_z738_get_cmda_led(void);
 uint32_t hsairpl_mcp_z738_get_cmdb_led(void);
+uint32_t hsairpl_mcp_z738_get_cwsa_led(void);
+uint32_t hsairpl_mcp_z738_get_cwsb_led(void);
 
 /* EFIS captain side specifics */
 void     hsairpl_efis1_z738_set_mode(uint32_t);
