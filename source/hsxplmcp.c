@@ -2508,8 +2508,8 @@ uint32_t hsairpl_mcp_get_cmda_led(void) {
     }
   }
 
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738) {
-    return( hsairpl_mcp_z738_get_cmda_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    return( hsairpl_mcp_b738_get_cmda_led() );
   }
 
   if(hsairxpl_mcp_datarefs.ap_fdmode!=NULL){
@@ -2563,8 +2563,8 @@ uint32_t hsairpl_mcp_get_cmdb_led(void) {
     }
   }
 
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738) {
-    return( hsairpl_mcp_z738_get_cmdb_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    return( hsairpl_mcp_b738_get_cmdb_led() );
   }
 
   return 0;
@@ -2579,8 +2579,8 @@ uint32_t hsairpl_mcp_get_cwsa_led(void) {
     return 0;
   }
 
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738) {
-    return( hsairpl_mcp_z738_get_cwsa_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    return( hsairpl_mcp_b738_get_cwsa_led() );
   }
 
   return 0;
@@ -2595,8 +2595,8 @@ uint32_t hsairpl_mcp_get_cwsb_led(void) {
     return 0;
   }
 
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738) {
-    return( hsairpl_mcp_z738_get_cwsb_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+    return( hsairpl_mcp_b738_get_cwsb_led() );
   }
 
   return 0;
@@ -2635,8 +2635,8 @@ uint32_t hsairpl_mcp_get_n1_led(void) {
     }
   }
   
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_n1_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_n1_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -2694,8 +2694,8 @@ uint32_t hsairpl_mcp_get_lchg_led(void) {
     }
   }
   
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_lvlchg_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_lvlchg_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -2751,8 +2751,8 @@ uint32_t hsairpl_mcp_get_spd_led(void) {
     }
   }
   
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_speed_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_speed_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -2807,8 +2807,8 @@ uint32_t hsairpl_mcp_get_vnav_led(void) {
     }
   }
 
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_vnav_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_vnav_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -2912,8 +2912,8 @@ uint32_t hsairpl_mcp_get_hdg_led(void) {
      */
   }
   
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_hdgsel_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_hdgsel_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -2969,8 +2969,8 @@ uint32_t hsairpl_mcp_get_lnav_led(void) {
     }
   }
   
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_lnav_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_lnav_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -3025,8 +3025,8 @@ uint32_t hsairpl_mcp_get_loc_led(void) {
     }
   }
   
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_vorloc_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_vorloc_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -3083,8 +3083,8 @@ uint32_t hsairpl_mcp_get_app_led(void) {
     }
   }
   
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_app_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_app_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -3139,8 +3139,8 @@ uint32_t hsairpl_mcp_get_alt_led(void) {
     }
   }
   
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_althld_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_althld_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -3195,8 +3195,8 @@ uint32_t hsairpl_mcp_get_vs_led(void) {
     }
   }
   
-  if (hsxpl_plane_type==HSXPL_PLANE_Z738 ) {
-     return( hsairpl_mcp_z738_get_vs_led() );
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_vs_led() );
   }
   
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
@@ -3213,22 +3213,28 @@ uint32_t hsairpl_mcp_get_vs_led(void) {
   return 0;
 }
 
-
 uint32_t hsairpl_mcp_get_ma1_led(void) {
-  
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_ma1led!=NULL) {
       return XPLMGetDatai(hsairxpl_mcp_datarefs.x737_ap_ma1led);
     }
   }
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_ma_ca_led() );
+  }
   return 0;
 }
+
 uint32_t hsairpl_mcp_get_ma2_led(void) {
-  
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_ma2led!=NULL) {
       return XPLMGetDatai(hsairxpl_mcp_datarefs.x737_ap_ma2led);
     }
+  }
+
+  if ( hsxpl_plane_type==HSXPL_PLANE_Z738 || hsxpl_plane_type==HSXPL_PLANE_B738) {
+     return( hsairpl_mcp_b738_get_ma_fo_led() );
   }
   return 0;
 }

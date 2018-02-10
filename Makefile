@@ -79,6 +79,7 @@ LIBSOSX64= # -framework XPWidgets -framework XPLM
 ##############################################################################
 CCLIN32=/usr/local/gcc-4.8.1-for-linux32/bin/i586-pc-linux-gcc
 CCLIN64=/usr/local/gcc-4.8.1-for-linux64/bin/x86_64-pc-linux-gcc
+CCLIN64=gcc -Wall
 
 CFLAGSLIN32=-fPIC -m32 -O0 -ansi -iquote. -DIBM=0 -DAPL=0 -DLIN=1 -D_BSD_SOURCE=1
 CFLAGSLIN64=-fPIC -m64 -O0 -ansi -iquote. -DIBM=0 -DAPL=0 -DLIN=1 -D_BSD_SOURCE=1 -Wunused-function -Wunused-label -Wunused-value -Wunused-variable -Wimplicit-function-declaration

@@ -59,20 +59,6 @@ struct z738_datarefs_s {
   XPLMDataRef mcpAltDialDown;
   XPLMDataRef mcpHdgDialUp;
   XPLMDataRef mcpHdgDialDown;
-  XPLMDataRef mcpN1led;
-  XPLMDataRef mcpSPEEDled;
-  XPLMDataRef mcpLVLCHGled;
-  XPLMDataRef mcpVNAVled;
-  XPLMDataRef mcpLNAVled;
-  XPLMDataRef mcpVORLOCled;
-  XPLMDataRef mcpAPPled;
-  XPLMDataRef mcpHDGSELled;
-  XPLMDataRef mcpALTHLDled;
-  XPLMDataRef mcpVSled;
-  XPLMDataRef mcpCmdAled;
-  XPLMDataRef mcpCmdBled;
-  XPLMDataRef mcpCwsAled;
-  XPLMDataRef mcpCwsBled;
   XPLMDataRef efisCptModeUp;
   XPLMDataRef efisCptModeDn;
   XPLMDataRef efisCptModePos;
@@ -159,22 +145,6 @@ void hsxpl_set_z738_datarefs(void) {
   z738data.efisCptRangeUp=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_up");
   z738data.efisCptRangeDn=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_dn");
   z738data.efisCptRangePos=XPLMFindDataRef("laminar/B738/EFIS/capt/map_range");
-
-  /* Autopilot Lights */
-  z738data.mcpN1led	= XPLMFindDataRef("laminar/B738/autopilot/n1_status");
-  z738data.mcpSPEEDled	= XPLMFindDataRef("laminar/B738/autopilot/speed_status1");
-  z738data.mcpLVLCHGled	= XPLMFindDataRef("laminar/B738/autopilot/lvl_chg_status");
-  z738data.mcpVNAVled	= XPLMFindDataRef("laminar/B738/autopilot/vnav_status1");
-  z738data.mcpLNAVled	= XPLMFindDataRef("laminar/B738/autopilot/lnav_status");
-  z738data.mcpVORLOCled	= XPLMFindDataRef("laminar/B738/autopilot/vorloc_status");
-  z738data.mcpAPPled	= XPLMFindDataRef("laminar/B738/autopilot/app_status");
-  z738data.mcpHDGSELled	= XPLMFindDataRef("laminar/B738/autopilot/hdg_sel_status");
-  z738data.mcpALTHLDled	= XPLMFindDataRef("laminar/B738/autopilot/alt_hld_status");
-  z738data.mcpVSled	= XPLMFindDataRef("laminar/B738/autopilot/vs_status");
-  z738data.mcpCmdAled	= XPLMFindDataRef("laminar/B738/autopilot/cmd_a_status");
-  z738data.mcpCmdBled	= XPLMFindDataRef("laminar/B738/autopilot/cmd_b_status");
-  z738data.mcpCwsAled	= XPLMFindDataRef("laminar/B738/autopilot/cws_a_status");
-  z738data.mcpCwsBled	= XPLMFindDataRef("laminar/B738/autopilot/cws_b_status");
 }
 
 #pragma mark MCP stuff
@@ -236,95 +206,6 @@ void hsairpl_mcp_z738_set_hdg_dial(uint32_t v) {
       XPLMCommandOnce(z738data.mcpHdgDialDown);
     }
   }
-}
-
-uint32_t hsairpl_mcp_z738_get_n1_led(void) {
-  if ( z738data.mcpN1led != NULL ) {
-    return XPLMGetDatai(z738data.mcpN1led);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_speed_led(void) {
-  if ( z738data.mcpSPEEDled != NULL ) {
-    return XPLMGetDatai(z738data.mcpSPEEDled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_lvlchg_led(void) {
-  if ( z738data.mcpLVLCHGled != NULL ) {
-    return XPLMGetDatai(z738data.mcpLVLCHGled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_vnav_led(void) {
-  if ( z738data.mcpVNAVled != NULL ) {
-    return XPLMGetDatai(z738data.mcpVNAVled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_lnav_led(void) {
-  if ( z738data.mcpLNAVled != NULL ) {
-    return XPLMGetDatai(z738data.mcpLNAVled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_vorloc_led(void) {
-  if ( z738data.mcpVORLOCled != NULL ) {
-    return XPLMGetDatai(z738data.mcpVORLOCled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_app_led(void) {
-  if ( z738data.mcpAPPled != NULL ) {
-    return XPLMGetDatai(z738data.mcpAPPled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_hdgsel_led(void) {
-  if ( z738data.mcpHDGSELled != NULL ) {
-    return XPLMGetDatai(z738data.mcpHDGSELled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_althld_led(void) {
-  if ( z738data.mcpALTHLDled != NULL ) {
-    return XPLMGetDatai(z738data.mcpALTHLDled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_vs_led(void) {
-  if ( z738data.mcpVSled != NULL ) {
-    return XPLMGetDatai(z738data.mcpVSled);
-  }
-  return 0;
-}
-
-uint32_t hsairpl_mcp_z738_get_cmda_led(void) {
-  if ( z738data.mcpCmdAled != NULL ) {
-    return XPLMGetDatai(z738data.mcpCmdAled);
-  }
-  return 0;
-}
-
-uint32_t hsairpl_mcp_z738_get_cmdb_led(void) {
-  if ( z738data.mcpCmdBled != NULL ) {
-    return XPLMGetDatai(z738data.mcpCmdBled);
-  }
-  return 0;
-}
-
-uint32_t hsairpl_mcp_z738_get_cwsa_led(void) {
-  if ( z738data.mcpCwsAled != NULL ) {
-    return XPLMGetDatai(z738data.mcpCwsAled);
-  }
-  return 0;
-}
-
-uint32_t hsairpl_mcp_z738_get_cwsb_led(void) {
-  if ( z738data.mcpCwsBled != NULL ) {
-    return XPLMGetDatai(z738data.mcpCwsBled);
-  }
-  return 0;
 }
 
 #pragma mark EFIS Captain side stuff
