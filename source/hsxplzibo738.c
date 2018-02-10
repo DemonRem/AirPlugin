@@ -295,6 +295,20 @@ uint32_t hsairpl_mcp_z738_get_vs_led(void) {
   return 0;
 }
 
+uint32_t hsairpl_mcp_z738_get_cmda_led(void) {
+  if ( z738data.mcpCmdAled != NULL ) {
+    return XPLMGetDatai(z738data.mcpCmdAled);
+  }
+  return 0;
+}
+
+uint32_t hsairpl_mcp_z738_get_cmdb_led(void) {
+  if ( z738data.mcpCmdBled != NULL ) {
+    return XPLMGetDatai(z738data.mcpCmdBled);
+  }
+  return 0;
+}
+
 #pragma mark EFIS Captain side stuff
 
 /* ND mode */

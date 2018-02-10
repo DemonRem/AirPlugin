@@ -2495,12 +2495,16 @@ uint32_t hsairpl_mcp_get_cmda_led(void) {
     }
   }
   
-  
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_cmda!=NULL) {
       return XPLMGetDatai(hsairxpl_mcp_datarefs.x737_ap_cmda);
     }
   }
+
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738) {
+    return( hsairpl_mcp_z738_get_cmda_led() );
+  }
+
   if(hsairxpl_mcp_datarefs.ap_fdmode!=NULL){
     if(XPLMGetDatai(hsairxpl_mcp_datarefs.ap_fdmode)==2){
       return 1;
@@ -2546,13 +2550,16 @@ uint32_t hsairpl_mcp_get_cmdb_led(void) {
     }
   }
   
-  
-  
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_cmdb!=NULL) {
       return XPLMGetDatai(hsairxpl_mcp_datarefs.x737_ap_cmdb);
     }
   }
+
+  if (hsxpl_plane_type==HSXPL_PLANE_Z738) {
+    return( hsairpl_mcp_z738_get_cmdb_led() );
+  }
+
   return 0;
 }
 uint32_t hsairpl_mcp_get_cwsa_led(void) {
