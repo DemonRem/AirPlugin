@@ -65,6 +65,10 @@ struct z738_datarefs_s {
   XPLMDataRef efisCptRangeUp;
   XPLMDataRef efisCptRangeDn;
   XPLMDataRef efisCptRangePos;
+  XPLMDataRef efisCptVas1Up;
+  XPLMDataRef efisCptVas1Dn;
+  XPLMDataRef efisCptVas2Up;
+  XPLMDataRef efisCptVas2Dn;
 } z738data;
 
 /* Shared global var to hold FMC specific datarefs */
@@ -132,19 +136,24 @@ void hsxpl_set_z738_datarefs(void) {
   hsxpl_set_z738_fmc_keys();
 
   /* MCP commands and datarefs, zibo specific */
-  z738data.mcpAltDialUp=XPLMFindCommand("laminar/B738/autopilot/altitude_up");
-  z738data.mcpAltDialDown=XPLMFindCommand("laminar/B738/autopilot/altitude_dn");
-  z738data.mcpHdgDialUp=XPLMFindCommand("laminar/B738/autopilot/heading_up");
-  z738data.mcpHdgDialDown=XPLMFindCommand("laminar/B738/autopilot/heading_dn");
+  z738data.mcpAltDialUp    = XPLMFindCommand("laminar/B738/autopilot/altitude_up");
+  z738data.mcpAltDialDown  = XPLMFindCommand("laminar/B738/autopilot/altitude_dn");
+  z738data.mcpHdgDialUp    = XPLMFindCommand("laminar/B738/autopilot/heading_up");
+  z738data.mcpHdgDialDown  = XPLMFindCommand("laminar/B738/autopilot/heading_dn");
 
   /* EFIS captain side */
-  z738data.efisCptModeUp=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_up");
-  z738data.efisCptModeDn=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_dn");
-  z738data.efisCptModePos=XPLMFindDataRef("laminar/B738/EFIS_control/capt/map_mode_pos");
+  z738data.efisCptModeUp   = XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_up");
+  z738data.efisCptModeDn   = XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_dn");
+  z738data.efisCptModePos  = XPLMFindDataRef("laminar/B738/EFIS_control/capt/map_mode_pos");
 
-  z738data.efisCptRangeUp=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_up");
-  z738data.efisCptRangeDn=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_dn");
-  z738data.efisCptRangePos=XPLMFindDataRef("laminar/B738/EFIS/capt/map_range");
+  z738data.efisCptRangeUp  = XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_up");
+  z738data.efisCptRangeDn  = XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_dn");
+  z738data.efisCptRangePos = XPLMFindDataRef("laminar/B738/EFIS/capt/map_range");
+
+  z738data.efisCptVas1Up   = XPLMFindCommand("laminar/B738/EFIS_control/capt/vor1_off_up");
+  z738data.efisCptVas1Dn   = XPLMFindCommand("laminar/B738/EFIS_control/capt/vor1_off_dn");
+  z738data.efisCptVas2Up   = XPLMFindCommand("laminar/B738/EFIS_control/capt/vor2_off_up");
+  z738data.efisCptVas2Dn   = XPLMFindCommand("laminar/B738/EFIS_control/capt/vor2_off_dn");
 }
 
 #pragma mark MCP stuff
@@ -277,6 +286,28 @@ void hsairpl_efis1_z738_set_range(float v) {
     for(j=0;j>numcrements;j--) {
       XPLMCommandOnce(z738data.efisCptRangeDn);
     }
+  }
+}
+
+void hsairpl_efis1_z738_set_vas1(uint32_t v) {
+  uint32_t vas1Pos = hsairpl_efis1_get_vas1();
+
+  if ( v > vas1Pos ) {
+    XPLMCommandOnce(z738data.efisCptVas1Up);
+  }
+  if ( v < vas1Pos ) {
+    XPLMCommandOnce(z738data.efisCptVas1Dn);
+  }
+}
+
+void hsairpl_efis1_z738_set_vas2(uint32_t v) {
+  uint32_t vas2Pos = hsairpl_efis1_get_vas2();
+
+  if ( v > vas2Pos ) {
+    XPLMCommandOnce(z738data.efisCptVas2Up);
+  }
+  if ( v < vas2Pos ) {
+    XPLMCommandOnce(z738data.efisCptVas2Dn);
   }
 }
 

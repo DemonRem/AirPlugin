@@ -46,6 +46,8 @@ void     hsairpl_efis1_z738_set_mode(uint32_t);
 uint32_t hsairpl_efis1_z738_get_mode(void);
 void     hsairpl_efis1_z738_set_range(float);
 uint32_t hsairpl_efis1_z738_get_range(void);
+void     hsairpl_efis1_z738_set_vas1(uint32_t v);
+void     hsairpl_efis1_z738_set_vas2(uint32_t v);
 
 /* Sends the z738 specific data to AirEFB i.e. its MCDU screen lines and states */
 void hsxpl_send_z738_data(void);

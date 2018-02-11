@@ -5520,8 +5520,11 @@ void hsairpl_efis1_set_vas1(uint32_t v) {
           XPLMSetDataf(hsairxpl_mcp_datarefs.b767_efis_vas1_sel,1.0);
       }
     }
-    
-    
+
+    if (hsxpl_plane_type==HSXPL_PLANE_Z738) {
+      hsairpl_efis1_z738_set_vas1(v);
+    }
+
     if(hsairxpl_mcp_datarefs.efis_n1sel!=NULL) {
       XPLMSetDatai(hsairxpl_mcp_datarefs.efis_n1sel,v);
     }
@@ -5577,8 +5580,10 @@ void hsairpl_efis1_set_vas2(uint32_t v) {
       }
     }
     
-    
-    
+    if (hsxpl_plane_type==HSXPL_PLANE_Z738) {
+      hsairpl_efis1_z738_set_vas2(v);
+    }
+
     if(hsairxpl_mcp_datarefs.efis_n2sel!=NULL) {
       XPLMSetDatai(hsairxpl_mcp_datarefs.efis_n2sel,v);
     }
