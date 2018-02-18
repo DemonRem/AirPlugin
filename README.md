@@ -45,8 +45,6 @@ The principle behind the Haversine Air Plugin is one plugin does all, and allow 
 
 ## Building 
 
-To build you will need the HSMP set of files as well:
-
 1) Clone the Air Plugin
 
 git clone git@github.com:haversine-air/AirPlugin.git
