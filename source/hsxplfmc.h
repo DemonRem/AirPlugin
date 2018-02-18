@@ -33,6 +33,8 @@
 #include <stdio.h>
 #include <XPLMDataAccess.h>
 
+#include "hsmpnet.h"
+
 /* A typedef to hold all standard FMC datarefs (for AirFMC) */
 typedef struct hsxpl_fmc_s {
 
@@ -156,5 +158,10 @@ typedef struct hsxpl_fmc_s {
 
 } hsxpl_fmc_t;
 
+void hsxpl_build_fmc_screen_line(hsmp_fmc_screen_c_t *matrix,char *line,uint8_t row,uint8_t font_size,uint32_t colour);
+
+void hsxpl_send_fmc_data(void);
+void hsxpl_fmc_press_key(uint32_t mid,XPLMDataRef k);
+void hsxpl_mcdu_toggle(void);
 
 #endif /* __HSAIRXPLFMC__ */

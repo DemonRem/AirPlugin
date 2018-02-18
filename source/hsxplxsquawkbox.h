@@ -1,5 +1,4 @@
-/*-
- * Copyright (c) 2013-2017 Haversine Ltd
+/* Copyright (c) 2013-2017 Haversine Ltd
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,20 +22,23 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
+ * XSquawkbox VATSIM stuff
+ *
  */
 
-#ifndef __HSXPLSETTINGS_H__
-#define __HSXPLSETTINGS_H__
+#ifndef __HSXPLXSQUAWKBOX__H__
+#define __HSXPLXSQUAWKBOX__H__
 
+#include <stdio.h>
 #include "hsxpl.h"
 
-void hsxpl_settings_configure_menu(void);
-void hsxpl_load_settings(void);
-void hsxpl_save_settings(void);
+/* XSquawkbox datarefs */
+typedef struct hsxpl_xsb_datarefs_s {
 
-/* Widgets */
-void hsxpl_create_settings_widget(int x, int y, int w, int h);
-void hsxpl_select_menu_option(void *inMenuRef,void *inItemRef);
-int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,long inParam1,long inParam2);
+  XPLMDataRef callsign;
 
-#endif /* __HSXPLSETTINGS_H__ */
+} hsxpl_xsb_datarefs_t;
+
+void hsxpl_set_xsb_datarefs(void);
+
+#endif /* __HSXPLXSQUAWKBOX__H__ */

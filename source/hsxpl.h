@@ -95,17 +95,6 @@ typedef int socklen_t;
 #define HSXPL_PLANE_Z738    0x00001000  /* 737-800 modified by zibo */
 #define HSXPL_PLANE_B738    0x00002000  /* X-Plane 11 default 737-800 */
 
-/* A320 colour IDs */
-#define HSXPL_A320Q_COL_IDX_WHITE       0
-#define HSXPL_A320Q_COL_IDX_GREEN       1
-#define HSXPL_A320Q_COL_IDX_BLUE        2
-#define HSXPL_A320Q_COL_IDX_AMBER       3
-#define HSXPL_A320Q_COL_IDX_YELLOW      4
-#define HSXPL_A320Q_COL_IDX_MAGENTA     5
-#define HSXPL_A320Q_COL_IDX_S           6
-
-/* A function that resets the datarefs */
-void hsxpl_set_datarefs(void);
 float hsxpl_runtime(float                inElapsedSinceLastCall,
                     float                inElapsedTimeSinceLastFlightLoop,
                     int                  inCounter,
@@ -117,47 +106,5 @@ void hsxpl_send_subsecond_data(void);
 void hsxpl_send_second_data(void);
 
 void hsxpl_set_datarefs(void);
-void hsxpl_set_xplane_datarefs(void);
-void hsxpl_set_x737_datarefs(void);
-void hsxpl_set_ix733_datarefs(void);
-void hsxpl_set_ufmc_datarefs(void);
-void hsxpl_set_a320n_datarefs(void);
-void hsxpl_set_a320q_datarefs(void);
-void hsxpl_set_xsb_datarefs(void);
-void hsxpl_set_p757_datarefs(void);
-void hsxpl_set_p767_datarefs(void);
-void hsxpl_set_p777_datarefs(void);
-void hsxpl_set_pcrj200_datarefs(void);
-void hsxpl_set_xfmc_datarefs(void);
-void hsxpl_set_zibo737_datarefs(void);
-void hsxpl_set_b738_keys(void);
-
-void hsxpl_load_settings(void);
-void hsxpl_save_settings(void);
-
-void hsxpl_send_fmc_data(void);
-void hsxpl_send_xfmc_data(void);
-void hsxpl_send_ufmc_data(void);
-void hsxpl_send_z738_data(void);
-void hsxpl_send_a320n_fmc_data(void);
-void hsxpl_send_a320q_fmc_data(void);
-void hsxpl_send_p757_data(void);
-void hsxpl_send_p777_data(void);
-void hsxpl_send_pcrj200_data(void);
-void hsxpl_send_ix733_data(void);
-
-char *hsxpl_acf_icao(void);
-char *hsxpl_acf_tailno(void);
-
-void hsxpl_test_default_fmc_support(void);
-
-void hsxpl_fmc_press_key(uint32_t mid,XPLMDataRef k);
-void hsxpl_mcdu_toggle(void);
-
-/* Widgets */
-void hsxpl_create_settings_widget(int x, int y, int w, int h);
-void hsxpl_select_menu_option(void *inMenuRef,void *inItemRef);
-int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,long inParam1,long inParam2);
-
 
 #endif  /* __HS_HSAIRXPL_H__ */

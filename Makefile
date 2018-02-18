@@ -32,9 +32,9 @@ LIBS=	# -lm
 LFLAGS= # rdynamic
 CC=cc
 
-HDRS=./source/hsxpl.h ./HSMP/hsmpnet.h ./HSMP/hsmptcp.h ./HSMP/hsmpmsg.h ./HSMP/hsmpatp.h ./source/hsxplclist.h ./source/hsxplmcp.h ./source/hsxplcoms.h ./source/hsxplcpflight.h ./source/hsxplmisc.h ./source/hsxplnavdb.h ./source/hsxplatc.h ./source/hsxplairports.h ./source/hsxpldref-requests.h ./source/hsxpldefault738.h ./source/hsxplzibo738.h ./source/hsxplfmc.h ./source/hsxplsettings.h
+HDRS=./source/hsxpl.h ./HSMP/hsmpnet.h ./HSMP/hsmptcp.h ./HSMP/hsmpmsg.h ./HSMP/hsmpatp.h ./source/hsxplclist.h ./source/hsxplmcp.h ./source/hsxplcoms.h ./source/hsxplcpflight.h ./source/hsxplmisc.h ./source/hsxplnavdb.h ./source/hsxplatc.h ./source/hsxplairports.h ./source/hsxpldref-requests.h ./source/hsxpldefault738.h ./source/hsxplzibo738.h ./source/hsxplfmc.h ./source/hsxplsettings.h ./source/hsxpleadtx738.h ./source/hsxplixeg733.h ./source/hsxpljara320.h ./source/hsxpldatarefs.h ./source/hsxplff757.h ./source/hsxplff767.h ./source/hsxplff777.h ./source/hsxplcrj200.h ./source/hsxplxfmc.h ./source/hsxplufmc.h ./source/hsxplqa320.h ./source/hsxplxsquawkbox.h
 
-SRCS=./source/hsxplclist.c ./source/hsxpl.c	./source/hsxplmcp.c ./source/hsxplcoms.c ./HSMP/hsmpnet.c ./HSMP/hsmptcp.c ./source/hsxplcpflight.c ./source/hsxplmisc.c ./source/hsxplnavdb.c ./source/hsxplatc.c ./source/hsxplairports.c ./source/hsxpldref-requests.c ./source/hsxpldefault738.c ./source/hsxplzibo738.c ./source/hsxplfmc.c ./source/hsxplsettings.c
+SRCS=./source/hsxplclist.c ./source/hsxpl.c	./source/hsxplmcp.c ./source/hsxplcoms.c ./HSMP/hsmpnet.c ./HSMP/hsmptcp.c ./source/hsxplcpflight.c ./source/hsxplmisc.c ./source/hsxplnavdb.c ./source/hsxplatc.c ./source/hsxplairports.c ./source/hsxpldref-requests.c ./source/hsxpldefault738.c ./source/hsxplzibo738.c ./source/hsxplfmc.c ./source/hsxplsettings.c ./source/hsxpleadtx738.c ./source/hsxplixeg733.c ./source/hsxpljara320.c ./source/hsxpldatarefs.c source/hsxplff757.c ./source/hsxplff767.c ./source/hsxplff777.c ./source/hsxplcrj200.c ./source/hsxplxfmc.c ./source/hsxplufmc.c ./source/hsxplqa320.c ./source/hsxplxsquawkbox.c
 
 ##############################################################################
 # Windows flags and libraries

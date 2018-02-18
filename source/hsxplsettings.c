@@ -34,6 +34,7 @@
 
 #include "hsxplsettings.h"
 #include "hsxpl.h"
+#include "hsxplmisc.h"
 #include "hsmpmsg.h"
 #include "hsmpnet.h"
 
@@ -52,6 +53,10 @@ extern uint32_t hsxpl_cpflight_enabled;
 
 void hsxpl_load_settings(void)
 {
+
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsxpl_load_settings()");
+#endif
 
 #ifdef CPFLIGHT
   memset(hsaircpf_serial_port,0,256);
@@ -167,5 +172,144 @@ void hsxpl_save_settings(void)
 
     fclose(fp);
   }
+}
+
+
+#pragma mark Widget functions
+
+/**** WIDGET RELATED PROTOTYPES AND GLOBAL VARS *****/
+XPLMMenuID hsxpl_main_menu=NULL;
+int hsxpl_settings_menu_item;
+XPLMMenuID hsxpl_settingsmenu=NULL;
+XPWidgetID hsxpl_settings_widget=NULL;
+XPWidgetID hsxpl_ipsubwindow=NULL;
+XPWidgetID hsxpl_iplabel=NULL;
+XPWidgetID hsxpl_iptxinput=NULL;
+XPWidgetID hsxpl_iplabel2=NULL;
+XPWidgetID hsxpl_iplabel3=NULL;
+XPWidgetID hsxpl_iplabel4=NULL;
+XPWidgetID hsxpl_iplabel5=NULL;
+XPWidgetID hsxpl_ipapply=NULL;
+
+void hsxpl_settings_configure_menu(void) {
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"XPLMCreateMenu()");
+#endif
+  hsxpl_main_menu=XPLMCreateMenu("Haversine Air",NULL,0,hsxpl_select_menu_option,0);
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"XPLMAppendMenuItem()");
+#endif
+  hsxpl_settings_menu_item=XPLMAppendMenuItem(hsxpl_main_menu,"Settings",(void *)"Settings",1);
+}
+void hsxpl_select_menu_option(void *inMenuRef,void *inItemRef)
+{
+
+  if (!strcmp((char *) inItemRef, "Settings")) {
+
+    if(hsxpl_settings_widget==NULL) {
+      hsxpl_create_settings_widget(300,650,300,220);
+      if(hsxpl_settings_widget==NULL) return;
+    }
+
+    if(!XPIsWidgetVisible(hsxpl_settings_widget))
+      XPShowWidget(hsxpl_settings_widget);
+  }
+}
+
+void hsxpl_create_settings_widget(int x, int y, int w, int h)
+{
+
+
+  /* AirTrack IP address part */
+
+  char vstr[64];
+  sprintf(vstr,"Haversine Air %s Settings",HSAIRXPL_VERSION);
+  hsxpl_settings_widget = XPCreateWidget(x, y, x+w, y-h,1,vstr,1,NULL, xpWidgetClass_MainWindow);
+  XPSetWidgetProperty(hsxpl_settings_widget, xpProperty_MainWindowHasCloseBoxes, 1);
+
+  hsxpl_ipsubwindow = XPCreateWidget(x+15, y-30,x+w-15,y-200,1,"",0,hsxpl_settings_widget,xpWidgetClass_SubWindow);
+  XPSetWidgetProperty(hsxpl_ipsubwindow, xpProperty_SubWindowType, xpSubWindowStyle_SubWindow);
+
+
+  hsxpl_iplabel=XPCreateWidget(x+25,y-50,x+120,y-70,1,"AirApp IP Address: ",0,hsxpl_settings_widget, xpWidgetClass_Caption);
+
+  if(hsxpl_unicast_sa.sin_addr.s_addr)
+    hsxpl_iptxinput=XPCreateWidget(x+140, y-50, x+w-25, y-70,1, inet_ntoa(hsxpl_unicast_sa.sin_addr), 0, hsxpl_settings_widget,xpWidgetClass_TextField);
+  else
+    hsxpl_iptxinput=XPCreateWidget(x+140, y-50, x+w-25, y-70,1, "AUTO", 0, hsxpl_settings_widget,xpWidgetClass_TextField);
+  XPSetWidgetProperty(hsxpl_iptxinput, xpProperty_TextFieldType, xpTextEntryField);
+
+  hsxpl_iplabel2=XPCreateWidget(x+25,y-80,x+w-25,y-90,1,"This sets the IP address of the device",0,hsxpl_settings_widget, xpWidgetClass_Caption);
+  hsxpl_iplabel3=XPCreateWidget(x+25,y-100,x+w-25,y-110,1,"running an AirApp. You should leave this with",0,hsxpl_settings_widget, xpWidgetClass_Caption);
+  hsxpl_iplabel4=XPCreateWidget(x+25,y-120,x+w-25,y-130,1,"AUTO and set it only if you experience",0,hsxpl_settings_widget, xpWidgetClass_Caption);
+  hsxpl_iplabel5=XPCreateWidget(x+25,y-140,x+w-25,y-150,1,"connectivity problems.",0,hsxpl_settings_widget, xpWidgetClass_Caption);
+  hsxpl_ipapply = XPCreateWidget(x+50,y-170,x+w-50,y-180,1,"Apply",0,hsxpl_settings_widget,xpWidgetClass_Button);
+
+  XPAddWidgetCallback(hsxpl_settings_widget,(XPWidgetFunc_t)hsxpl_settings_widget_handler);
+  XPAddWidgetCallback(hsxpl_ipapply,(XPWidgetFunc_t)hsxpl_settings_widget_handler);
+}
+
+
+
+int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,long inParam1,long inParam2)
+{
+
+
+  /* Close button pressed, only hide the widget, rather than destropying it. */
+  if (inMessage == xpMessage_CloseButtonPushed && inWidget==hsxpl_settings_widget)
+  {
+    if (hsxpl_settings_widget!=NULL)
+    {
+      XPHideWidget(hsxpl_settings_widget);
+    }
+    return 1;
+  }
+
+  /* IP addr apply button pressed */
+  if (inMessage == xpMsg_PushButtonPressed && inWidget==hsxpl_ipapply)
+  {
+
+    char buffer[256];
+    struct in_addr a4;
+
+    /* Get the IP address from the text box */
+    XPGetWidgetDescriptor(hsxpl_iptxinput, buffer, sizeof(buffer));
+    if(!strncmp(buffer,"AUTO",4)) {
+      if(hsxpl_unicast_sa.sin_addr.s_addr) {
+        hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
+        hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
+        hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
+      }
+      hsxpl_unicast_sa.sin_addr.s_addr=0;
+      hsxpl_save_settings();
+      return 1;
+    }
+
+
+    a4.s_addr=inet_addr(buffer);
+    if(a4.s_addr==INADDR_NONE) {
+      if(hsxpl_unicast_sa.sin_addr.s_addr) {
+        hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
+        hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
+        hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
+      }
+      hsxpl_unicast_sa.sin_addr.s_addr=0;
+      XPSetWidgetDescriptor(hsxpl_iptxinput, "AUTO");
+      hsxpl_save_settings();
+      return 1;
+    }
+
+    hsxpl_unicast_sa.sin_family=AF_INET;
+    hsxpl_unicast_sa.sin_port=htons(HSMP_AIRTRACK_PORT);
+    hsxpl_unicast_sa.sin_addr=a4;
+    hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT,HSMP_PKT_NT_AIRTRACK|HSMP_PKT_PROTO_VER);
+    hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT,HSMP_PKT_NT_AIRFMC|HSMP_PKT_PROTO_VER);
+    hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT,HSMP_PKT_NT_AIREFB|HSMP_PKT_PROTO_VER);
+    hsxpl_save_settings();
+    return 1;
+
+  }
+
+  return 0;
 }
 

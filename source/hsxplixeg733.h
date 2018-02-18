@@ -23,20 +23,25 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
+ * IXEG 737 Classic specifics
+ *
  */
 
-#ifndef __HSXPLSETTINGS_H__
-#define __HSXPLSETTINGS_H__
+#ifndef __HSXPLIX733__H__
+#define __HSXPLIX733__H__
 
+#include <stdio.h>
 #include "hsxpl.h"
 
-void hsxpl_settings_configure_menu(void);
-void hsxpl_load_settings(void);
-void hsxpl_save_settings(void);
+typedef struct hsxpl_ix733_datarefs_s {
+  XPLMDataRef     title;
+  XPLMDataRef     scratchPad;
+  XPLMDataRef     pageNo;
+  XPLMDataRef     llines[12];
+  XPLMDataRef     rlines[12];
+} hsxpl_ix733_datarefs_t;
 
-/* Widgets */
-void hsxpl_create_settings_widget(int x, int y, int w, int h);
-void hsxpl_select_menu_option(void *inMenuRef,void *inItemRef);
-int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,long inParam1,long inParam2);
+void hsxpl_set_ix733_datarefs(void);
+void hsxpl_send_ix733_data(void);
 
-#endif /* __HSXPLSETTINGS_H__ */
+#endif /* __HSXPLIX733__H__ */
