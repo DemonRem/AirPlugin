@@ -14,9 +14,26 @@ New planes and functions are implemented by testing against their specific datar
 
 ## Network
 
-The plugin uses the HSMP protocol which comprises UDP messages being exchanged between X-Plane and Apps. AirTrack traditionally uses port 2424, AirFMC uses port 2425 and the X-Plane plugin attempts to bind to port 59000 by default so messages are exchanged between these. 
+The plugin uses the HSMP protocol which comprises UDP messages being exchanged between X-Plane and Apps. AirTrack traditionally uses port 2424, AirFMC uses port 2425, AirEFB users port 2426 and the X-Plane plugin attempts to bind to port 59000 by default so messages are exchanged between these. 
 
 The Makefile is my own version which allows cross-compiling. It probably needs to be tweeked if you want to compile the code yourself. 
+
+## Haversine Message Protocol
+
+ **HSMP** stands for **Haversine Message Protocol**, a norm defined by
+ Haversine and used to exchange data messages synchronously and
+ asynchronously between nodes, implementing a CAN style BUS over IP
+ networks, and allowing for simulators to exchange data  with air apps
+ of the Haversine family.
+
+ This set of files is used in both apps and flight simulator
+ plugins to implement the data exchange.
+
+ The protocol is in constant evolution and updates are signaled by the
+ library version number HSMP_PKT_PROTO_VER defined in HSMPNET.h
+ New additions to the protocol generate a new version but versions tend
+ to be backwards compatible so for example a 4.2 app can talk to a 4.6
+ plugin although it may not be able to understand all its messages.
 
 ## CPFlight MCP
 
@@ -30,21 +47,17 @@ The principle behind the Haversine Air Plugin is one plugin does all, and allow 
 
 To build you will need the HSMP set of files as well:
 
-1) Clone HSMP
-
-git clone git@github.com:haversine-air/HSMP.git
-
-2) Clone the Air Plugin
+1) Clone the Air Plugin
 
 git clone git@github.com:haversine-air/AirPlugin.git
 
-3) Change to the AirPlugin directory 
+2) Change to the AirPlugin directory 
 
-4) Edit the Makefile and adjust the compiler to your own
+3) Edit the Makefile and adjust the compiler to your own
 
-5) Type "make platform"
+4) Type "make platform"
 
-6) If the build is successfull, copy the corresponding .xpl file to your X-Plane Resources/plugins directory
+5) If the build is successfull, copy the generated HaversineAir folder to the X-Plane Resources/plugins directory
 
 Where platform is one of: 
 
@@ -58,6 +71,6 @@ Where platform is one of:
 
 ## New code / suggestions / improvements / bugs / support of new planes
 
-Feel free to submit a pull request.
+Feel free to ask for contributor status and submit pull requests.
 
 
