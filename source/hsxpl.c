@@ -116,7 +116,7 @@ uint32_t hsxpl_idver=0;
 
 uint32_t hsxpl_active_mcdu=1;
 
-uint32_t hsxpl_cpflight_enabled=0;
+extern uint32_t hsxpl_cpflight_enabled;
 
 /* Local hack to fix AirTrack N1 press twice bug until it's fixed */
 uint32_t hsxpl_n1_pressed=0;
@@ -5902,130 +5902,5 @@ int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,
   return 0;
 }
 
-#pragma mark Settings functions
 
-#ifdef CPFLIGHT
-extern char hsaircpf_serial_port[256];
-#endif
-
-
-void hsxpl_load_settings(void)
-{
-  
-#ifdef CPFLIGHT
-  memset(hsaircpf_serial_port,0,256);
-#endif
-  
-#if !defined(_WIN32)
-  FILE *fp=fopen("Resources/plugins/HaversineAir/hsairxpl.cfg","r");
-  if(fp==NULL) fp=fopen("Resources/plugins/HaversineAir/hsairxpl.cfg","r");
-#else
-  FILE *fp=fopen("Resources\\plugins\\HaversineAir\\hsairxpl.cfg","r");
-  if(fp==NULL) fp=fopen("Resources\\plugins\\HaversineAir\\hsairxpl.cfg","r");
-#endif
-  
-  
-  if(fp!=NULL) {
-    char buffer[1024]; buffer[1023]='\0';
-    while(fgets(buffer,1023,fp)!=NULL) {
-      
-      
-      /* Remove leading \r\n */
-      char *c=buffer;
-      while(*c!='\0' && *c!='\r' && *c!='\n') c++;
-      *c='\0';
-      
-#ifdef CPFLIGHT
-      /* Test CPFLIGHT serial port setting */
-      if(!memcmp(buffer,"CPFLIGHT-SERIAL-PORT=",strlen("CPFLIGHT-SERIAL-PORT="))) {
-        
-        hsxpl_cpflight_enabled=1;
-        
-        c=&buffer[strlen("CPFLIGHT-SERIAL-PORT=")];
-        
-        if(*c!='\0') {
-          strncpy(hsaircpf_serial_port,c,255);
-          if(!strcmp(hsaircpf_serial_port,"AUTO"))
-            memset(hsaircpf_serial_port,0,256);
-        }
-      }
-#endif
-      
-      /* Test broadcast mode */
-      if(!memcmp(buffer,"DESTINATION-IP=",strlen("DESTINATION-IP="))) {
-        
-        c=&buffer[strlen("DESTINATION-IP=")];
-        
-        if(*c!='\0') {
-          if(!memcmp(c,"AUTO",4)) {
-            if(hsxpl_unicast_sa.sin_addr.s_addr) {
-              hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
-              hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
-              hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
-            }
-            hsxpl_unicast_sa.sin_addr.s_addr=0;
-          }
-          else
-          {
-            struct in_addr a4;
-            a4.s_addr=inet_addr(c);
-            
-            if(a4.s_addr==INADDR_NONE) {
-              if(hsxpl_unicast_sa.sin_addr.s_addr) {
-                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
-                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
-                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
-              }
-              hsxpl_unicast_sa.sin_addr.s_addr=0;
-              hsxpl_save_settings();
-            } else {
-              if(hsxpl_unicast_sa.sin_addr.s_addr) {
-                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
-                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
-                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
-              }
-              hsxpl_unicast_sa.sin_addr.s_addr=a4.s_addr;
-              hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT,HSMP_PKT_NT_AIRTRACK|HSMP_PKT_PROTO_VER);
-              hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT,HSMP_PKT_NT_AIRFMC|HSMP_PKT_PROTO_VER);
-              hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT,HSMP_PKT_NT_AIREFB|HSMP_PKT_PROTO_VER);
-
-              hsxpl_save_settings();
-              
-            }
-          }
-        }
-      }
-      
-      
-      
-    }
-    fclose(fp);
-  }
-  
-}
-void hsxpl_save_settings(void)
-{
-  
-#if !defined(_WIN32)
-  FILE *fp=fopen("Resources/plugins/HaversineAir/hsairxpl.cfg","w");
-#else
-  FILE *fp=fopen("Resources\\plugins\\HaversineAir\\hsairxpl.cfg","w");
-#endif
-  if(fp!=NULL) {
-    
-    /* Save broadcast mode */
-    if(hsxpl_unicast_sa.sin_addr.s_addr)
-      fprintf(fp,"DESTINATION-IP=%s\r\n",inet_ntoa(hsxpl_unicast_sa.sin_addr));
-    else
-      fprintf(fp,"DESTINATION-IP=AUTO\r\n");
-    
-#ifdef CPFLIGHT
-    if(hsaircpf_serial_port[0]!='\0') {
-      fprintf(fp,"CPFLIGHT-SERIAL-PORT=%s\r\n",hsaircpf_serial_port);
-    }
-#endif
-    
-    fclose(fp);
-  }
-}
 

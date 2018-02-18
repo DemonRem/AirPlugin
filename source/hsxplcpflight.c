@@ -54,6 +54,9 @@
 float roundf(float x);
 #endif
 
+/* Global var whether CPFlight has been specifically enabled in the config file or not */
+uint32_t hsxpl_cpflight_enabled=0;
+
 /* A structure to hold the hardware states so that we don't overwrite */
 struct hsaircpf_hardware_s {
 

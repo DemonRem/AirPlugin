@@ -32,9 +32,9 @@ LIBS=	# -lm
 LFLAGS= # rdynamic
 CC=cc
 
-HDRS=./source/hsxpl.h ../HSMP/hsmpnet.h ../HSMP/hsmptcp.h ../HSMP/hsmpmsg.h ../HSMP/hsmpatp.h ./source/hsxplclist.h ./source/hsxplmcp.h ./source/hsxplcoms.h ./source/hsxplcpflight.h ./source/hsxplmisc.h ./source/hsxplnavdb.h ./source/hsxplatc.h ./source/hsxplairports.h ./source/hsxpldref-requests.h ./source/hsxpldefault738.h ./source/hsxplzibo738.h ./source/hsxplfmc.h
+HDRS=./source/hsxpl.h ../HSMP/hsmpnet.h ../HSMP/hsmptcp.h ../HSMP/hsmpmsg.h ../HSMP/hsmpatp.h ./source/hsxplclist.h ./source/hsxplmcp.h ./source/hsxplcoms.h ./source/hsxplcpflight.h ./source/hsxplmisc.h ./source/hsxplnavdb.h ./source/hsxplatc.h ./source/hsxplairports.h ./source/hsxpldref-requests.h ./source/hsxpldefault738.h ./source/hsxplzibo738.h ./source/hsxplfmc.h ./source/hsxplsettings.h
 
-SRCS=./source/hsxplclist.c ./source/hsxpl.c	./source/hsxplmcp.c ./source/hsxplcoms.c ../HSMP/hsmpnet.c ../HSMP/hsmptcp.c ./source/hsxplcpflight.c ./source/hsxplmisc.c ./source/hsxplnavdb.c ./source/hsxplatc.c ./source/hsxplairports.c ./source/hsxpldref-requests.c ./source/hsxpldefault738.c ./source/hsxplzibo738.c ./source/hsxplfmc.c
+SRCS=./source/hsxplclist.c ./source/hsxpl.c	./source/hsxplmcp.c ./source/hsxplcoms.c ../HSMP/hsmpnet.c ../HSMP/hsmptcp.c ./source/hsxplcpflight.c ./source/hsxplmisc.c ./source/hsxplnavdb.c ./source/hsxplatc.c ./source/hsxplairports.c ./source/hsxpldref-requests.c ./source/hsxpldefault738.c ./source/hsxplzibo738.c ./source/hsxplfmc.c ./source/hsxplsettings.c
 
 ##############################################################################
 # Windows flags and libraries
