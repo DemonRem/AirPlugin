@@ -23,20 +23,17 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
+ * Flight factor 777
+ *
  */
 
-#ifndef __HSXPLSETTINGS_H__
-#define __HSXPLSETTINGS_H__
+#ifndef __HSXPLFF777_H__
+#define __HSXPLFF777_H__
 
+#include <stdio.h>
 #include "hsxpl.h"
 
-void hsxpl_settings_configure_menu(void);
-void hsxpl_load_settings(void);
-void hsxpl_save_settings(void);
+void hsxpl_set_p777_datarefs(void);
+void hsxpl_send_p777_data(void);
 
-/* Widgets */
-void hsxpl_create_settings_widget(int x, int y, int w, int h);
-void hsxpl_select_menu_option(void *inMenuRef,void *inItemRef);
-int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,long inParam1,long inParam2);
-
-#endif /* __HSXPLSETTINGS_H__ */
+#endif /* __HSXPLFF777_H__ */

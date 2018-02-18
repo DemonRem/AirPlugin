@@ -23,20 +23,24 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
+ * UFMC/X737FMC from Javier Cortes : http://ufmc.eadt.eu 
+ *
  */
 
-#ifndef __HSXPLSETTINGS_H__
-#define __HSXPLSETTINGS_H__
+#ifndef __HSXPLUFMC_H__
+#define __HSXPLUFMC_H__
 
+#include <stdio.h>
 #include "hsxpl.h"
 
-void hsxpl_settings_configure_menu(void);
-void hsxpl_load_settings(void);
-void hsxpl_save_settings(void);
+/* Data refs for X737FMC */
+typedef struct hsxpl_ufmc_datarefs_s {
 
-/* Widgets */
-void hsxpl_create_settings_widget(int x, int y, int w, int h);
-void hsxpl_select_menu_option(void *inMenuRef,void *inItemRef);
-int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,long inParam1,long inParam2);
+  XPLMDataRef         line[14];
 
-#endif /* __HSXPLSETTINGS_H__ */
+} hsxpl_ufmc_datarefs_t;
+
+void hsxpl_set_ufmc_datarefs(void);
+void hsxpl_send_ufmc_data(void);
+
+#endif /* __HSXPLUFMC_H__ */

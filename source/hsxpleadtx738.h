@@ -23,20 +23,31 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
+ * EADT 737-800 stuff : https://www.eadt.eu
+ *
  */
 
-#ifndef __HSXPLSETTINGS_H__
-#define __HSXPLSETTINGS_H__
+#ifndef __HSXPLEADTX738__H__
+#define __HSXPLEADTX738__H__
 
+#include <stdio.h>
 #include "hsxpl.h"
 
-void hsxpl_settings_configure_menu(void);
-void hsxpl_load_settings(void);
-void hsxpl_save_settings(void);
+/* The x737 set of functions are meant to overcome some dataref
+ * differences between the normal aircraft and the EADT x737 project
+ * Boeing 737-NG. This is only relevant for X-Plane so if you try to
+ * port this code to another flight simulator you may forget these  */
+typedef struct hsxpl_x737_datarefs_s {
 
-/* Widgets */
-void hsxpl_create_settings_widget(int x, int y, int w, int h);
-void hsxpl_select_menu_option(void *inMenuRef,void *inItemRef);
-int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,long inParam1,long inParam2);
+  XPLMDataRef pluginstatus;
 
-#endif /* __HSXPLSETTINGS_H__ */
+  /* For xFMC and x737 V5 */
+  XPLMDataRef key_down;
+
+} hsxpl_x737_datarefs_t;
+
+void hsxpl_x737_fmc_press_key(XPLMDataRef k);
+void hsxpl_x737_release_key_pressed(void);
+void hsxpl_set_x737_datarefs(void);
+
+#endif /* __HSXPLEADTX738__H__ */

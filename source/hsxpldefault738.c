@@ -33,6 +33,7 @@
 
 #include "hsxpldefault738.h"
 #include "hsxpl.h"
+#include "hsxpldatarefs.h"
 #include "hsxplfmc.h"
 #include "hsxplmcp.h"
 

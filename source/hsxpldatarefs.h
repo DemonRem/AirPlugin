@@ -23,20 +23,72 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
+ * Generic datarefs used throughout the plugin
+ *
  */
 
-#ifndef __HSXPLSETTINGS_H__
-#define __HSXPLSETTINGS_H__
+#ifndef __HSXPLDATAREFS_H__
+#define __HSXPLDATAREFS_H__
 
+#include <stdio.h>
 #include "hsxpl.h"
 
-void hsxpl_settings_configure_menu(void);
-void hsxpl_load_settings(void);
-void hsxpl_save_settings(void);
+/* The list of X-Plane datarefs */
+typedef struct hsxpl_xplane_datarefs_s {
 
-/* Widgets */
-void hsxpl_create_settings_widget(int x, int y, int w, int h);
-void hsxpl_select_menu_option(void *inMenuRef,void *inItemRef);
-int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,long inParam1,long inParam2);
+  /* STATIC DATA */
+  XPLMDataRef tailno;
+  XPLMDataRef acficao;
+  XPLMDataRef callsign;
 
-#endif /* __HSXPLSETTINGS_H__ */
+  /* IPOS */
+  XPLMDataRef latitude;
+  XPLMDataRef longitude;
+  XPLMDataRef elevation;
+  XPLMDataRef theta;
+  XPLMDataRef phi;
+  XPLMDataRef psi;
+  XPLMDataRef mvar;
+  XPLMDataRef vpath;
+  XPLMDataRef hpath;
+  XPLMDataRef gs;
+  XPLMDataRef ias;
+  XPLMDataRef tas;
+  XPLMDataRef vvi;
+  XPLMDataRef mach;
+  XPLMDataRef msl;
+  XPLMDataRef agl;
+
+  /* WXR */
+  XPLMDataRef outsidetemp;
+  XPLMDataRef winddir;
+  XPLMDataRef windspeed;
+
+  /* BFLG */
+  XPLMDataRef pbreak;
+  XPLMDataRef flaps;
+  XPLMDataRef spdbreak;
+  XPLMDataRef lgear;
+
+  /* VSPEEDS */
+  XPLMDataRef vso;
+  XPLMDataRef vs;
+  XPLMDataRef vfe;
+  XPLMDataRef vno;
+  XPLMDataRef vne;
+  XPLMDataRef mmo;
+
+  /* JOYSTICK */
+  XPLMDataRef joyroll;
+  XPLMDataRef joypitch;
+  XPLMDataRef joyyaw;
+
+} hsxpl_xplane_datarefs_t;
+
+void hsxpl_set_xplane_datarefs(void);
+
+
+char *hsxpl_acf_icao(void);
+char *hsxpl_acf_tailno(void);
+
+#endif /* __HSXPLDATAREFS_H__ */

@@ -23,20 +23,65 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
+ * EADT 737-800 stuff : https://www.eadt.eu
+ *
  */
 
-#ifndef __HSXPLSETTINGS_H__
-#define __HSXPLSETTINGS_H__
-
+#include "hsxpleadtx738.h"
 #include "hsxpl.h"
+#include "hsxplmisc.h"
+#include "hsxplfmc.h"
+#include "hsxplmcp.h"
+#include "hsmpnet.h"
 
-void hsxpl_settings_configure_menu(void);
-void hsxpl_load_settings(void);
-void hsxpl_save_settings(void);
+extern uint32_t hsxpl_fmc_type;
+extern uint32_t hsxpl_plane_type;
+extern hsxpl_fmc_t hsxpl_fmc;
 
-/* Widgets */
-void hsxpl_create_settings_widget(int x, int y, int w, int h);
-void hsxpl_select_menu_option(void *inMenuRef,void *inItemRef);
-int hsxpl_settings_widget_handler(XPWidgetMessage inMessage,XPWidgetID inWidget,long inParam1,long inParam2);
+hsxpl_x737_datarefs_t hsxpl_x737_datarefs;
 
-#endif /* __HSXPLSETTINGS_H__ */
+/* Release x737 FMC key if pressed */
+void hsxpl_x737_release_key_pressed(void) {
+  if(hsxpl_x737_datarefs.key_down!=NULL) {
+    XPLMSetDataf(hsxpl_x737_datarefs.key_down,0);
+    hsxpl_x737_datarefs.key_down=NULL;
+
+  }
+}
+
+void hsxpl_x737_fmc_press_key(XPLMDataRef k) {
+
+  if(hsxpl_x737_datarefs.key_down!=NULL) {
+    XPLMSetDataf(hsxpl_x737_datarefs.key_down,0);
+    hsxpl_x737_datarefs.key_down=NULL;
+  }
+
+  XPLMSetDataf(k,1);
+
+  if(hsxpl_fmc_type==HSMP_FMC_TYPE_XP_X737V5) {
+    hsxpl_x737_datarefs.key_down=k;
+  }
+  
+}
+
+void hsxpl_set_x737_datarefs(void) {
+
+  /* x737 datarefs */
+  memset(&hsxpl_x737_datarefs,0,sizeof(struct hsxpl_x737_datarefs_s));
+
+  /* Make sure we have an x737 status dataref */
+  hsxpl_x737_datarefs.pluginstatus=XPLMFindDataRef("x737/systems/afds/plugin_status");
+  if(hsxpl_x737_datarefs.pluginstatus==NULL) {
+    return;
+  }
+
+  /* And that it is enabled */
+  if(!(XPLMGetDatai(hsxpl_x737_datarefs.pluginstatus))) {
+    return;
+  }
+
+  hsxpl_plane_type = HSXPL_PLANE_X737;
+
+}
+
+

@@ -33,6 +33,7 @@
 
 #include "hsxplzibo738.h"
 #include "hsxpl.h"
+#include "hsxpldatarefs.h"
 #include "hsxplmisc.h"
 #include "hsxplfmc.h"
 #include "hsxplmcp.h"
@@ -271,6 +272,7 @@ void hsairpl_efis1_z738_set_range(float v) {
   else if ( v >=  20 ) newRangePos = 2;
   else if ( v >=  10 ) newRangePos = 1;
   else if ( v >=   5 ) newRangePos = 0;
+  else                 newRangePos = 0;
 
   /* if virtual cockpit range dial and physical MCP range dial are out-of-sync at startup,
    * we have to do multiple up/dn commands to catch up.
