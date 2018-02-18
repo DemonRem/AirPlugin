@@ -153,4 +153,3 @@ You can of course visit us at http://haversine.com/, see the FAQ, and
 contact us through support anytime you like. Feel free to do so if you have
 problems, comments, suggestions, or just to say hi.
 
-
