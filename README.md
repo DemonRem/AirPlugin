@@ -30,7 +30,7 @@ The Makefile is my own version which allows cross-compiling. It probably needs t
  plugins to implement the data exchange.
 
  The protocol is in constant evolution and updates are signaled by the
- library version number HSMP_PKT_PROTO_VER defined in HSMPNET.h
+ library version number HSMP_PKT_PROTO_VER defined in hsmpnet.h
  New additions to the protocol generate a new version but versions tend
  to be backwards compatible so for example a 4.2 app can talk to a 4.6
  plugin although it may not be able to understand all its messages.
