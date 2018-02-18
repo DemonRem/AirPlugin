@@ -57,6 +57,24 @@ struct b738_datarefs_s {
   XPLMDataRef mcpVSpress;
   XPLMDataRef mcpCmdApress;
   XPLMDataRef mcpCmdBpress;
+  XPLMDataRef mcpCwsApress;
+  XPLMDataRef mcpCwsBpress;
+  XPLMDataRef mcpMaCaled;
+  XPLMDataRef mcpMaFoled;
+  XPLMDataRef mcpN1led;
+  XPLMDataRef mcpSPEEDled;
+  XPLMDataRef mcpLVLCHGled;
+  XPLMDataRef mcpVNAVled;
+  XPLMDataRef mcpLNAVled;
+  XPLMDataRef mcpVORLOCled;
+  XPLMDataRef mcpAPPled;
+  XPLMDataRef mcpHDGSELled;
+  XPLMDataRef mcpALTHLDled;
+  XPLMDataRef mcpVSled;
+  XPLMDataRef mcpCmdAled;
+  XPLMDataRef mcpCmdBled;
+  XPLMDataRef mcpCwsAled;
+  XPLMDataRef mcpCwsBled;
   XPLMDataRef efisCptWXRpress;
   XPLMDataRef efisCptSTApress;
   XPLMDataRef efisCptWPTpress;
@@ -119,6 +137,26 @@ void hsxpl_set_default_738_datarefs(void) {
   b738data.mcpVSpress		= XPLMFindCommand("laminar/B738/autopilot/vs_press");
   b738data.mcpCmdApress		= XPLMFindCommand("laminar/B738/autopilot/cmd_a_press");
   b738data.mcpCmdBpress		= XPLMFindCommand("laminar/B738/autopilot/cmd_b_press");
+  b738data.mcpCwsApress		= XPLMFindCommand("laminar/B738/autopilot/cws_a_press");
+  b738data.mcpCwsBpress		= XPLMFindCommand("laminar/B738/autopilot/cws_b_press");
+
+  /* Autopilot Lights */
+  b738data.mcpMaCaled	= XPLMFindDataRef("laminar/B738/autopilot/master_capt_status");
+  b738data.mcpMaFoled	= XPLMFindDataRef("laminar/B738/autopilot/master_fo_status");
+  b738data.mcpN1led	= XPLMFindDataRef("laminar/B738/autopilot/n1_status");
+  b738data.mcpSPEEDled	= XPLMFindDataRef("laminar/B738/autopilot/speed_status1");
+  b738data.mcpLVLCHGled	= XPLMFindDataRef("laminar/B738/autopilot/lvl_chg_status");
+  b738data.mcpVNAVled	= XPLMFindDataRef("laminar/B738/autopilot/vnav_status1");
+  b738data.mcpLNAVled	= XPLMFindDataRef("laminar/B738/autopilot/lnav_status");
+  b738data.mcpVORLOCled	= XPLMFindDataRef("laminar/B738/autopilot/vorloc_status");
+  b738data.mcpAPPled	= XPLMFindDataRef("laminar/B738/autopilot/app_status");
+  b738data.mcpHDGSELled	= XPLMFindDataRef("laminar/B738/autopilot/hdg_sel_status");
+  b738data.mcpALTHLDled	= XPLMFindDataRef("laminar/B738/autopilot/alt_hld_status");
+  b738data.mcpVSled	= XPLMFindDataRef("laminar/B738/autopilot/vs_status");
+  b738data.mcpCmdAled	= XPLMFindDataRef("laminar/B738/autopilot/cmd_a_status");
+  b738data.mcpCmdBled	= XPLMFindDataRef("laminar/B738/autopilot/cmd_b_status");
+  b738data.mcpCwsAled	= XPLMFindDataRef("laminar/B738/autopilot/cws_a_status");
+  b738data.mcpCwsBled	= XPLMFindDataRef("laminar/B738/autopilot/cws_b_status");
 
   /* EFIS commands and datarefs, default 737-800 specific */
   b738data.efisCptWXRpress	= XPLMFindCommand("laminar/B738/EFIS_control/capt/push_button/wxr_press");
@@ -262,6 +300,124 @@ void hsairpl_mcp_b738_cmd_b_press(void) {
      XPLMCommandOnce(b738data.mcpCmdBpress);
   }
 }
+
+/* CWS A */
+void hsairpl_mcp_b738_cws_a_press(void) {
+  if ( b738data.mcpCwsApress != NULL ) {
+     XPLMCommandOnce(b738data.mcpCwsApress);
+  }
+}
+
+/* CWS B */
+void hsairpl_mcp_b738_cws_b_press(void) {
+  if ( b738data.mcpCwsBpress != NULL ) {
+     XPLMCommandOnce(b738data.mcpCwsBpress);
+  }
+}
+
+uint32_t hsairpl_mcp_b738_get_ma_ca_led(void) {
+  if ( b738data.mcpMaCaled != NULL ) {
+    return XPLMGetDatai(b738data.mcpMaCaled);
+  }
+  return 0;
+}
+
+uint32_t hsairpl_mcp_b738_get_ma_fo_led(void) {
+  if ( b738data.mcpMaFoled != NULL ) {
+    return XPLMGetDatai(b738data.mcpMaFoled);
+  }
+  return 0;
+}
+
+uint32_t hsairpl_mcp_b738_get_n1_led(void) {
+  if ( b738data.mcpN1led != NULL ) {
+    return XPLMGetDatai(b738data.mcpN1led);
+  }
+  return 0;
+}
+uint32_t hsairpl_mcp_b738_get_speed_led(void) {
+  if ( b738data.mcpSPEEDled != NULL ) {
+    return XPLMGetDatai(b738data.mcpSPEEDled);
+  }
+  return 0;
+}
+uint32_t hsairpl_mcp_b738_get_lvlchg_led(void) {
+  if ( b738data.mcpLVLCHGled != NULL ) {
+    return XPLMGetDatai(b738data.mcpLVLCHGled);
+  }
+  return 0;
+}
+uint32_t hsairpl_mcp_b738_get_vnav_led(void) {
+  if ( b738data.mcpVNAVled != NULL ) {
+    return XPLMGetDatai(b738data.mcpVNAVled);
+  }
+  return 0;
+}
+uint32_t hsairpl_mcp_b738_get_lnav_led(void) {
+  if ( b738data.mcpLNAVled != NULL ) {
+    return XPLMGetDatai(b738data.mcpLNAVled);
+  }
+  return 0;
+}
+uint32_t hsairpl_mcp_b738_get_vorloc_led(void) {
+  if ( b738data.mcpVORLOCled != NULL ) {
+    return XPLMGetDatai(b738data.mcpVORLOCled);
+  }
+  return 0;
+}
+uint32_t hsairpl_mcp_b738_get_app_led(void) {
+  if ( b738data.mcpAPPled != NULL ) {
+    return XPLMGetDatai(b738data.mcpAPPled);
+  }
+  return 0;
+}
+uint32_t hsairpl_mcp_b738_get_hdgsel_led(void) {
+  if ( b738data.mcpHDGSELled != NULL ) {
+    return XPLMGetDatai(b738data.mcpHDGSELled);
+  }
+  return 0;
+}
+uint32_t hsairpl_mcp_b738_get_althld_led(void) {
+  if ( b738data.mcpALTHLDled != NULL ) {
+    return XPLMGetDatai(b738data.mcpALTHLDled);
+  }
+  return 0;
+}
+uint32_t hsairpl_mcp_b738_get_vs_led(void) {
+  if ( b738data.mcpVSled != NULL ) {
+    return XPLMGetDatai(b738data.mcpVSled);
+  }
+  return 0;
+}
+
+uint32_t hsairpl_mcp_b738_get_cmda_led(void) {
+  if ( b738data.mcpCmdAled != NULL ) {
+    return XPLMGetDatai(b738data.mcpCmdAled);
+  }
+  return 0;
+}
+
+uint32_t hsairpl_mcp_b738_get_cmdb_led(void) {
+  if ( b738data.mcpCmdBled != NULL ) {
+    return XPLMGetDatai(b738data.mcpCmdBled);
+  }
+  return 0;
+}
+
+uint32_t hsairpl_mcp_b738_get_cwsa_led(void) {
+  if ( b738data.mcpCwsAled != NULL ) {
+    return XPLMGetDatai(b738data.mcpCwsAled);
+  }
+  return 0;
+}
+
+uint32_t hsairpl_mcp_b738_get_cwsb_led(void) {
+  if ( b738data.mcpCwsBled != NULL ) {
+    return XPLMGetDatai(b738data.mcpCwsBled);
+  }
+  return 0;
+}
+
 
 #pragma mark EFIS Captain side stuff
 

@@ -43,8 +43,8 @@ void hsairpl_mcp_update_datarefs(void);           /* Updates - looks up the data
 void hsairpl_mcp_press_cmda(void);                /* Toggle */
 void hsairpl_mcp_press_cmdb(void);                /* Toggle */
 
-void hsairpl_mcp_press_cswa(void);                /* Toggle */
-void hsairpl_mcp_press_cswb(void);                /* Toggle */
+void hsairpl_mcp_press_cwsa(void);                /* Toggle */
+void hsairpl_mcp_press_cwsb(void);                /* Toggle */
 
 void hsairpl_mcp_press_co(void);                  /* Toggle */
 void hsairpl_mcp_press_spdintv(void);             /* Toggle */

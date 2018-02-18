@@ -59,24 +59,16 @@ struct z738_datarefs_s {
   XPLMDataRef mcpAltDialDown;
   XPLMDataRef mcpHdgDialUp;
   XPLMDataRef mcpHdgDialDown;
-  XPLMDataRef mcpN1led;
-  XPLMDataRef mcpSPEEDled;
-  XPLMDataRef mcpLVLCHGled;
-  XPLMDataRef mcpVNAVled;
-  XPLMDataRef mcpLNAVled;
-  XPLMDataRef mcpVORLOCled;
-  XPLMDataRef mcpAPPled;
-  XPLMDataRef mcpHDGSELled;
-  XPLMDataRef mcpALTHLDled;
-  XPLMDataRef mcpVSled;
-  XPLMDataRef mcpCmdAled;
-  XPLMDataRef mcpCmdBled;
   XPLMDataRef efisCptModeUp;
   XPLMDataRef efisCptModeDn;
   XPLMDataRef efisCptModePos;
   XPLMDataRef efisCptRangeUp;
   XPLMDataRef efisCptRangeDn;
   XPLMDataRef efisCptRangePos;
+  XPLMDataRef efisCptVas1Up;
+  XPLMDataRef efisCptVas1Dn;
+  XPLMDataRef efisCptVas2Up;
+  XPLMDataRef efisCptVas2Dn;
 } z738data;
 
 /* Shared global var to hold FMC specific datarefs */
@@ -144,33 +136,24 @@ void hsxpl_set_z738_datarefs(void) {
   hsxpl_set_z738_fmc_keys();
 
   /* MCP commands and datarefs, zibo specific */
-  z738data.mcpAltDialUp=XPLMFindCommand("laminar/B738/autopilot/altitude_up");
-  z738data.mcpAltDialDown=XPLMFindCommand("laminar/B738/autopilot/altitude_dn");
-  z738data.mcpHdgDialUp=XPLMFindCommand("laminar/B738/autopilot/heading_up");
-  z738data.mcpHdgDialDown=XPLMFindCommand("laminar/B738/autopilot/heading_dn");
+  z738data.mcpAltDialUp    = XPLMFindCommand("laminar/B738/autopilot/altitude_up");
+  z738data.mcpAltDialDown  = XPLMFindCommand("laminar/B738/autopilot/altitude_dn");
+  z738data.mcpHdgDialUp    = XPLMFindCommand("laminar/B738/autopilot/heading_up");
+  z738data.mcpHdgDialDown  = XPLMFindCommand("laminar/B738/autopilot/heading_dn");
 
   /* EFIS captain side */
-  z738data.efisCptModeUp=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_up");
-  z738data.efisCptModeDn=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_dn");
-  z738data.efisCptModePos=XPLMFindDataRef("laminar/B738/EFIS_control/capt/map_mode_pos");
+  z738data.efisCptModeUp   = XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_up");
+  z738data.efisCptModeDn   = XPLMFindCommand("laminar/B738/EFIS_control/capt/map_mode_dn");
+  z738data.efisCptModePos  = XPLMFindDataRef("laminar/B738/EFIS_control/capt/map_mode_pos");
 
-  z738data.efisCptRangeUp=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_up");
-  z738data.efisCptRangeDn=XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_dn");
-  z738data.efisCptRangePos=XPLMFindDataRef("laminar/B738/EFIS/capt/map_range");
+  z738data.efisCptRangeUp  = XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_up");
+  z738data.efisCptRangeDn  = XPLMFindCommand("laminar/B738/EFIS_control/capt/map_range_dn");
+  z738data.efisCptRangePos = XPLMFindDataRef("laminar/B738/EFIS/capt/map_range");
 
-  /* Autopilot Lights */
-  z738data.mcpN1led	= XPLMFindDataRef("laminar/B738/autopilot/n1_status");
-  z738data.mcpSPEEDled	= XPLMFindDataRef("laminar/B738/autopilot/speed_status1");
-  z738data.mcpLVLCHGled	= XPLMFindDataRef("laminar/B738/autopilot/lvl_chg_status");
-  z738data.mcpVNAVled	= XPLMFindDataRef("laminar/B738/autopilot/vnav_status1");
-  z738data.mcpLNAVled	= XPLMFindDataRef("laminar/B738/autopilot/lnav_status");
-  z738data.mcpVORLOCled	= XPLMFindDataRef("laminar/B738/autopilot/vorloc_status");
-  z738data.mcpAPPled	= XPLMFindDataRef("laminar/B738/autopilot/app_status");
-  z738data.mcpHDGSELled	= XPLMFindDataRef("laminar/B738/autopilot/hdg_sel_status");
-  z738data.mcpALTHLDled	= XPLMFindDataRef("laminar/B738/autopilot/alt_hld_status");
-  z738data.mcpVSled	= XPLMFindDataRef("laminar/B738/autopilot/vs_status");
-  z738data.mcpCmdAled	= XPLMFindDataRef("laminar/B738/autopilot/cmd_a_status");
-  z738data.mcpCmdBled	= XPLMFindDataRef("laminar/B738/autopilot/cmd_b_status");
+  z738data.efisCptVas1Up   = XPLMFindCommand("laminar/B738/EFIS_control/capt/vor1_off_up");
+  z738data.efisCptVas1Dn   = XPLMFindCommand("laminar/B738/EFIS_control/capt/vor1_off_dn");
+  z738data.efisCptVas2Up   = XPLMFindCommand("laminar/B738/EFIS_control/capt/vor2_off_up");
+  z738data.efisCptVas2Dn   = XPLMFindCommand("laminar/B738/EFIS_control/capt/vor2_off_dn");
 }
 
 #pragma mark MCP stuff
@@ -232,67 +215,6 @@ void hsairpl_mcp_z738_set_hdg_dial(uint32_t v) {
       XPLMCommandOnce(z738data.mcpHdgDialDown);
     }
   }
-}
-
-uint32_t hsairpl_mcp_z738_get_n1_led(void) {
-  if ( z738data.mcpN1led != NULL ) {
-    return XPLMGetDatai(z738data.mcpN1led);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_speed_led(void) {
-  if ( z738data.mcpSPEEDled != NULL ) {
-    return XPLMGetDatai(z738data.mcpSPEEDled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_lvlchg_led(void) {
-  if ( z738data.mcpLVLCHGled != NULL ) {
-    return XPLMGetDatai(z738data.mcpLVLCHGled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_vnav_led(void) {
-  if ( z738data.mcpVNAVled != NULL ) {
-    return XPLMGetDatai(z738data.mcpVNAVled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_lnav_led(void) {
-  if ( z738data.mcpLNAVled != NULL ) {
-    return XPLMGetDatai(z738data.mcpLNAVled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_vorloc_led(void) {
-  if ( z738data.mcpVORLOCled != NULL ) {
-    return XPLMGetDatai(z738data.mcpVORLOCled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_app_led(void) {
-  if ( z738data.mcpAPPled != NULL ) {
-    return XPLMGetDatai(z738data.mcpAPPled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_hdgsel_led(void) {
-  if ( z738data.mcpHDGSELled != NULL ) {
-    return XPLMGetDatai(z738data.mcpHDGSELled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_althld_led(void) {
-  if ( z738data.mcpALTHLDled != NULL ) {
-    return XPLMGetDatai(z738data.mcpALTHLDled);
-  }
-  return 0;
-}
-uint32_t hsairpl_mcp_z738_get_vs_led(void) {
-  if ( z738data.mcpVSled != NULL ) {
-    return XPLMGetDatai(z738data.mcpVSled);
-  }
-  return 0;
 }
 
 #pragma mark EFIS Captain side stuff
@@ -364,6 +286,28 @@ void hsairpl_efis1_z738_set_range(float v) {
     for(j=0;j>numcrements;j--) {
       XPLMCommandOnce(z738data.efisCptRangeDn);
     }
+  }
+}
+
+void hsairpl_efis1_z738_set_vas1(uint32_t v) {
+  uint32_t vas1Pos = hsairpl_efis1_get_vas1();
+
+  if ( v > vas1Pos ) {
+    XPLMCommandOnce(z738data.efisCptVas1Up);
+  }
+  if ( v < vas1Pos ) {
+    XPLMCommandOnce(z738data.efisCptVas1Dn);
+  }
+}
+
+void hsairpl_efis1_z738_set_vas2(uint32_t v) {
+  uint32_t vas2Pos = hsairpl_efis1_get_vas2();
+
+  if ( v > vas2Pos ) {
+    XPLMCommandOnce(z738data.efisCptVas2Up);
+  }
+  if ( v < vas2Pos ) {
+    XPLMCommandOnce(z738data.efisCptVas2Dn);
   }
 }
 

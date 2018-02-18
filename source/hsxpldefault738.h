@@ -59,6 +59,25 @@ void hsairpl_mcp_b738_althld_press(void);
 void hsairpl_mcp_b738_vs_press(void);
 void hsairpl_mcp_b738_cmd_a_press(void);
 void hsairpl_mcp_b738_cmd_b_press(void);
+void hsairpl_mcp_b738_cws_a_press(void);
+void hsairpl_mcp_b738_cws_b_press(void);
+
+uint32_t hsairpl_mcp_b738_get_ma_ca_led(void);
+uint32_t hsairpl_mcp_b738_get_ma_fo_led(void);
+uint32_t hsairpl_mcp_b738_get_n1_led(void);
+uint32_t hsairpl_mcp_b738_get_speed_led(void);
+uint32_t hsairpl_mcp_b738_get_lvlchg_led(void);
+uint32_t hsairpl_mcp_b738_get_vnav_led(void);
+uint32_t hsairpl_mcp_b738_get_lnav_led(void);
+uint32_t hsairpl_mcp_b738_get_vorloc_led(void);
+uint32_t hsairpl_mcp_b738_get_app_led(void);
+uint32_t hsairpl_mcp_b738_get_hdgsel_led(void);
+uint32_t hsairpl_mcp_b738_get_althld_led(void);
+uint32_t hsairpl_mcp_b738_get_vs_led(void);
+uint32_t hsairpl_mcp_b738_get_cmda_led(void);
+uint32_t hsairpl_mcp_b738_get_cmdb_led(void);
+uint32_t hsairpl_mcp_b738_get_cwsa_led(void);
+uint32_t hsairpl_mcp_b738_get_cwsb_led(void);
 
 /* EFIS captain side specifics */
 void hsairpl_efis1_b738_wxr_press(void);
