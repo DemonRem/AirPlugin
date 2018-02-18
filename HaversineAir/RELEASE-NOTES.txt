@@ -1,3 +1,9 @@
+What's new in 4.7.4 (2018/02/18)
+################################
+- Fixes an issue with the plugin taking too long to load in some systems
+- Greatly improves the CPFlight support for the Zibo 737
+- Redefines the location of the configuration file to something more intuitive
+
 What's new in 4.7.3 (2018/01/10)
 ################################
 - Additional fix for Linux
