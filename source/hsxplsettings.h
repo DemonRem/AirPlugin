@@ -28,8 +28,6 @@
 #ifndef __HSXPLSETTINGS_H__
 #define __HSXPLSETTINGS_H__
 
-#include <stdio.h>
-
 void hsxpl_load_settings(void);
 void hsxpl_save_settings(void);
 

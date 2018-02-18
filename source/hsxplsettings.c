@@ -29,7 +29,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <math.h>
 #include <time.h>
 #include <ctype.h>
 
