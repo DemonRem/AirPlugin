@@ -118,7 +118,7 @@ void hsairpl_clist_create_ref_for(char *rpath) {
  * the outside. */
 void hsairpl_clist_read_references(char *rpath) {
 
-  char path[512]; memset(path,0,512);
+  char path[1024]; memset(path,0,1024);
   if(rpath==NULL) {
 
     /* Only read once */
@@ -128,9 +128,9 @@ void hsairpl_clist_read_references(char *rpath) {
     hsairpl_clist_clear_references();
 
     XPLMGetSystemPath(path);
-    strncat(path, "Aircraft", 511);
+    strncat(path, "Aircraft", 1023);
   } else {
-    strncpy(path,rpath,511);
+    strncpy(path,rpath,1023);
   }
 
   DIR *dirp = opendir(path);
@@ -150,7 +150,7 @@ void hsairpl_clist_read_references(char *rpath) {
 #endif
           if(!strcmp(dname,".")) continue;
           if(!strcmp(dname,"..")) continue;
-          char rpath[512];
+          char rpath[1024];
           sprintf(rpath,"%s/%s",path,dname);
           if(hsxpl_path_is_dir(rpath)) {
             hsairpl_clist_read_references(rpath);

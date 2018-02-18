@@ -349,49 +349,99 @@ PLUGIN_API int XPluginStart ( char * outName, char * outSig, char * outDesc ) {
 #endif
 
   /* Initialise network */
+
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsmp_initialise_network()");
+#endif
   hsmp_initialise_network("0.0.0.0",0,hsxpl_idver);
 
+
   /* Register AirTrack multicast receiver */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsmp_add_multicast_target()");
+#endif
   hsmp_add_multicast_target(HSMP_DEF_MULTICAST_ADDR,HSMP_AIRTRACK_PORT);
 
   /* Register AirFMC multicast receiver */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsmp_add_multicast_target()");
+#endif
   hsmp_add_multicast_target(HSMP_DEF_MULTICAST_ADDR,HSMP_AIRFMC_PORT);
 
   /* Register AirEFB multicast receiver */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsmp_add_multicast_target()");
+#endif
   hsmp_add_multicast_target(HSMP_DEF_MULTICAST_ADDR,HSMP_AIREFB_PORT);
 
   /* Enable message callback */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsmp_net_message_received_callback=");
+#endif
   hsmp_net_message_received_callback = hsxpl_hsmp_message_callback;
 
   /* Setup datarefs */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsxpl_set_datarefs()");
+#endif
   hsxpl_set_datarefs();
 
   /* Clear route */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsxpl_navdb_clear_route()");
+#endif
   hsxpl_navdb_clear_route();
 
   /* Setup settings menu entries */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"XPLMCreateMenu()");
+#endif
   hsxpl_main_menu=XPLMCreateMenu("Haversine Air",NULL,0,hsxpl_select_menu_option,0);
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"XPLMAppendMenuItem()");
+#endif
   hsxpl_settings_menu_item=XPLMAppendMenuItem(hsxpl_main_menu,"Settings",(void *)"Settings",1);
 
   /* Load saved settings */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsxpl_load_settings()");
+#endif
   hsxpl_load_settings();
 
 #ifdef CPFLIGHT
   if(hsxpl_cpflight_enabled) {
+#ifdef HSXPLDEBUG
+    hsxpl_log(HSXPLDEBUG_ACTION,"hsaircpf_open_serial_port()");
+#endif
     hsaircpf_open_serial_port();
+#ifdef HSXPLDEBUG
+    hsxpl_log(HSXPLDEBUG_ACTION,"hsaircpf_initialise_hardware()");
+#endif
     hsaircpf_initialise_hardware();
   }
 #endif
 
   /* Setup AirEFB tcp server */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsmp_tcp_start_server()");
+#endif
   hsmp_tcp_start_server("0.0.0.0",HSMP_DYN_TCP_PORT_START);
 
   /* Register main loopback call */
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"XPLMRegisterFlightLoopCallback()");
+#endif
   XPLMRegisterFlightLoopCallback(hsxpl_runtime,-1,NULL);
 
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"XPLMRegisterFlightLoopCallback()");
+#endif
+
+#ifdef HSXPLDEBUG
+  hsxpl_log(HSXPLDEBUG_ACTION,"XPluginStart() finishing");
+#endif
   return 1;
 }
-
 
 PLUGIN_API void XPluginStop ( void ) {
   XPLMUnregisterFlightLoopCallback(hsxpl_runtime,NULL);
@@ -3632,7 +3682,7 @@ void hsxpl_set_datarefs(void) {
   hsairpl_coms_update_datarefs();
   hsairpl_atc_update_datarefs();
 
-  hsairpl_apt_read_references(NULL);
+  hsairpl_apt_read_references();
   hsairpl_clist_read_references(NULL);
 
   hsxpl_navdb_reset_fmc_type();

@@ -282,12 +282,14 @@ void hsxpl_point_name_for_position(double lat,double lon,char *pName)
 
 void hsxpl_log(int level,char *logstr) {
 
+  if(logstr==NULL) return;
+  
 #ifdef HSXPLDEBUG
   if(level<=HSXPLDEBUG) {
-    char str[1024];
-    memset(str,0,1024);
+    char str[2048];
+    memset(str,0,2048);
     sprintf(str,"HSAIRXPL: ");
-    strncat(str,logstr,1000);
+    strncat(str,logstr,2000);
     strcat(str,"\n");
     XPLMDebugString(str);
   }
@@ -297,11 +299,13 @@ void hsxpl_log(int level,char *logstr) {
 
 void hsxpl_log_str(char *logstr) {
 
+  if(logstr==NULL) return;
+
 #ifdef HSXPLDEBUG
-  char str[1024];
-  memset(str,0,1024);
+  char str[2048];
+  memset(str,0,2048);
   sprintf(str,"HSAIRXPL: ");
-  strncat(str,logstr,1000);
+  strncat(str,logstr,2000);
   strcat(str,"\n");
   XPLMDebugString(str);
 #endif

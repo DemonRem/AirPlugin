@@ -66,6 +66,10 @@ void hsairpl_apt_clear_references(void) {
  * reads and creates a reference for the given airport. */
 void hsairpl_apt_create_ref_for(char *rpath) {
 
+  char str[1024];
+  snprintf(str,1024,"hsairpl_apt_create_ref_for(%s)",rpath);
+  hsxpl_log(HSXPLDEBUG_ACTION,str);
+
   FILE *fp=fopen(rpath,"r");
   if(fp!=NULL) {
     char line[1024]; line[1023]='\0';
@@ -114,56 +118,40 @@ void hsairpl_apt_create_ref_for(char *rpath) {
 
 /* hsairpl_apt_read_references() parses all apt.dat files under
  * $(X-Plane)/Custom Scenery and constructs a list of these which are
- * kept in memory so that they can be retrieved. This function calls
- * itself recursively and should only be called with rpath=NULL from
- * the outside. */
-void hsairpl_apt_read_references(char *rpath) {
+ * kept in memory so that they can be retrieved.
+ */
+void hsairpl_apt_read_references() {
 
-  char path[512]; memset(path,0,512);
-  if(rpath==NULL) {
+  /* Only read once */
+  if(__hsairpl_apt_ref_base__!=NULL) return;
 
-    /* Only read once */
-    if(__hsairpl_apt_ref_base__!=NULL) return;
+  hsxpl_log(HSXPLDEBUG_ACTION,"hsairpl_apt_read_references()");
 
-    hsxpl_log(HSXPLDEBUG_ACTION,"hsairpl_apt_read_references()");
-    hsairpl_apt_clear_references();
+  /* Get location of X-Plane base */
+  char path[1024];
+  XPLMGetSystemPath(path);
 
-    XPLMGetSystemPath(path);
-    strncat(path, "Custom Scenery", 511);
-  } else {
-    strncpy(path,rpath,511);
-  }
+  /* Add Custom Scenery to it */
+  strncat(path,"Custom Scenery",1024-strlen(path)-1);
 
-
+  /* Now list scenery packages and look for apt.dat in them */
   DIR *dirp = opendir(path);
   if(dirp!=NULL) {
     struct dirent *dp;
     while((dp=readdir(dirp))!=NULL) {
-      char dname[256];
-
-#if APL
-      if(dp->d_namlen > 0) {
-
-        memcpy(dname,dp->d_name,dp->d_namlen);
-        dname[dp->d_namlen]='\0';
-#else
-        if(1) {
-        strcpy(dname,dp->d_name);
-#endif
-        if(!strcmp(dname,".")) continue;
-        if(!strcmp(dname,"..")) continue;
-        char rpath[512];
-        sprintf(rpath,"%s/%s",path,dname);
-
-        if(hsxpl_path_is_dir(rpath)) {
-          hsairpl_apt_read_references(rpath);
-        } else if(hsxpl_path_is_reg(rpath)) {
-          if(!strcmp(dname,"apt.dat")) {
-            hsairpl_apt_create_ref_for(rpath);
-          }
+      char dname[256]; dname[255]='\0';
+      char rpath[1024];
+      strncpy(dname,dp->d_name,255);
+      if(!strcmp(dname,".")) continue;
+      if(!strcmp(dname,"..")) continue;
+      sprintf(rpath,"%s/%s",path,dname);
+      if(hsxpl_path_is_dir(rpath)) {
+        strncat(rpath,"/Earth nav data/apt.dat",1023);
+        struct stat   buffer;
+        if(stat (rpath, &buffer) == 0) {
+          hsairpl_apt_create_ref_for(rpath);
         }
-
-        }
+      }
     }
     closedir(dirp);
   }

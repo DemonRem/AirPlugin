@@ -46,10 +46,8 @@ void hsairpl_apt_clear_references(void);
 
 /* hsairpl_apt_read_references() parses all apt.dat files under
  * $(X-Plane)/Custom Scenery and constructs a list of these which are
- * kept in memory so that they can be retrieved. This function calls
- * itself recursively and should only be called with rpath=NULL from
- * the outside. */
-void hsairpl_apt_read_references(char *rpath);
+ * kept in memory so that they can be retrieved. */
+void hsairpl_apt_read_references(void);
 
 /* For each entry found in hsairpl_apt_read_references() this method
  * reads and creates a reference for the given airport. */
