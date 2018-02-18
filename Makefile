@@ -27,7 +27,7 @@
 #
 
 INCLUDES=-I. -I.. -I./XPSDK/CHeaders/XPLM -I./XPSDK/CHeaders/Widgets -I./HSMP
-CFLAGS=-DCPFXPL=1 -DXPLM200=1 -DXPLM210=1 -DXPLM211=1 -DXPL=1 -DCPFLIGHT=1 -Wunused-function -Wunused-label -Wunused-value -Wunused-variable -Wimplicit-function-declaration -DHSXPLDEBUG=3 # -DHSMPDEBUG=1 -fPIC -fno-stack-protector
+CFLAGS=-DCPFXPL=1 -DXPLM200=1 -DXPLM210=1 -DXPLM211=1 -DXPL=1 -DCPFLIGHT=1 -Wunused-function -Wunused-label -Wunused-value -Wunused-variable -Wimplicit-function-declaration # -DHSXPLDEBUG=3 # -DHSMPDEBUG=1 -fPIC -fno-stack-protector
 LIBS=	# -lm
 LFLAGS= # rdynamic
 CC=cc

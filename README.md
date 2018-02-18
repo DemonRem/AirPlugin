@@ -69,6 +69,12 @@ Where platform is one of:
 	make win32 - For Windows 32 bit build
 	make all   - For all builds
 
+## Debugging
+
+Builds generaly go out with debugging off. If you want to enable debugging, edit the Makefile and
+uncomment the -DHSXPLDEBUG=3 in CFLAGS. If you want further network level debugging uncomment also
+-DHSMPDEBUG=1 although this generates a lot of output and is often better left turned off.
+
 ## New code / suggestions / improvements / bugs / support of new planes
 
 Feel free to ask for contributor status and submit pull requests.
