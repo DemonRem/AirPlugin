@@ -56,6 +56,7 @@
 struct z738_datarefs_s {
   XPLMDataRef lines[14][HSAIRXPL_Z783_L_G+1];
   XPLMDataRef execLight;
+  XPLMDataRef mcpAltDial;
   XPLMDataRef mcpAltDialUp;
   XPLMDataRef mcpAltDialDown;
   XPLMDataRef mcpHdgDialUp;
@@ -137,6 +138,7 @@ void hsxpl_set_z738_datarefs(void) {
   hsxpl_set_z738_fmc_keys();
 
   /* MCP commands and datarefs, zibo specific */
+  z738data.mcpAltDial      = XPLMFindDataRef("laminar/B738/autopilot/mcp_alt_dial");
   z738data.mcpAltDialUp    = XPLMFindCommand("laminar/B738/autopilot/altitude_up");
   z738data.mcpAltDialDown  = XPLMFindCommand("laminar/B738/autopilot/altitude_dn");
   z738data.mcpHdgDialUp    = XPLMFindCommand("laminar/B738/autopilot/heading_up");
@@ -194,6 +196,13 @@ void hsairpl_mcp_z738_set_alt_dial(uint32_t v) {
       XPLMCommandOnce(z738data.mcpAltDialDown);
     }
   }
+}
+
+uint32_t hsairpl_mcp_z738_get_alt_dial(void) {
+  if ( z738data.mcpAltDial != NULL ) {
+    return XPLMGetDatai(z738data.mcpAltDial);
+  }
+  return 0;
 }
 
 void hsairpl_mcp_z738_set_hdg_dial(uint32_t v) {
