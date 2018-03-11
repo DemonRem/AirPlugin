@@ -341,7 +341,6 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
     hsxpl_set_datarefs();
   }
 
-
   /* Perform HSMP control tasks */
   hsmp_showtime();
 
@@ -374,7 +373,7 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
   _hsxpl_runtime_three_tictacs_--;
   if(_hsxpl_runtime_three_tictacs_<1) {
     _hsxpl_runtime_three_tictacs_=3;
-    hsxpl_send_fmc_data();
+     hsxpl_send_fmc_data();
 
   }
 
@@ -393,7 +392,7 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
     /* Send per second datarefs and cleanup old peers */
     hsairpl_dref_showtime_sec();
 
-    hsairpl_mcp_second_timer();
+    hsairpl_dref_showtime_sec();
   }
 
   /* Re-check ufmc because it sometimes takes a while for it to come up */

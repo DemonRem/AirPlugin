@@ -52,6 +52,8 @@
 #define HSXPL_A320Q_COL_IDX_MAGENTA     5
 #define HSXPL_A320Q_COL_IDX_S           6
 
+#define HSXPL_A320Q_NO_COLS             24
+
 typedef struct hsxpl_a320q_datarefs_s {
 
   XPLMDataRef     title[7];
