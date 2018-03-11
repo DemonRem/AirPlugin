@@ -332,7 +332,7 @@ void hsxpl_send_a320q_fmc_data(void) {
   memset(&screen,0,sizeof(hsmp_fmc_screen_t));
 
   /* Initialise to spaces */
-  for(i=0;i<HSXPL_A320Q_NO_COLS;i++) {
+  for(i=0;i<HSXPL_A320Q_NO_ROWS;i++) {
     for(j=0;j<HSXPL_A320Q_NO_COLS;j++) {
       screen.matrix[i][j].row=i;
       screen.matrix[i][j].col=j;
