@@ -373,7 +373,7 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
   _hsxpl_runtime_three_tictacs_--;
   if(_hsxpl_runtime_three_tictacs_<1) {
     _hsxpl_runtime_three_tictacs_=3;
-     hsxpl_send_fmc_data();
+    hsxpl_send_fmc_data();
 
   }
 
@@ -390,7 +390,7 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
     hsairpl_atc_send_traffic();
 
     /* Send per second datarefs and cleanup old peers */
-    hsairpl_dref_showtime_sec();
+    hsairpl_mcp_second_timer();
 
     hsairpl_dref_showtime_sec();
   }
