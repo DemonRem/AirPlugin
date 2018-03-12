@@ -47,7 +47,8 @@ extern hsxpl_xplane_datarefs_t hsxpl_xplane_datarefs;
 void hsxpl_build_a320q_screen_line(hsmp_fmc_screen_c_t *matrix,char *line,uint8_t row,uint8_t font_size,uint32_t colour);
 void hsxpl_build_a320q_screen_sline(hsmp_fmc_screen_c_t *matrix,char *line,uint8_t row,uint8_t font_size);
 
-
+/* Configure AirbusFBW datarefs, we don't need to do this all the time as they shouldn't change,
+only when the plugin is detected/activated */
 void hsxpl_set_a320q_datarefs(void) {
 
   int i;
@@ -221,7 +222,6 @@ void hsxpl_set_a320q_datarefs(void) {
     hsxpl_fmc.key_dot = XPLMCreateCommand("AirbusFBW/MCDU2KeyDecimal", "Decimal Key on MCDU2 pressed");
     hsxpl_fmc.key_plusminus = XPLMCreateCommand("AirbusFBW/MCDU2KeyPM", "PlusMinus Key on MCDU2 pressed");
 
-
     hsxpl_fmc.key_init = XPLMCreateCommand("AirbusFBW/MCDU2Init", "Init button on MCDU2 pressed");
     hsxpl_fmc.key_fpln = XPLMCreateCommand("AirbusFBW/MCDU2Fpln", "Flight plan button on MCDU2 pressed");
     hsxpl_fmc.key_perf = XPLMCreateCommand("AirbusFBW/MCDU2Perf", "Performance button on MCDU2 pressed");
@@ -318,20 +318,22 @@ void hsxpl_set_a320q_datarefs(void) {
 
 }
 
+/* Parse datarefs and send MCDU display screen data to apps. This function is called recurringly, multiple times per second */
 void hsxpl_send_a320q_fmc_data(void) {
-
 
   uint8_t i;
   uint8_t j;
 
-  /* Build screen, prepare matrix  */
+  char line[HSXPL_A320Q_NO_COLS+1];
+  line[HSXPL_A320Q_NO_COLS]='\0';
 
+  /* Build screen, prepare matrix  */
   hsmp_fmc_screen_t screen;
   memset(&screen,0,sizeof(hsmp_fmc_screen_t));
 
   /* Initialise to spaces */
-  for(i=0;i<HSMP_FMC_MAX_SCREEN_NOROWS;i++) {
-    for(j=0;j<HSMP_FMC_MAX_SCREEN_NOCOLS;j++) {
+  for(i=0;i<HSXPL_A320Q_NO_ROWS;i++) {
+    for(j=0;j<HSXPL_A320Q_NO_COLS;j++) {
       screen.matrix[i][j].row=i;
       screen.matrix[i][j].col=j;
       screen.matrix[i][j].colour=HSXPL_A320Q_FMC_COL_WHITE;
@@ -340,186 +342,176 @@ void hsxpl_send_a320q_fmc_data(void) {
     }
   }
 
-  char line[26];line[25]='\0';
-
-  /* Line 0 is title */
-
+  /* Read, line 0 is title */
   if(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_WHITE]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_WHITE],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_WHITE],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_WHITE);
   }
   if(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_GREEN]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_GREEN],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_GREEN],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_GREEN);
   }
   if(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_BLUE]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_BLUE],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_BLUE],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_CYAN);
   }
   if(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_AMBER]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_AMBER],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_AMBER],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_AMBER);
   }
   if(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_YELLOW]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_YELLOW],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_YELLOW],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_YELLOW);
   }
   if(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_MAGENTA]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_MAGENTA],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_MAGENTA],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_MAGENTA);
   }
 
-
   if(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_WHITE]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_WHITE],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_WHITE],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_WHITE);
   }
   if(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_GREEN]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_GREEN],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_GREEN],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_GREEN);
   }
   if(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_BLUE]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_BLUE],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_BLUE],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_CYAN);
   }
   if(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_AMBER]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_AMBER],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_AMBER],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_AMBER);
   }
   if(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_YELLOW]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_YELLOW],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_YELLOW],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_YELLOW);
   }
   if(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_MAGENTA]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_MAGENTA],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_MAGENTA],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_MAGENTA);
   }
   if(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_S]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_S],line,0,26);
-    hsxpl_build_a320q_screen_sline(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT);
+    XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_S],line,0,HSXPL_A320Q_NO_COLS);
+    hsxpl_build_a320q_screen_sline(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT);
   }
 
   /* Scratchpad is line 13 */
   if(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_WHITE]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_WHITE],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_WHITE],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[13],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_WHITE);
   }
   if(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_GREEN]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_GREEN],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_GREEN],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[13],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_GREEN);
   }
   if(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_BLUE]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_BLUE],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_BLUE],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[13],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_CYAN);
   }
   if(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_AMBER]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_AMBER],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_AMBER],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[13],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_AMBER);
   }
   if(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_YELLOW]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_YELLOW],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_YELLOW],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[13],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_YELLOW);
   }
   if(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_MAGENTA]!=NULL) {
-    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_MAGENTA],line,0,26);
+    XPLMGetDatab(hsxpl_a320q_datarefs.scratchpad[HSXPL_A320Q_COL_IDX_MAGENTA],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[13],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_MAGENTA);
   }
 
   /* Now for the rest */
   for(i=0;i<6;i++) {
 
-
     if(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_WHITE]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_WHITE],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_WHITE],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+1],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_WHITE);
     }
     if(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_GREEN]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_GREEN],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_GREEN],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+1],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_GREEN);
     }
     if(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_BLUE]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_BLUE],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_BLUE],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+1],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_CYAN);
     }
     if(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_AMBER]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_AMBER],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_AMBER],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+1],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_AMBER);
     }
     if(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_YELLOW]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_YELLOW],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_YELLOW],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+1],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_YELLOW);
     }
     if(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_MAGENTA]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_MAGENTA],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_MAGENTA],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+1],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_MAGENTA);
     }
     if(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_S]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_S],line,0,26);
-      hsxpl_build_a320q_screen_sline(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_LABEL);
+      XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_S],line,0,HSXPL_A320Q_NO_COLS);
+      hsxpl_build_a320q_screen_sline(screen.matrix[i*2+1],line,0,HSXPL_A320N_FMC_FSIZE_LABEL);
     }
 
     if(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_WHITE]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_WHITE],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_WHITE],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_WHITE);
     }
     if(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_GREEN]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_GREEN],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_GREEN],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_GREEN);
     }
     if(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_BLUE]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_BLUE],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_BLUE],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_CYAN);
     }
     if(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_AMBER]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_AMBER],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_AMBER],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_AMBER);
     }
     if(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_S]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_S],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_S],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_sline(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_LABEL);
     }
     if(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_YELLOW]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_YELLOW],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_YELLOW],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_YELLOW);
     }
     if(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_MAGENTA]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_MAGENTA],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_MAGENTA],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_MAGENTA);
     }
 
     if(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_WHITE]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_WHITE],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_WHITE],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_WHITE);
     }
     if(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_GREEN]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_GREEN],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_GREEN],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_GREEN);
     }
     if(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_BLUE]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_BLUE],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_BLUE],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_CYAN);
     }
     if(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_AMBER]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_AMBER],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_AMBER],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_AMBER);
     }
     if(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_S]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_S],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_S],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_sline(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT);
     }
     if(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_YELLOW]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_YELLOW],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_YELLOW],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_YELLOW);
     }
     if(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_MAGENTA]!=NULL) {
-      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_MAGENTA],line,0,26);
+      XPLMGetDatab(hsxpl_a320q_datarefs.content_large[i][HSXPL_A320Q_COL_IDX_MAGENTA],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT,HSXPL_A320Q_FMC_COL_MAGENTA);
     }
-
-
-
-
-
   }
 
   /* Send active MCDU info */
@@ -532,8 +524,9 @@ void hsxpl_send_a320q_fmc_data(void) {
     free(pkt);
   }
 
+  /* Now that we have a screen matrix, send it in 4 UDP packets so that each it fits in 1400 MTUs */
 
-  /* Now that we have a screen matrix, send it in 4 packets */
+  /* Packet #1 */
   pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
   if(pkt!=NULL) {
 
@@ -542,13 +535,15 @@ void hsxpl_send_a320q_fmc_data(void) {
     uint32_t n=HSMP_FMC_TYPE_XP_A320Q;
     hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_TYPE,&n);
     for(i=0;i<4;i++) {
-      for(j=0;j<HSMP_FMC_MAX_SCREEN_NOCOLS;j++) {
+      for(j=0;j<HSXPL_A320Q_NO_COLS;j++) {
         hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_SCREEN_C,&(screen.matrix[i][j]));
       }
     }
     hsmp_net_send_to_stream_peers(pkt,HSMP_PKT_NT_AIRFMC);
     free(pkt);
   }
+
+  /* Packet #2 */
   pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
   if(pkt!=NULL) {
 
@@ -558,13 +553,15 @@ void hsxpl_send_a320q_fmc_data(void) {
     hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_TYPE,&n);
 
     for(i=4;i<8;i++) {
-      for(j=0;j<HSMP_FMC_MAX_SCREEN_NOCOLS;j++) {
+      for(j=0;j<HSXPL_A320Q_NO_COLS;j++) {
         hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_SCREEN_C,&(screen.matrix[i][j]));
       }
     }
     hsmp_net_send_to_stream_peers(pkt,HSMP_PKT_NT_AIRFMC);
     free(pkt);
   }
+
+  /* Packet #3 */
   pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
   if(pkt!=NULL) {
 
@@ -574,13 +571,15 @@ void hsxpl_send_a320q_fmc_data(void) {
     hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_TYPE,&n);
 
     for(i=8;i<12;i++) {
-      for(j=0;j<HSMP_FMC_MAX_SCREEN_NOCOLS;j++) {
+      for(j=0;j<HSXPL_A320Q_NO_COLS;j++) {
         hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_SCREEN_C,&(screen.matrix[i][j]));
       }
     }
     hsmp_net_send_to_stream_peers(pkt,HSMP_PKT_NT_AIRFMC);
     free(pkt);
   }
+
+  /* Packet #4 */
   pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
   if(pkt!=NULL) {
 
@@ -589,7 +588,7 @@ void hsxpl_send_a320q_fmc_data(void) {
     hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_TYPE,&n);
 
     for(i=12;i<HSMP_FMC_MAX_SCREEN_NOROWS;i++) {
-      for(j=0;j<HSMP_FMC_MAX_SCREEN_NOCOLS;j++) {
+      for(j=0;j<HSXPL_A320Q_NO_COLS;j++) {
         hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_FMC_SCREEN_C,&(screen.matrix[i][j]));
       }
     }
@@ -598,13 +597,13 @@ void hsxpl_send_a320q_fmc_data(void) {
   }
 }
 
-
+/* Given a string in line, fill it on the screen matrix with the corresponding font size and colour */
 void hsxpl_build_a320q_screen_line(hsmp_fmc_screen_c_t *matrix,char *line,uint8_t row,uint8_t font_size,uint32_t colour) {
 
   char *cp=line;
   uint8_t i;
 
-  for(i=0;i<HSMP_FMC_MAX_SCREEN_NOCOLS;i++) {
+  for(i=0;i<HSXPL_A320Q_NO_COLS;i++) {
 
     if(*cp=='\0') break;
     if(*cp==' ') { cp++; continue; }
@@ -618,12 +617,14 @@ void hsxpl_build_a320q_screen_line(hsmp_fmc_screen_c_t *matrix,char *line,uint8_
   }
 }
 
+/* Processes the contents of an S line which is a formatting line rather than text, by altering
+ * the format of the text present in the matrix already. */
 void hsxpl_build_a320q_screen_sline(hsmp_fmc_screen_c_t *matrix,char *line,uint8_t row,uint8_t font_size) {
 
   char *cp=line;
   uint8_t i;
 
-  for(i=0;i<HSMP_FMC_MAX_SCREEN_NOCOLS;i++) {
+  for(i=0;i<HSXPL_A320Q_NO_COLS;i++) {
 
     if(*cp=='\0') break;
     if(*cp==' ') { cp++; continue; }
@@ -656,7 +657,6 @@ void hsxpl_build_a320q_screen_sline(hsmp_fmc_screen_c_t *matrix,char *line,uint8
 
       default:matrix[i].chr=*cp;matrix[i].colour=HSXPL_A320Q_FMC_COL_AMBER; break;
     }
-
     cp++;
   }
 }

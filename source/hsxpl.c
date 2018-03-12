@@ -341,7 +341,6 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
     hsxpl_set_datarefs();
   }
 
-
   /* Perform HSMP control tasks */
   hsmp_showtime();
 
@@ -391,9 +390,8 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
     hsairpl_atc_send_traffic();
 
     /* Send per second datarefs and cleanup old peers */
-    hsairpl_dref_showtime_sec();
-
     hsairpl_mcp_second_timer();
+    hsairpl_dref_showtime_sec();
   }
 
   /* Re-check ufmc because it sometimes takes a while for it to come up */

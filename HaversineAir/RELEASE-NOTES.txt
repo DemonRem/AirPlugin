@@ -1,3 +1,8 @@
+What's new in 4.7.5 (2018/03/12)
+################################
+- Improves HDG dial read for the Zibo 737
+- Fixes an issue that caused a crash in the ToLiSS Airbus A319
+
 What's new in 4.7.4 (2018/02/18)
 ################################
 - Fixes an issue with the plugin taking too long to load in some systems
