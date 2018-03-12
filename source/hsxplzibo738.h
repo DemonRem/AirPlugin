@@ -38,8 +38,9 @@
 void hsxpl_set_z738_datarefs(void);
 
 /* MCP specifics */
-void hsairpl_mcp_z738_set_alt_dial(uint32_t v);
-void hsairpl_mcp_z738_set_hdg_dial(uint32_t v);
+uint32_t hsairpl_mcp_z738_get_alt_dial(void);
+void     hsairpl_mcp_z738_set_alt_dial(uint32_t v);
+void     hsairpl_mcp_z738_set_hdg_dial(uint32_t v);
 
 /* EFIS captain side specifics */
 void     hsairpl_efis1_z738_set_mode(uint32_t);

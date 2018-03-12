@@ -3415,9 +3415,6 @@ uint32_t hsairpl_mcp_get_alt_dial(void) {
     }
   }
   
-  
-  
-  
   if(hsxpl_plane_type==HSXPL_PLANE_FF757) {
     if(hsairxpl_mcp_datarefs.b757_ap_alt_text!=NULL){
       char str[8];
@@ -3434,11 +3431,14 @@ uint32_t hsairpl_mcp_get_alt_dial(void) {
     }
   }
   
-  
   if(hsxpl_plane_type==HSXPL_PLANE_X737) {
     if(hsairxpl_mcp_datarefs.x737_ap_alt_dial!=NULL) {
       return (uint32_t)XPLMGetDataf(hsairxpl_mcp_datarefs.x737_ap_alt_dial);
     }
+  }
+
+  if(hsxpl_plane_type==HSXPL_PLANE_Z738) {
+    return hsairpl_mcp_z738_get_alt_dial();
   }
   
   if(hsairxpl_mcp_datarefs.ap_altdial!=NULL) {
