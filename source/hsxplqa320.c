@@ -47,7 +47,8 @@ extern hsxpl_xplane_datarefs_t hsxpl_xplane_datarefs;
 void hsxpl_build_a320q_screen_line(hsmp_fmc_screen_c_t *matrix,char *line,uint8_t row,uint8_t font_size,uint32_t colour);
 void hsxpl_build_a320q_screen_sline(hsmp_fmc_screen_c_t *matrix,char *line,uint8_t row,uint8_t font_size);
 
-
+/* Configure AirbusFBW datarefs, we don't need to do this all the time as they shouldn't change,
+only when the plugin is detected/activated */
 void hsxpl_set_a320q_datarefs(void) {
 
   int i;
@@ -317,17 +318,16 @@ void hsxpl_set_a320q_datarefs(void) {
 
 }
 
+/* Parse datarefs and send MCDU display screen data to apps. This function is called recurringly, multiple times per second */
 void hsxpl_send_a320q_fmc_data(void) {
-
 
   uint8_t i;
   uint8_t j;
 
-  /* Datarefs in this plane may change? so we try to lazily re-load them here */
-/*  hsxpl_set_a320q_datarefs(); */
+  char line[HSXPL_A320Q_NO_COLS+1];
+  line[HSXPL_A320Q_NO_COLS]='\0';
 
   /* Build screen, prepare matrix  */
-
   hsmp_fmc_screen_t screen;
   memset(&screen,0,sizeof(hsmp_fmc_screen_t));
 
@@ -342,10 +342,7 @@ void hsxpl_send_a320q_fmc_data(void) {
     }
   }
 
-  char line[HSXPL_A320Q_NO_COLS+1];line[HSXPL_A320Q_NO_COLS]='\0';
-
-  /* Line 0 is title */
-
+  /* Read, line 0 is title */
   if(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_WHITE]!=NULL) {
     XPLMGetDatab(hsxpl_a320q_datarefs.stitle[HSXPL_A320Q_COL_IDX_WHITE],line,0,HSXPL_A320Q_NO_COLS);
     hsxpl_build_a320q_screen_line(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_WHITE);
@@ -397,7 +394,7 @@ void hsxpl_send_a320q_fmc_data(void) {
   }
   if(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_S]!=NULL) {
     XPLMGetDatab(hsxpl_a320q_datarefs.title[HSXPL_A320Q_COL_IDX_S],line,0,HSXPL_A320Q_NO_COLS);
-    hsxpl_build_a320q_screen_sline(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT);
+    hsxpl_build_a320q_screen_sline(screen.matrix[0],line,0,HSXPL_A320N_FMC_FSIZE_DEFAULT);
   }
 
   /* Scratchpad is line 13 */
@@ -429,7 +426,6 @@ void hsxpl_send_a320q_fmc_data(void) {
   /* Now for the rest */
   for(i=0;i<6;i++) {
 
-
     if(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_WHITE]!=NULL) {
       XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_WHITE],line,0,HSXPL_A320Q_NO_COLS);
       hsxpl_build_a320q_screen_line(screen.matrix[i*2+1],line,0,HSXPL_A320N_FMC_FSIZE_LABEL,HSXPL_A320Q_FMC_COL_WHITE);
@@ -456,7 +452,7 @@ void hsxpl_send_a320q_fmc_data(void) {
     }
     if(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_S]!=NULL) {
       XPLMGetDatab(hsxpl_a320q_datarefs.label[i][HSXPL_A320Q_COL_IDX_S],line,0,HSXPL_A320Q_NO_COLS);
-      hsxpl_build_a320q_screen_sline(screen.matrix[i*2+2],line,0,HSXPL_A320N_FMC_FSIZE_LABEL);
+      hsxpl_build_a320q_screen_sline(screen.matrix[i*2+1],line,0,HSXPL_A320N_FMC_FSIZE_LABEL);
     }
 
     if(hsxpl_a320q_datarefs.content_small[i][HSXPL_A320Q_COL_IDX_WHITE]!=NULL) {
@@ -528,7 +524,9 @@ void hsxpl_send_a320q_fmc_data(void) {
     free(pkt);
   }
 
-  /* Now that we have a screen matrix, send it in 4 packets */
+  /* Now that we have a screen matrix, send it in 4 UDP packets so that each it fits in 1400 MTUs */
+
+  /* Packet #1 */
   pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
   if(pkt!=NULL) {
 
@@ -545,6 +543,7 @@ void hsxpl_send_a320q_fmc_data(void) {
     free(pkt);
   }
 
+  /* Packet #2 */
   pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
   if(pkt!=NULL) {
 
@@ -562,6 +561,7 @@ void hsxpl_send_a320q_fmc_data(void) {
     free(pkt);
   }
 
+  /* Packet #3 */
   pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
   if(pkt!=NULL) {
 
@@ -579,6 +579,7 @@ void hsxpl_send_a320q_fmc_data(void) {
     free(pkt);
   }
 
+  /* Packet #4 */
   pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
   if(pkt!=NULL) {
 
@@ -596,7 +597,7 @@ void hsxpl_send_a320q_fmc_data(void) {
   }
 }
 
-
+/* Given a string in line, fill it on the screen matrix with the corresponding font size and colour */
 void hsxpl_build_a320q_screen_line(hsmp_fmc_screen_c_t *matrix,char *line,uint8_t row,uint8_t font_size,uint32_t colour) {
 
   char *cp=line;
@@ -616,6 +617,8 @@ void hsxpl_build_a320q_screen_line(hsmp_fmc_screen_c_t *matrix,char *line,uint8_
   }
 }
 
+/* Processes the contents of an S line which is a formatting line rather than text, by altering
+ * the format of the text present in the matrix already. */
 void hsxpl_build_a320q_screen_sline(hsmp_fmc_screen_c_t *matrix,char *line,uint8_t row,uint8_t font_size) {
 
   char *cp=line;
@@ -654,7 +657,6 @@ void hsxpl_build_a320q_screen_sline(hsmp_fmc_screen_c_t *matrix,char *line,uint8
 
       default:matrix[i].chr=*cp;matrix[i].colour=HSXPL_A320Q_FMC_COL_AMBER; break;
     }
-
     cp++;
   }
 }

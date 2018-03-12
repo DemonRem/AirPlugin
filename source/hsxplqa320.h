@@ -51,22 +51,34 @@
 #define HSXPL_A320Q_COL_IDX_YELLOW      4
 #define HSXPL_A320Q_COL_IDX_MAGENTA     5
 #define HSXPL_A320Q_COL_IDX_S           6
+#define HSXPL_A320Q_COL_IDX_COUNT       7
 
+/* Dimensions of MCDU screen */
 #define HSXPL_A320Q_NO_ROWS             14
 #define HSXPL_A320Q_NO_COLS             24
 
 typedef struct hsxpl_a320q_datarefs_s {
 
-  XPLMDataRef     title[7];
-  XPLMDataRef     stitle[6];
-  XPLMDataRef     label[6][7];
-  XPLMDataRef     content_large[6][7];
-  XPLMDataRef     content_small[6][7];
-  XPLMDataRef     scratchpad[6];
+  /* title and stitle represent the title i.e. firt row (0) of the MCDU */
+  XPLMDataRef     title[HSXPL_A320Q_COL_IDX_COUNT];
+  XPLMDataRef     stitle[HSXPL_A320Q_COL_IDX_COUNT];
+
+  /* label and content are alternating rows. There are  of each making a total of 12 */
+  /* content exists in two formats, large and small */
+  /* content 0 follows label 0, label 1 follows content 0 and so forth ... */
+  XPLMDataRef     label[(HSXPL_A320Q_NO_ROWS-2)/2][HSXPL_A320Q_COL_IDX_COUNT];
+  XPLMDataRef     content_large[(HSXPL_A320Q_NO_ROWS-2)/2][HSXPL_A320Q_COL_IDX_COUNT];
+  XPLMDataRef     content_small[(HSXPL_A320Q_NO_ROWS-2)/2][HSXPL_A320Q_COL_IDX_COUNT];
+
+  /* scratchpad represents the last row of the MCDU (13) */
+  XPLMDataRef     scratchpad[HSXPL_A320Q_COL_IDX_COUNT];
 
 } hsxpl_a320q_datarefs_t;
 
+/* Sets the datarefs according to the selected MCDU */
 void hsxpl_set_a320q_datarefs(void);
+
+/* Sends MCDU data to apps, called recurringly a few times per second */
 void hsxpl_send_a320q_fmc_data(void);
 
 #endif /* __HSXPLQA320_H__ */
