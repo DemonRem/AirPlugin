@@ -391,7 +391,6 @@ float hsxpl_runtime(float                inElapsedSinceLastCall,
 
     /* Send per second datarefs and cleanup old peers */
     hsairpl_mcp_second_timer();
-
     hsairpl_dref_showtime_sec();
   }
 
