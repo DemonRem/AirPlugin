@@ -41,7 +41,8 @@ SRCS=./source/hsxplclist.c ./source/hsxpl.c	./source/hsxplmcp.c ./source/hsxplco
 ##############################################################################
 
 #CCWIN32=i686-w64-mingw32-gcc
-CCWIN32=/usr/local/mingw-w32-bin_i686-darwin_20130516/bin/i686-w64-mingw32-gcc
+#CCWIN32=/usr/local/mingw-w32-bin_i686-darwin_20130516/bin/i686-w64-mingw32-gcc
+CCWIN32=/usr/local/gcc-4.8.0-qt-4.8.4-for-mingw32/win32-gcc/bin/i586-mingw32-gcc
 #CCWIN64=x86_64-w64-mingw32-gcc
 CCWIN64=/usr/local/mingw-w64-bin_i686-darwin_20130622/bin/x86_64-w64-mingw32-gcc
 

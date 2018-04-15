@@ -48,6 +48,9 @@
 
 #if !defined(_WIN32)
 #include <sys/select.h>
+#else
+# include <windows.h>
+#define sleep(x) Sleep(1000 * x)
 #endif
 
 #if LIN /* can't seem to find roundf() in math.h / linux so need to declare it here */

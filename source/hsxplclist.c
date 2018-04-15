@@ -137,145 +137,132 @@ void hsairpl_clist_read_references(char *rpath) {
   if(dirp!=NULL) {
     struct dirent *dp;
     while((dp=readdir(dirp))!=NULL) {
-      char dname[256];
-
-#if APL
-      if(dp->d_namlen > 0) {
-
-        memcpy(dname,dp->d_name,dp->d_namlen);
-        dname[dp->d_namlen]='\0';
-#else
-        if(1) {
-          strcpy(dname,dp->d_name);
-#endif
-          if(!strcmp(dname,".")) continue;
-          if(!strcmp(dname,"..")) continue;
-          char rpath[1024];
-          sprintf(rpath,"%s/%s",path,dname);
-          if(hsxpl_path_is_dir(rpath)) {
-            hsairpl_clist_read_references(rpath);
-          } else if(hsxpl_path_is_reg(rpath)) {
-            if(!strcmp(dname,"clist.txt")) {
-              hsairpl_clist_create_ref_for(rpath);
-            }
-          }
+      char dname[256]; dname[255]='\0';
+      strncpy(dname,dp->d_name,255);
+      if(!strcmp(dname,".")) continue;
+      if(!strcmp(dname,"..")) continue;
+      char rpath[1024];
+      sprintf(rpath,"%s/%s",path,dname);
+      if(hsxpl_path_is_dir(rpath)) {
+        hsairpl_clist_read_references(rpath);
+      } else if(hsxpl_path_is_reg(rpath)) {
+        if(!strcmp(dname,"clist.txt")) {
+          hsairpl_clist_create_ref_for(rpath);
         }
       }
-      closedir(dirp);
     }
+    closedir(dirp);
+  }
+}
+
+/* Returns the list of references or NULL if none */
+hsairpl_clist_ref_t *hsairpl_clist_references(void) {
+  return __hsairpl_clist_ref_base__;
+}
+
+/* Send checklist indexes to a specific client sa */
+void hsairpl_clist_send_indexes_to(struct sockaddr_in*to) {
+
+  char str[512];
+  sprintf(str,"hsairpl_clist_send_indexes_to(%s)",inet_ntoa(to->sin_addr));
+  hsxpl_log(HSXPLDEBUG_ACTION,str);
+
+  if(__hsairpl_clist_ref_base__==NULL) {
+    return;
   }
 
-  /* Returns the list of references or NULL if none */
-  hsairpl_clist_ref_t *hsairpl_clist_references(void) {
-    return __hsairpl_clist_ref_base__;
+  hsmp_net_tgt_list_t *peer = hsmp_peer_with_sa(to);
+  if(peer==NULL) {
+    return;
   }
 
-  /* Send checklist indexes to a specific client sa */
-  void hsairpl_clist_send_indexes_to(struct sockaddr_in*to) {
+  hsairpl_clist_ref_t *ap=__hsairpl_clist_ref_base__;
 
-    char str[512];
-    sprintf(str,"hsairpl_clist_send_indexes_to(%s)",inet_ntoa(to->sin_addr));
-    hsxpl_log(HSXPLDEBUG_ACTION,str);
-
-    if(__hsairpl_clist_ref_base__==NULL) {
-      return;
-    }
-
-    hsmp_net_tgt_list_t *peer = hsmp_peer_with_sa(to);
-    if(peer==NULL) {
-      return;
-    }
-
-    hsairpl_clist_ref_t *ap=__hsairpl_clist_ref_base__;
-
-    hsmp_pkt_t *pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
-    int n=0; int psize=1400;
-    if(pkt!=NULL) {
-      while(ap!=NULL) {
-        hsmp_clist_idx_t idx;
-        strcpy(idx.checklist,ap->checklist);
-         idx.fsize=ap->fsize;
-        hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_CLIST_IDX,&idx);
-        n++;
-        psize -= (int)sizeof(hsmp_clist_idx_t);
-        if(psize < (int)sizeof(hsmp_clist_idx_t)) {
-          if(n>0) {
-            hsmp_net_send_to_target(pkt,pkt->hdr.dsize,peer);
-          }
-          free(pkt);
-          n=0;
-          pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
-          if(pkt==NULL) break;
+  hsmp_pkt_t *pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
+  int n=0; int psize=1400;
+  if(pkt!=NULL) {
+    while(ap!=NULL) {
+      hsmp_clist_idx_t idx;
+      strcpy(idx.checklist,ap->checklist);
+      idx.fsize=ap->fsize;
+      hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_CLIST_IDX,&idx);
+      n++;
+      psize -= (int)sizeof(hsmp_clist_idx_t);
+      if(psize < (int)sizeof(hsmp_clist_idx_t)) {
+        if(n>0) {
+          hsmp_net_send_to_target(pkt,pkt->hdr.dsize,peer);
         }
-        ap=ap->next;
+        free(pkt);
+        n=0;
+        pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
+        if(pkt==NULL) break;
       }
+      ap=ap->next;
     }
-    if(n>0 && pkt!=NULL) {
-      hsmp_net_send_to_target(pkt,pkt->hdr.dsize,peer);
-    }
-    free(pkt);
   }
+  if(n>0 && pkt!=NULL) {
+    hsmp_net_send_to_target(pkt,pkt->hdr.dsize,peer);
+  }
+  free(pkt);
+}
 
-  /* Send a list over the TCP server connection */
-  int __hsairpl_clist_file_being_sent_fd__=-1;
+/* Send a list over the TCP server connection */
+int __hsairpl_clist_file_being_sent_fd__=-1;
 
-  /* Sends the next set of bytes for a clist.txt transfer that is ongoing */
-  int hsairpl_clist_send_next_list_bytes(void) {
+/* Sends the next set of bytes for a clist.txt transfer that is ongoing */
+int hsairpl_clist_send_next_list_bytes(void) {
 
-    int netfd=hsmp_tcp_server_accept_incoming();
-    int t=0;
+  int netfd=hsmp_tcp_server_accept_incoming();
+  int t=0;
 
-    if(__hsairpl_clist_file_being_sent_fd__>=0 && netfd>=0) {
+  if(__hsairpl_clist_file_being_sent_fd__>=0 && netfd>=0) {
 
-      ssize_t n;ssize_t s;
-      uint8_t buffer[65536];
+    ssize_t n;ssize_t s;
+    uint8_t buffer[65536];
 
-      if((n=read(__hsairpl_clist_file_being_sent_fd__,buffer,65536))>0) {
-        s=send(netfd,buffer,n,0);
-        if(s!=n || s<0) {
-          hsmp_tcp_close_server_client();
-          close(__hsairpl_clist_file_being_sent_fd__);
-          __hsairpl_clist_file_being_sent_fd__=-1;
-          return -1;
-        }
-        t=(int)s;
-      } else {
+    if((n=read(__hsairpl_clist_file_being_sent_fd__,buffer,65536))>0) {
+      s=send(netfd,buffer,n,0);
+      if(s!=n || s<0) {
         hsmp_tcp_close_server_client();
         close(__hsairpl_clist_file_being_sent_fd__);
         __hsairpl_clist_file_being_sent_fd__=-1;
+        return -1;
       }
+      t=(int)s;
+    } else {
+      hsmp_tcp_close_server_client();
+      close(__hsairpl_clist_file_being_sent_fd__);
+      __hsairpl_clist_file_being_sent_fd__=-1;
     }
-    return t;
   }
+  return t;
+}
 
-  struct sockaddr_in __hsairpl_clist_send_list_to_addr__;
-  char __hsairpl_clist_send_list_to_list_id__[32];
+struct sockaddr_in __hsairpl_clist_send_list_to_addr__;
+char __hsairpl_clist_send_list_to_list_id__[32];
 
-  void hsairpl_clist_send_list_to(char *listid, struct sockaddr_in*to) {
+void hsairpl_clist_send_list_to(char *listid, struct sockaddr_in*to) {
 
-      strcpy(__hsairpl_clist_send_list_to_list_id__,listid);
-    memcpy(&__hsairpl_clist_send_list_to_addr__,to,sizeof(__hsairpl_clist_send_list_to_addr__));
+  strcpy(__hsairpl_clist_send_list_to_list_id__,listid);
+  memcpy(&__hsairpl_clist_send_list_to_addr__,to,sizeof(__hsairpl_clist_send_list_to_addr__));
 
-    if(hsmp_tcp_network_server_is_open()) {
-      if(__hsairpl_clist_file_being_sent_fd__<0) {
-        hsairpl_clist_ref_t *p=__hsairpl_clist_ref_base__;
-        while(p!=NULL) {
-          if(!strcmp(p->checklist,listid)) {
-            break;
-          }
-          p=p->next;
+  if(hsmp_tcp_network_server_is_open()) {
+    if(__hsairpl_clist_file_being_sent_fd__<0) {
+      hsairpl_clist_ref_t *p=__hsairpl_clist_ref_base__;
+      while(p!=NULL) {
+        if(!strcmp(p->checklist,listid)) {
+          break;
         }
-        if(p!=NULL) {
+        p=p->next;
+      }
+      if(p!=NULL) {
 #if IBM
-          __hsairpl_clist_file_being_sent_fd__=open(p->path,O_RDONLY|O_BINARY);
+        __hsairpl_clist_file_being_sent_fd__=open(p->path,O_RDONLY|O_BINARY);
 #else
-          __hsairpl_clist_file_being_sent_fd__=open(p->path,O_RDONLY);
+        __hsairpl_clist_file_being_sent_fd__=open(p->path,O_RDONLY);
 #endif
-          if(__hsairpl_clist_file_being_sent_fd__>=0) {
+        if(__hsairpl_clist_file_being_sent_fd__>=0) {
 
-          } else {
-            hsairpl_clist_send_req_fail();
-          }
         } else {
           hsairpl_clist_send_req_fail();
         }
@@ -285,20 +272,23 @@ void hsairpl_clist_read_references(char *rpath) {
     } else {
       hsairpl_clist_send_req_fail();
     }
+  } else {
+    hsairpl_clist_send_req_fail();
   }
+}
 
-  /* Sends a request fail back to the client app */
-  void hsairpl_clist_send_req_fail(void) {
+/* Sends a request fail back to the client app */
+void hsairpl_clist_send_req_fail(void) {
 
-    if(__hsairpl_clist_ref_base__==NULL) return;
-    hsmp_net_tgt_list_t *peer = hsmp_peer_with_sa(&__hsairpl_clist_send_list_to_addr__);
-    if(peer==NULL) return;
+  if(__hsairpl_clist_ref_base__==NULL) return;
+  hsmp_net_tgt_list_t *peer = hsmp_peer_with_sa(&__hsairpl_clist_send_list_to_addr__);
+  if(peer==NULL) return;
 
-    hsmp_pkt_t *pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
-    if(pkt!=NULL) {
-      hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_CLIST_REQFAIL,__hsairpl_clist_send_list_to_list_id__);
-      hsmp_net_send_to_target(pkt, pkt->hdr.dsize, peer);
-      free(pkt);
-    }
+  hsmp_pkt_t *pkt=(hsmp_pkt_t *)hsmp_net_make_packet();
+  if(pkt!=NULL) {
+    hsmp_net_add_msg_to_pkt(pkt,HSMP_MID_CLIST_REQFAIL,__hsairpl_clist_send_list_to_list_id__);
+    hsmp_net_send_to_target(pkt, pkt->hdr.dsize, peer);
+    free(pkt);
   }
+}
 

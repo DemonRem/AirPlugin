@@ -3310,41 +3310,42 @@ void hsairpl_mcp_set_hdg_dial(uint32_t v) {
 }
 
 uint32_t hsairpl_mcp_get_hdg_dial(void) {
-  
+
   if(hsxpl_plane_type==HSXPL_PLANE_FF777) {
     if(hsairxpl_mcp_datarefs.t7_ap_hdg_text!=NULL){
       char str[8];
       XPLMGetDatab(hsairxpl_mcp_datarefs.t7_ap_hdg_text,str,0,8); str[7]='\0';
       int i=atoi(str);
-      if(i>=0 && i<360) return i;
+      if(i>=0) return (i % 360);
       return 0;
     }
   }
-  
+
   if(hsxpl_plane_type==HSXPL_PLANE_FF757) {
-    
+
     if(hsairxpl_mcp_datarefs.b757_ap_hdg_text!=NULL){
       char str[8];
       XPLMGetDatab(hsairxpl_mcp_datarefs.b757_ap_hdg_text,str,0,8); str[7]='\0';
       int i=atoi(str);
-      if(i>=0 && i<360) return i;
+      if(i>=0) return (i % 360);
       return 0;
     }
   }
-  
+
   if(hsxpl_plane_type==HSXPL_PLANE_FF767) {
-    
+
     if(hsairxpl_mcp_datarefs.b767_ap_hdg_text!=NULL){
       char str[8];
       XPLMGetDatab(hsairxpl_mcp_datarefs.b767_ap_hdg_text,str,0,8); str[7]='\0';
       int i=atoi(str);
-      if(i>=0 && i<360) return i;
+      if(i>=0) return (i % 360);
       return 0;
     }
   }
-  
+
   if(hsairxpl_mcp_datarefs.ap_hdgdial!=NULL) {
-    return (uint32_t)XPLMGetDataf(hsairxpl_mcp_datarefs.ap_hdgdial);
+    int i=(int)XPLMGetDataf(hsairxpl_mcp_datarefs.ap_hdgdial);
+    if(i>=0) return (i % 360);
   }
   return 0;
 }

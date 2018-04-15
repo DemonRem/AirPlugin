@@ -1,3 +1,11 @@
+What's new in 4.7.7 (2018/04/12)
+################################
+Fixes linker issue on windows 32 bit and X-Plane 9 related to Error Code = 126 : The specified module could not be found.
+
+What's new in 4.7.6 (2018/04/10)
+################################
+Fixes a crash observed on Macs 
+
 What's new in 4.7.5 (2018/03/12)
 ################################
 - Improves HDG dial read for the Zibo 737

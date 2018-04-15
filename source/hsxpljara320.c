@@ -40,11 +40,30 @@ extern uint32_t hsxpl_fmc_type;
 extern uint32_t hsxpl_plane_type;
 extern hsxpl_fmc_t hsxpl_fmc;
 
+
+/* Looks for datarefs in either sim/custom/xap/mcdu/ or jd/mcdu/ */
+XPLMDataRef hsxpl_a320n_lookup_dataref(char *dref) {
+
+  char str[512];
+  XPLMDataRef r;
+
+  sprintf(str,"sim/custom/xap/mcdu/%s",dref);
+  r = XPLMFindDataRef(str);
+
+  if(r==NULL) {
+    sprintf(str,"jd/mcdu/%s",dref);
+    r = XPLMFindDataRef(str);
+  }
+  return r;
+}
+
+
+
 /* Overrides FMC default datarefs with A320/A330 specific ones */
 void hsxpl_set_a320n_datarefs(void) {
 
   if(strcmp(hsxpl_acf_icao(),"A320") && strcmp(hsxpl_acf_icao(),"A330")) return;
-  if(XPLMFindDataRef("sim/custom/xap/mcdu/click_0") == NULL) {
+  if(hsxpl_a320n_lookup_dataref("click_0") == NULL) {
     return;
   }
 
@@ -54,138 +73,138 @@ void hsxpl_set_a320n_datarefs(void) {
   memset(&hsxpl_fmc,0,sizeof(struct hsxpl_fmc_s));
   memset(&hsxpl_a320n_datarefs,0,sizeof(struct hsxpl_a320n_datarefs_s));
 
-  hsxpl_fmc.key_0=XPLMFindDataRef("sim/custom/xap/mcdu/click_0");
-  hsxpl_fmc.key_1=XPLMFindDataRef("sim/custom/xap/mcdu/click_1");
-  hsxpl_fmc.key_2=XPLMFindDataRef("sim/custom/xap/mcdu/click_2");
-  hsxpl_fmc.key_3=XPLMFindDataRef("sim/custom/xap/mcdu/click_3");
-  hsxpl_fmc.key_4=XPLMFindDataRef("sim/custom/xap/mcdu/click_4");
-  hsxpl_fmc.key_5=XPLMFindDataRef("sim/custom/xap/mcdu/click_5");
-  hsxpl_fmc.key_6=XPLMFindDataRef("sim/custom/xap/mcdu/click_6");
-  hsxpl_fmc.key_7=XPLMFindDataRef("sim/custom/xap/mcdu/click_7");
-  hsxpl_fmc.key_8=XPLMFindDataRef("sim/custom/xap/mcdu/click_8");
-  hsxpl_fmc.key_9=XPLMFindDataRef("sim/custom/xap/mcdu/click_9");
-  hsxpl_fmc.key_dot=XPLMFindDataRef("sim/custom/xap/mcdu/click_dot");
-  hsxpl_fmc.key_plusminus=XPLMFindDataRef("sim/custom/xap/mcdu/plusmin");
+  hsxpl_fmc.key_0=hsxpl_a320n_lookup_dataref("click_0");
+  hsxpl_fmc.key_1=hsxpl_a320n_lookup_dataref("click_1");
+  hsxpl_fmc.key_2=hsxpl_a320n_lookup_dataref("click_2");
+  hsxpl_fmc.key_3=hsxpl_a320n_lookup_dataref("click_3");
+  hsxpl_fmc.key_4=hsxpl_a320n_lookup_dataref("click_4");
+  hsxpl_fmc.key_5=hsxpl_a320n_lookup_dataref("click_5");
+  hsxpl_fmc.key_6=hsxpl_a320n_lookup_dataref("click_6");
+  hsxpl_fmc.key_7=hsxpl_a320n_lookup_dataref("click_7");
+  hsxpl_fmc.key_8=hsxpl_a320n_lookup_dataref("click_8");
+  hsxpl_fmc.key_9=hsxpl_a320n_lookup_dataref("click_9");
+  hsxpl_fmc.key_dot=hsxpl_a320n_lookup_dataref("click_dot");
+  hsxpl_fmc.key_plusminus=hsxpl_a320n_lookup_dataref("plusmin");
 
-  hsxpl_fmc.key_a=XPLMFindDataRef("sim/custom/xap/mcdu/click_a");
-  hsxpl_fmc.key_b=XPLMFindDataRef("sim/custom/xap/mcdu/click_b");
-  hsxpl_fmc.key_c=XPLMFindDataRef("sim/custom/xap/mcdu/click_c");
-  hsxpl_fmc.key_d=XPLMFindDataRef("sim/custom/xap/mcdu/click_d");
-  hsxpl_fmc.key_e=XPLMFindDataRef("sim/custom/xap/mcdu/click_e");
-  hsxpl_fmc.key_f=XPLMFindDataRef("sim/custom/xap/mcdu/click_f");
-  hsxpl_fmc.key_g=XPLMFindDataRef("sim/custom/xap/mcdu/click_g");
-  hsxpl_fmc.key_h=XPLMFindDataRef("sim/custom/xap/mcdu/click_h");
-  hsxpl_fmc.key_i=XPLMFindDataRef("sim/custom/xap/mcdu/click_i");
-  hsxpl_fmc.key_j=XPLMFindDataRef("sim/custom/xap/mcdu/click_j");
-  hsxpl_fmc.key_k=XPLMFindDataRef("sim/custom/xap/mcdu/click_k");
-  hsxpl_fmc.key_l=XPLMFindDataRef("sim/custom/xap/mcdu/click_l");
-  hsxpl_fmc.key_m=XPLMFindDataRef("sim/custom/xap/mcdu/click_m");
-  hsxpl_fmc.key_n=XPLMFindDataRef("sim/custom/xap/mcdu/click_n");
-  hsxpl_fmc.key_o=XPLMFindDataRef("sim/custom/xap/mcdu/click_o");
-  hsxpl_fmc.key_p=XPLMFindDataRef("sim/custom/xap/mcdu/click_p");
-  hsxpl_fmc.key_q=XPLMFindDataRef("sim/custom/xap/mcdu/click_q");
-  hsxpl_fmc.key_r=XPLMFindDataRef("sim/custom/xap/mcdu/click_r");
-  hsxpl_fmc.key_s=XPLMFindDataRef("sim/custom/xap/mcdu/click_s");
-  hsxpl_fmc.key_t=XPLMFindDataRef("sim/custom/xap/mcdu/click_t");
-  hsxpl_fmc.key_u=XPLMFindDataRef("sim/custom/xap/mcdu/click_u");
-  hsxpl_fmc.key_v=XPLMFindDataRef("sim/custom/xap/mcdu/click_v");
-  hsxpl_fmc.key_w=XPLMFindDataRef("sim/custom/xap/mcdu/click_w");
-  hsxpl_fmc.key_x=XPLMFindDataRef("sim/custom/xap/mcdu/click_x");
-  hsxpl_fmc.key_y=XPLMFindDataRef("sim/custom/xap/mcdu/click_y");
-  hsxpl_fmc.key_z=XPLMFindDataRef("sim/custom/xap/mcdu/click_z");
+  hsxpl_fmc.key_a=hsxpl_a320n_lookup_dataref("click_a");
+  hsxpl_fmc.key_b=hsxpl_a320n_lookup_dataref("click_b");
+  hsxpl_fmc.key_c=hsxpl_a320n_lookup_dataref("click_c");
+  hsxpl_fmc.key_d=hsxpl_a320n_lookup_dataref("click_d");
+  hsxpl_fmc.key_e=hsxpl_a320n_lookup_dataref("click_e");
+  hsxpl_fmc.key_f=hsxpl_a320n_lookup_dataref("click_f");
+  hsxpl_fmc.key_g=hsxpl_a320n_lookup_dataref("click_g");
+  hsxpl_fmc.key_h=hsxpl_a320n_lookup_dataref("click_h");
+  hsxpl_fmc.key_i=hsxpl_a320n_lookup_dataref("click_i");
+  hsxpl_fmc.key_j=hsxpl_a320n_lookup_dataref("click_j");
+  hsxpl_fmc.key_k=hsxpl_a320n_lookup_dataref("click_k");
+  hsxpl_fmc.key_l=hsxpl_a320n_lookup_dataref("click_l");
+  hsxpl_fmc.key_m=hsxpl_a320n_lookup_dataref("click_m");
+  hsxpl_fmc.key_n=hsxpl_a320n_lookup_dataref("click_n");
+  hsxpl_fmc.key_o=hsxpl_a320n_lookup_dataref("click_o");
+  hsxpl_fmc.key_p=hsxpl_a320n_lookup_dataref("click_p");
+  hsxpl_fmc.key_q=hsxpl_a320n_lookup_dataref("click_q");
+  hsxpl_fmc.key_r=hsxpl_a320n_lookup_dataref("click_r");
+  hsxpl_fmc.key_s=hsxpl_a320n_lookup_dataref("click_s");
+  hsxpl_fmc.key_t=hsxpl_a320n_lookup_dataref("click_t");
+  hsxpl_fmc.key_u=hsxpl_a320n_lookup_dataref("click_u");
+  hsxpl_fmc.key_v=hsxpl_a320n_lookup_dataref("click_v");
+  hsxpl_fmc.key_w=hsxpl_a320n_lookup_dataref("click_w");
+  hsxpl_fmc.key_x=hsxpl_a320n_lookup_dataref("click_x");
+  hsxpl_fmc.key_y=hsxpl_a320n_lookup_dataref("click_y");
+  hsxpl_fmc.key_z=hsxpl_a320n_lookup_dataref("click_z");
 
-  hsxpl_fmc.key_clr=XPLMFindDataRef("sim/custom/xap/mcdu/click_clr");
-  hsxpl_fmc.key_space=XPLMFindDataRef("sim/custom/xap/mcdu/click_sp");
-  hsxpl_fmc.key_slash=XPLMFindDataRef("sim/custom/xap/mcdu/click_slash");
-  hsxpl_fmc.key_ovfy=XPLMFindDataRef("sim/custom/xap/mcdu/click_ovfy");
+  hsxpl_fmc.key_clr=hsxpl_a320n_lookup_dataref("click_clr");
+  hsxpl_fmc.key_space=hsxpl_a320n_lookup_dataref("click_sp");
+  hsxpl_fmc.key_slash=hsxpl_a320n_lookup_dataref("click_slash");
+  hsxpl_fmc.key_ovfy=hsxpl_a320n_lookup_dataref("click_ovfy");
 
-  hsxpl_fmc.key_airp=XPLMFindDataRef("sim/custom/xap/mcdu/click_airp");
-  hsxpl_fmc.key_data=XPLMFindDataRef("sim/custom/xap/mcdu/click_data");
-  hsxpl_fmc.key_dir=XPLMFindDataRef("sim/custom/xap/mcdu/click_dir");
-  hsxpl_fmc.key_fpln=XPLMFindDataRef("sim/custom/xap/mcdu/click_fpln");
-  hsxpl_fmc.key_init=XPLMFindDataRef("sim/custom/xap/mcdu/click_int");
-  hsxpl_fmc.key_fuel=XPLMFindDataRef("sim/custom/xap/mcdu/click_fuel");
-  hsxpl_fmc.key_menu=XPLMFindDataRef("sim/custom/xap/mcdu/click_mcdumenu");
-  hsxpl_fmc.key_perf=XPLMFindDataRef("sim/custom/xap/mcdu/click_perf");
-  hsxpl_fmc.key_radnav=XPLMFindDataRef("sim/custom/xap/mcdu/click_radnav");
-  hsxpl_fmc.key_prog=XPLMFindDataRef("sim/custom/xap/mcdu/click_prog");
-  hsxpl_fmc.key_blank=XPLMFindDataRef("sim/custom/xap/mcdu/click_blank");
+  hsxpl_fmc.key_airp=hsxpl_a320n_lookup_dataref("click_airp");
+  hsxpl_fmc.key_data=hsxpl_a320n_lookup_dataref("click_data");
+  hsxpl_fmc.key_dir=hsxpl_a320n_lookup_dataref("click_dir");
+  hsxpl_fmc.key_fpln=hsxpl_a320n_lookup_dataref("click_fpln");
+  hsxpl_fmc.key_init=hsxpl_a320n_lookup_dataref("click_int");
+  hsxpl_fmc.key_fuel=hsxpl_a320n_lookup_dataref("click_fuel");
+  hsxpl_fmc.key_menu=hsxpl_a320n_lookup_dataref("click_mcdumenu");
+  hsxpl_fmc.key_perf=hsxpl_a320n_lookup_dataref("click_perf");
+  hsxpl_fmc.key_radnav=hsxpl_a320n_lookup_dataref("click_radnav");
+  hsxpl_fmc.key_prog=hsxpl_a320n_lookup_dataref("click_prog");
+  hsxpl_fmc.key_blank=hsxpl_a320n_lookup_dataref("click_blank");
 
-  hsxpl_fmc.key_down=XPLMFindDataRef("sim/custom/xap/mcdu/click_up");
-  hsxpl_fmc.key_up=XPLMFindDataRef("sim/custom/xap/mcdu/click_down");
+  hsxpl_fmc.key_down=hsxpl_a320n_lookup_dataref("click_up");
+  hsxpl_fmc.key_up=hsxpl_a320n_lookup_dataref("click_down");
 
-  hsxpl_fmc.key_left=XPLMFindDataRef("sim/custom/xap/mcdu/click_left");
-  hsxpl_fmc.key_right=XPLMFindDataRef("sim/custom/xap/mcdu/click_right");
+  hsxpl_fmc.key_left=hsxpl_a320n_lookup_dataref("click_left");
+  hsxpl_fmc.key_right=hsxpl_a320n_lookup_dataref("click_right");
 
-  hsxpl_fmc.key_lk1=XPLMFindDataRef("sim/custom/xap/mcdu/click_l1");
-  hsxpl_fmc.key_lk2=XPLMFindDataRef("sim/custom/xap/mcdu/click_l2");
-  hsxpl_fmc.key_lk3=XPLMFindDataRef("sim/custom/xap/mcdu/click_l3");
-  hsxpl_fmc.key_lk4=XPLMFindDataRef("sim/custom/xap/mcdu/click_l4");
-  hsxpl_fmc.key_lk5=XPLMFindDataRef("sim/custom/xap/mcdu/click_l5");
-  hsxpl_fmc.key_lk6=XPLMFindDataRef("sim/custom/xap/mcdu/click_l6");
+  hsxpl_fmc.key_lk1=hsxpl_a320n_lookup_dataref("click_l1");
+  hsxpl_fmc.key_lk2=hsxpl_a320n_lookup_dataref("click_l2");
+  hsxpl_fmc.key_lk3=hsxpl_a320n_lookup_dataref("click_l3");
+  hsxpl_fmc.key_lk4=hsxpl_a320n_lookup_dataref("click_l4");
+  hsxpl_fmc.key_lk5=hsxpl_a320n_lookup_dataref("click_l5");
+  hsxpl_fmc.key_lk6=hsxpl_a320n_lookup_dataref("click_l6");
 
-  hsxpl_fmc.key_rk1=XPLMFindDataRef("sim/custom/xap/mcdu/click_r1");
-  hsxpl_fmc.key_rk2=XPLMFindDataRef("sim/custom/xap/mcdu/click_r2");
-  hsxpl_fmc.key_rk3=XPLMFindDataRef("sim/custom/xap/mcdu/click_r3");
-  hsxpl_fmc.key_rk4=XPLMFindDataRef("sim/custom/xap/mcdu/click_r4");
-  hsxpl_fmc.key_rk5=XPLMFindDataRef("sim/custom/xap/mcdu/click_r5");
-  hsxpl_fmc.key_rk6=XPLMFindDataRef("sim/custom/xap/mcdu/click_r6");
+  hsxpl_fmc.key_rk1=hsxpl_a320n_lookup_dataref("click_r1");
+  hsxpl_fmc.key_rk2=hsxpl_a320n_lookup_dataref("click_r2");
+  hsxpl_fmc.key_rk3=hsxpl_a320n_lookup_dataref("click_r3");
+  hsxpl_fmc.key_rk4=hsxpl_a320n_lookup_dataref("click_r4");
+  hsxpl_fmc.key_rk5=hsxpl_a320n_lookup_dataref("click_r5");
+  hsxpl_fmc.key_rk6=hsxpl_a320n_lookup_dataref("click_r6");
 
-  hsxpl_a320n_datarefs.label1=XPLMFindDataRef("sim/custom/xap/mcdu/label_1");
-  hsxpl_a320n_datarefs.label2=XPLMFindDataRef("sim/custom/xap/mcdu/label_2");
-  hsxpl_a320n_datarefs.label3=XPLMFindDataRef("sim/custom/xap/mcdu/label_3");
-  hsxpl_a320n_datarefs.label4=XPLMFindDataRef("sim/custom/xap/mcdu/label_4");
-  hsxpl_a320n_datarefs.label5=XPLMFindDataRef("sim/custom/xap/mcdu/label_5");
-  hsxpl_a320n_datarefs.label6=XPLMFindDataRef("sim/custom/xap/mcdu/label_6");
+  hsxpl_a320n_datarefs.label1=hsxpl_a320n_lookup_dataref("label_1");
+  hsxpl_a320n_datarefs.label2=hsxpl_a320n_lookup_dataref("label_2");
+  hsxpl_a320n_datarefs.label3=hsxpl_a320n_lookup_dataref("label_3");
+  hsxpl_a320n_datarefs.label4=hsxpl_a320n_lookup_dataref("label_4");
+  hsxpl_a320n_datarefs.label5=hsxpl_a320n_lookup_dataref("label_5");
+  hsxpl_a320n_datarefs.label6=hsxpl_a320n_lookup_dataref("label_6");
 
-  hsxpl_a320n_datarefs.line1a=XPLMFindDataRef("sim/custom/xap/mcdu/line_1a");
-  hsxpl_a320n_datarefs.line1b=XPLMFindDataRef("sim/custom/xap/mcdu/line_1b");
-  hsxpl_a320n_datarefs.line1g=XPLMFindDataRef("sim/custom/xap/mcdu/line_1g");
-  hsxpl_a320n_datarefs.line1m=XPLMFindDataRef("sim/custom/xap/mcdu/line_1m");
-  hsxpl_a320n_datarefs.line1w=XPLMFindDataRef("sim/custom/xap/mcdu/line_1w");
-  hsxpl_a320n_datarefs.line1y=XPLMFindDataRef("sim/custom/xap/mcdu/line_1y");
+  hsxpl_a320n_datarefs.line1a=hsxpl_a320n_lookup_dataref("line_1a");
+  hsxpl_a320n_datarefs.line1b=hsxpl_a320n_lookup_dataref("line_1b");
+  hsxpl_a320n_datarefs.line1g=hsxpl_a320n_lookup_dataref("line_1g");
+  hsxpl_a320n_datarefs.line1m=hsxpl_a320n_lookup_dataref("line_1m");
+  hsxpl_a320n_datarefs.line1w=hsxpl_a320n_lookup_dataref("line_1w");
+  hsxpl_a320n_datarefs.line1y=hsxpl_a320n_lookup_dataref("line_1y");
 
-  hsxpl_a320n_datarefs.line2a=XPLMFindDataRef("sim/custom/xap/mcdu/line_2a");
-  hsxpl_a320n_datarefs.line2b=XPLMFindDataRef("sim/custom/xap/mcdu/line_2b");
-  hsxpl_a320n_datarefs.line2g=XPLMFindDataRef("sim/custom/xap/mcdu/line_2g");
-  hsxpl_a320n_datarefs.line2m=XPLMFindDataRef("sim/custom/xap/mcdu/line_2m");
-  hsxpl_a320n_datarefs.line2w=XPLMFindDataRef("sim/custom/xap/mcdu/line_2w");
-  hsxpl_a320n_datarefs.line2y=XPLMFindDataRef("sim/custom/xap/mcdu/line_2y");
+  hsxpl_a320n_datarefs.line2a=hsxpl_a320n_lookup_dataref("line_2a");
+  hsxpl_a320n_datarefs.line2b=hsxpl_a320n_lookup_dataref("line_2b");
+  hsxpl_a320n_datarefs.line2g=hsxpl_a320n_lookup_dataref("line_2g");
+  hsxpl_a320n_datarefs.line2m=hsxpl_a320n_lookup_dataref("line_2m");
+  hsxpl_a320n_datarefs.line2w=hsxpl_a320n_lookup_dataref("line_2w");
+  hsxpl_a320n_datarefs.line2y=hsxpl_a320n_lookup_dataref("line_2y");
 
-  hsxpl_a320n_datarefs.line3a=XPLMFindDataRef("sim/custom/xap/mcdu/line_3a");
-  hsxpl_a320n_datarefs.line3b=XPLMFindDataRef("sim/custom/xap/mcdu/line_3b");
-  hsxpl_a320n_datarefs.line3g=XPLMFindDataRef("sim/custom/xap/mcdu/line_3g");
-  hsxpl_a320n_datarefs.line3m=XPLMFindDataRef("sim/custom/xap/mcdu/line_3m");
-  hsxpl_a320n_datarefs.line3w=XPLMFindDataRef("sim/custom/xap/mcdu/line_3w");
-  hsxpl_a320n_datarefs.line3y=XPLMFindDataRef("sim/custom/xap/mcdu/line_3y");
+  hsxpl_a320n_datarefs.line3a=hsxpl_a320n_lookup_dataref("line_3a");
+  hsxpl_a320n_datarefs.line3b=hsxpl_a320n_lookup_dataref("line_3b");
+  hsxpl_a320n_datarefs.line3g=hsxpl_a320n_lookup_dataref("line_3g");
+  hsxpl_a320n_datarefs.line3m=hsxpl_a320n_lookup_dataref("line_3m");
+  hsxpl_a320n_datarefs.line3w=hsxpl_a320n_lookup_dataref("line_3w");
+  hsxpl_a320n_datarefs.line3y=hsxpl_a320n_lookup_dataref("line_3y");
 
-  hsxpl_a320n_datarefs.line4a=XPLMFindDataRef("sim/custom/xap/mcdu/line_4a");
-  hsxpl_a320n_datarefs.line4b=XPLMFindDataRef("sim/custom/xap/mcdu/line_4b");
-  hsxpl_a320n_datarefs.line4g=XPLMFindDataRef("sim/custom/xap/mcdu/line_4g");
-  hsxpl_a320n_datarefs.line4m=XPLMFindDataRef("sim/custom/xap/mcdu/line_4m");
-  hsxpl_a320n_datarefs.line4w=XPLMFindDataRef("sim/custom/xap/mcdu/line_4w");
-  hsxpl_a320n_datarefs.line4y=XPLMFindDataRef("sim/custom/xap/mcdu/line_4y");
+  hsxpl_a320n_datarefs.line4a=hsxpl_a320n_lookup_dataref("line_4a");
+  hsxpl_a320n_datarefs.line4b=hsxpl_a320n_lookup_dataref("line_4b");
+  hsxpl_a320n_datarefs.line4g=hsxpl_a320n_lookup_dataref("line_4g");
+  hsxpl_a320n_datarefs.line4m=hsxpl_a320n_lookup_dataref("line_4m");
+  hsxpl_a320n_datarefs.line4w=hsxpl_a320n_lookup_dataref("line_4w");
+  hsxpl_a320n_datarefs.line4y=hsxpl_a320n_lookup_dataref("line_4y");
 
-  hsxpl_a320n_datarefs.line5a=XPLMFindDataRef("sim/custom/xap/mcdu/line_5a");
-  hsxpl_a320n_datarefs.line5b=XPLMFindDataRef("sim/custom/xap/mcdu/line_5b");
-  hsxpl_a320n_datarefs.line5g=XPLMFindDataRef("sim/custom/xap/mcdu/line_5g");
-  hsxpl_a320n_datarefs.line5m=XPLMFindDataRef("sim/custom/xap/mcdu/line_5m");
-  hsxpl_a320n_datarefs.line5w=XPLMFindDataRef("sim/custom/xap/mcdu/line_5w");
-  hsxpl_a320n_datarefs.line5y=XPLMFindDataRef("sim/custom/xap/mcdu/line_5y");
+  hsxpl_a320n_datarefs.line5a=hsxpl_a320n_lookup_dataref("line_5a");
+  hsxpl_a320n_datarefs.line5b=hsxpl_a320n_lookup_dataref("line_5b");
+  hsxpl_a320n_datarefs.line5g=hsxpl_a320n_lookup_dataref("line_5g");
+  hsxpl_a320n_datarefs.line5m=hsxpl_a320n_lookup_dataref("line_5m");
+  hsxpl_a320n_datarefs.line5w=hsxpl_a320n_lookup_dataref("line_5w");
+  hsxpl_a320n_datarefs.line5y=hsxpl_a320n_lookup_dataref("line_5y");
 
-  hsxpl_a320n_datarefs.line6a=XPLMFindDataRef("sim/custom/xap/mcdu/line_6a");
-  hsxpl_a320n_datarefs.line6b=XPLMFindDataRef("sim/custom/xap/mcdu/line_6b");
-  hsxpl_a320n_datarefs.line6g=XPLMFindDataRef("sim/custom/xap/mcdu/line_6g");
-  hsxpl_a320n_datarefs.line6m=XPLMFindDataRef("sim/custom/xap/mcdu/line_6m");
-  hsxpl_a320n_datarefs.line6w=XPLMFindDataRef("sim/custom/xap/mcdu/line_6w");
-  hsxpl_a320n_datarefs.line6y=XPLMFindDataRef("sim/custom/xap/mcdu/line_6y");
+  hsxpl_a320n_datarefs.line6a=hsxpl_a320n_lookup_dataref("line_6a");
+  hsxpl_a320n_datarefs.line6b=hsxpl_a320n_lookup_dataref("line_6b");
+  hsxpl_a320n_datarefs.line6g=hsxpl_a320n_lookup_dataref("line_6g");
+  hsxpl_a320n_datarefs.line6m=hsxpl_a320n_lookup_dataref("line_6m");
+  hsxpl_a320n_datarefs.line6w=hsxpl_a320n_lookup_dataref("line_6w");
+  hsxpl_a320n_datarefs.line6y=hsxpl_a320n_lookup_dataref("line_6y");
 
-  hsxpl_a320n_datarefs.scratchpad=XPLMFindDataRef("sim/custom/xap/mcdu/scratchpad");
-  hsxpl_a320n_datarefs.scratchpad_a=XPLMFindDataRef("sim/custom/xap/mcdu/scratchpad_a");
+  hsxpl_a320n_datarefs.scratchpad=hsxpl_a320n_lookup_dataref("scratchpad");
+  hsxpl_a320n_datarefs.scratchpad_a=hsxpl_a320n_lookup_dataref("scratchpad_a");
 
-  hsxpl_a320n_datarefs.title_g=XPLMFindDataRef("sim/custom/xap/mcdu/title_g");
-  hsxpl_a320n_datarefs.title_w=XPLMFindDataRef("sim/custom/xap/mcdu/title_w");
-  hsxpl_a320n_datarefs.title_y=XPLMFindDataRef("sim/custom/xap/mcdu/title_y");
+  hsxpl_a320n_datarefs.title_g=hsxpl_a320n_lookup_dataref("title_g");
+  hsxpl_a320n_datarefs.title_w=hsxpl_a320n_lookup_dataref("title_w");
+  hsxpl_a320n_datarefs.title_y=hsxpl_a320n_lookup_dataref("title_y");
 
 }
 
