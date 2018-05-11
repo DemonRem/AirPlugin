@@ -1,3 +1,8 @@
+What's new in 4.7.8 (2018/05/11)
+################################
+Adds the possibility of multiple target static IPs via the APP-IP keyword
+in the config file.
+
 What's new in 4.7.7 (2018/04/12)
 ################################
 Fixes linker issue on windows 32 bit and X-Plane 9 related to Error Code = 126 : The specified module could not be found.

@@ -50,6 +50,8 @@ extern char hsaircpf_serial_port[256];
 
 extern struct sockaddr_in hsxpl_unicast_sa;
 extern uint32_t hsxpl_cpflight_enabled;
+uint32_t hsxpl_appips[1024];
+uint32_t hsxpl_no_appips=0;
 
 void hsxpl_load_settings(void)
 {
@@ -61,6 +63,9 @@ void hsxpl_load_settings(void)
 #ifdef CPFLIGHT
   memset(hsaircpf_serial_port,0,256);
 #endif
+
+  hsxpl_no_appips=0;
+  memset(hsxpl_appips,0,sizeof(hsxpl_appips));
 
 #if !defined(_WIN32)
   FILE *fp=fopen("Resources/plugins/HaversineAir.cfg","r");
@@ -127,11 +132,6 @@ void hsxpl_load_settings(void)
               hsxpl_unicast_sa.sin_addr.s_addr=0;
               hsxpl_save_settings();
             } else {
-              if(hsxpl_unicast_sa.sin_addr.s_addr) {
-                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT);
-                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT);
-                hsmp_remove_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIREFB_PORT);
-              }
               hsxpl_unicast_sa.sin_addr.s_addr=a4.s_addr;
               hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRTRACK_PORT,HSMP_PKT_NT_AIRTRACK|HSMP_PKT_PROTO_VER);
               hsmp_add_peer_target(inet_ntoa(hsxpl_unicast_sa.sin_addr),HSMP_AIRFMC_PORT,HSMP_PKT_NT_AIRFMC|HSMP_PKT_PROTO_VER);
@@ -143,6 +143,21 @@ void hsxpl_load_settings(void)
           }
         }
       }
+
+      if(!memcmp(buffer,"APP-IP=",strlen("APP-IP="))) {
+        c=&buffer[strlen("APP-IP=")];
+        if(*c!='\0') {
+          struct in_addr a4;
+          a4.s_addr=inet_addr(c);
+          if(a4.s_addr!=INADDR_NONE) {
+            memcpy(&hsxpl_appips[hsxpl_no_appips],&a4.s_addr,4);
+            hsxpl_no_appips++;
+            hsmp_add_peer_target(inet_ntoa(a4),HSMP_AIRTRACK_PORT,HSMP_PKT_NT_AIRTRACK|HSMP_PKT_PROTO_VER);
+            hsmp_add_peer_target(inet_ntoa(a4),HSMP_AIRFMC_PORT,HSMP_PKT_NT_AIRFMC|HSMP_PKT_PROTO_VER);
+            hsmp_add_peer_target(inet_ntoa(a4),HSMP_AIREFB_PORT,HSMP_PKT_NT_AIREFB|HSMP_PKT_PROTO_VER);
+          }
+        }
+      }
     }
     fclose(fp);
   }
@@ -151,6 +166,7 @@ void hsxpl_load_settings(void)
 void hsxpl_save_settings(void)
 {
 
+  uint32_t i;
 #if !defined(_WIN32)
   FILE *fp=fopen("Resources/plugins/HaversineAir.cfg","w");
 #else
@@ -169,6 +185,12 @@ void hsxpl_save_settings(void)
       fprintf(fp,"CPFLIGHT-SERIAL-PORT=%s\r\n",hsaircpf_serial_port);
     }
 #endif
+
+    for(i=0;i<hsxpl_no_appips;i++) {
+      struct in_addr a4;
+      memcpy(&a4.s_addr,&hsxpl_appips[i],4);
+      fprintf(fp,"APP-IP=%s\r\n",inet_ntoa(a4));
+    }
 
     fclose(fp);
   }
